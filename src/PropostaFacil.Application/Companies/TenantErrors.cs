@@ -2,7 +2,7 @@
 
 namespace PropostaFacil.Application.Companies
 {
-    public static class CompanyErrors
+    public static class TenantErrors
     {
         public static Error NotFound(string id) =>
             Error.NotFound("Companies.NotFound", $"Company with Id: {id} not found");
