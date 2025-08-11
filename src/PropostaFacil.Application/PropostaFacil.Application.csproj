@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PropostaFacil.Domain\PropostaFacil.Domain.csproj" />
     <ProjectReference Include="..\PropostaFacil.Shared\PropostaFacil.Shared.csproj" />
   </ItemGroup>

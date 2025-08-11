@@ -1,19 +1,13 @@
 ﻿using Common.ResultPattern;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PropostaFacil.API.Controllers;
 
-/// <summary>
-/// Represents a base controller for the Web API.
-/// </summary>
 [ApiController]
 public class BaseController : ControllerBase
 {
-    /// <summary>
-    /// Returns a problem response with the specified error details.
-    /// </summary>
-    /// <param name="error">The error details.</param>
-    /// <returns>A problem response with the specified error details.</returns>
+
     protected IActionResult Problem(Error error)
     {
         var statusCode = error.ErrorType switch
@@ -31,6 +25,22 @@ public class BaseController : ControllerBase
             statusCode: statusCode,
             title: error.Description,
             detail: error.Code);
+    }
+
+    protected IActionResult? ValidateOrBadRequest<T>(
+        T command,
+        IValidator<T> validator)
+    {
+        var result = validator.Validate(command);
+        if (!result.IsValid)
+        {
+            return BadRequest(new
+            {
+                statusCode = 400,
+                message = result.Errors.Select(e => e.ErrorMessage).ToList()
+            });
+        }
+        return null;
     }
 }
 

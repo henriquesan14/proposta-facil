@@ -1,18 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PropostaFacil.API.Services;
-using Common.ResultPattern;
-using PropostaFacil.Application.Companies;
+﻿using Common.ResultPattern;
+using FluentValidation;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using PropostaFacil.Application.Tenants.Commands.CreateTenant;
+using PropostaFacil.Application.Tenants.Queries.GetTenantById;
+using PropostaFacil.Application.Tenants.Queries.GetTenants;
 
 namespace PropostaFacil.API.Controllers
 {
     [Route("api/[controller]")]
-    public class CompanyController(ICompanyService companyService) : BaseController
+    public class TenantController(IMediator mediator) : BaseController
     {
 
         [HttpGet]
         public async Task<IActionResult> Get(CancellationToken ct)
         {
-            var result = await companyService.GetAsync(ct);
+            var query = new GetTenantsQuery();
+            var result = await mediator.Send(query, ct);
 
             return result.Match(
                 onSuccess: Ok,
@@ -23,7 +27,8 @@ namespace PropostaFacil.API.Controllers
         [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
         {
-            var result = await companyService.GetByIdAsync(id, ct);
+            var query = new GetTenantByIdGuery(id);
+            var result = await mediator.Send(query, ct);
 
             return result.Match(
                 onSuccess: Ok,
@@ -32,9 +37,12 @@ namespace PropostaFacil.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCompanyRequest request, CancellationToken ct)
+        public async Task<IActionResult> Create(CreateTenantCommand command, IValidator<CreateTenantCommand> validator, CancellationToken ct)
         {
-            var result = await companyService.AddAsync(request, ct);
+            var badRequest = ValidateOrBadRequest(command, validator);
+            if (badRequest != null) return badRequest;
+
+            var result = await mediator.Send(command, ct);
 
             return result.Match(
                 onSuccess: () => CreatedAtAction(
