@@ -4,7 +4,7 @@ namespace PropostaFacil.Application.Tenants
 {
     public static class TenantErrors
     {
-        public static Error NotFound(string id) =>
+        public static Error NotFound(Guid id) =>
             Error.NotFound("Tenants.NotFound", $"Tenant with Id: {id} not found");
 
         public static Error Conflict(string name) =>

@@ -3,8 +3,8 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
+using PropostaFacil.Application.Tenants.Queries.GetTenantById;
 using PropostaFacil.Application.Tenants.Queries.GetTenants;
-using System.ComponentModel.DataAnnotations;
 
 namespace PropostaFacil.API.Controllers
 {
@@ -24,16 +24,17 @@ namespace PropostaFacil.API.Controllers
             );
         }
 
-        //[HttpGet("{id:guid}")]
-        //public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
-        //{
-        //    var result = await companyService.GetByIdAsync(id, ct);
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
+        {
+            var query = new GetTenantByIdGuery(id);
+            var result = await mediator.Send(query, ct);
 
-        //    return result.Match(
-        //        onSuccess: Ok,
-        //        onFailure: Problem
-        //    );
-        //}
+            return result.Match(
+                onSuccess: Ok,
+                onFailure: Problem
+            );
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateTenantCommand command, IValidator<CreateTenantCommand> validator, CancellationToken ct)
@@ -44,7 +45,9 @@ namespace PropostaFacil.API.Controllers
             var result = await mediator.Send(command, ct);
 
             return result.Match(
-                onSuccess: () => Ok(
+                onSuccess: () => CreatedAtAction(
+                    actionName: nameof(GetById),
+                    routeValues: new { id = result.Value.Id },
                     value: result.Value
                 ),
                 onFailure: Problem
