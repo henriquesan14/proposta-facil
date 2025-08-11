@@ -1,8 +1,10 @@
 ﻿using Common.ResultPattern;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using PropostaFacil.Application.Companies.Commands.CreateTenant;
-using PropostaFacil.Application.Companies.Queries.GetTenants;
+using PropostaFacil.Application.Tenants.Commands.CreateTenant;
+using PropostaFacil.Application.Tenants.Queries.GetTenants;
+using System.ComponentModel.DataAnnotations;
 
 namespace PropostaFacil.API.Controllers
 {
@@ -34,8 +36,11 @@ namespace PropostaFacil.API.Controllers
         //}
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTenantCommand command, CancellationToken ct)
+        public async Task<IActionResult> Create(CreateTenantCommand command, IValidator<CreateTenantCommand> validator, CancellationToken ct)
         {
+            var badRequest = ValidateOrBadRequest(command, validator);
+            if (badRequest != null) return badRequest;
+
             var result = await mediator.Send(command, ct);
 
             return result.Match(

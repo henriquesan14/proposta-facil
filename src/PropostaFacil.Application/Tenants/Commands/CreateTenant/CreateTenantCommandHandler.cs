@@ -3,7 +3,7 @@ using PropostaFacil.Application.Contracts.Data;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Shared.Common.CQRS;
 
-namespace PropostaFacil.Application.Companies.Commands.CreateTenant
+namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
 {
     public class CreateTenantCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<CreateTenantCommand, ResultT<TenantResponse>>
     {

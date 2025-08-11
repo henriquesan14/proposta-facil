@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
+using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 
 namespace PropostaFacil.Application
 {
@@ -10,6 +12,8 @@ namespace PropostaFacil.Application
             {
                 cfg.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly);
             });
+
+            services.AddValidatorsFromAssemblyContaining<CreateTenantCommandValidator>();
 
             return services;
         }

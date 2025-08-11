@@ -2,7 +2,7 @@
 using PropostaFacil.Application.Contracts.Data;
 using PropostaFacil.Shared.Common.CQRS;
 
-namespace PropostaFacil.Application.Companies.Queries.GetTenants
+namespace PropostaFacil.Application.Tenants.Queries.GetTenants
 {
     public class GetTenantsQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<GetTenantsQuery, ResultT<IEnumerable<TenantResponse>>>
     {
