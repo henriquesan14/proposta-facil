@@ -120,7 +120,9 @@ namespace PropostaFacil.Infra.Data.Repositories
 
         public void Remove(TEntity entity)
         {
-            DbContext.Set<TEntity>().Remove(entity);
+            entity.IsActive = false;
+
+            DbContext.Entry(entity).Property(e => e.IsActive).IsModified = true;
         }
 
         public virtual async Task<int> GetCountAsync(Expression<Func<TEntity, bool>> predicate = null)

@@ -15,6 +15,13 @@ namespace PropostaFacil.Domain.Entities
                 Domain = domain
             };
         }
+
+        public void Update(string name, string cnpj, string domain)
+        {
+            Name = name;
+            Cnpj = cnpj;
+            Domain = domain;
+        }
         public string Name { get; private set; } = default!;
         public string Cnpj { get; private set; } = default!;
         public string Domain { get; private set; } = default!;
