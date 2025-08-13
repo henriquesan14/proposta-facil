@@ -28,7 +28,6 @@ namespace PropostaFacil.Infra.Data.Configurations
                 doc.Property(d => d.Number)
                    .IsRequired()
                    .HasMaxLength(20);
-
             });
 
             builder.OwnsOne(c => c.Contact, contact =>

@@ -10,9 +10,9 @@ namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
     {
         public async Task<ResultT<TenantResponse>> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
         {
-            var tenantExist = await unitOfWork.Tenants.GetSingleAsync(t => t.Name == request.Name);
+            var tenantExist = await unitOfWork.Tenants.GetSingleAsync(t => t.Document.Number == request.Document);
 
-            if (tenantExist != null) return TenantErrors.Conflict(request.Name);
+            if (tenantExist != null) return ClientErrors.Conflict(request.Document);
 
             var document = Document.Of(request.Document);
             var contact = Contact.Of(request.Email, request.PhoneNumber);

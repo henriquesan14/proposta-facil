@@ -11,12 +11,12 @@ namespace PropostaFacil.Application.Tenants.Commands.UpdateTenant
         public async Task<Result> Handle(UpdateTenantCommand request, CancellationToken cancellationToken)
         {
             var tenant = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(request.Id));
-            if (tenant == null) return TenantErrors.NotFound(request.Id);
+            if (tenant == null) return ClientErrors.NotFound(request.Id);
 
             if (!request.Name.Equals(tenant.Name, StringComparison.OrdinalIgnoreCase))
             {
                 var tenantExist = await unitOfWork.Tenants.GetSingleAsync(t => t.Name.Equals(request.Name));
-                if (tenantExist != null && tenantExist.Id != TenantId.Of(request.Id)) return TenantErrors.Conflict(request.Name);
+                if (tenantExist != null && tenantExist.Id != TenantId.Of(request.Id)) return ClientErrors.Conflict(request.Name);
             }
 
             var document = Document.Of(request.Document);

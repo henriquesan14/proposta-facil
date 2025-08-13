@@ -28,6 +28,7 @@ namespace PropostaFacil.Infra
             services.AddScoped(typeof(IAsyncRepository<,>), typeof(RepositoryBase<,>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITenantRepository, TenantRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
 
             return services;
         }

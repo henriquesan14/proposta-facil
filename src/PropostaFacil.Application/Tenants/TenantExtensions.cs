@@ -2,7 +2,7 @@
 
 namespace PropostaFacil.Application.Tenants
 {
-    public static class TenantExtensions
+    public static class ClientExtensions
     {
         public static TenantResponse ToDto(this Tenant tenant)
         {
