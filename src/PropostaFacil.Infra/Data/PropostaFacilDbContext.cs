@@ -11,6 +11,10 @@ namespace PropostaFacil.Infra.Data
         : base(options) { }
 
         public DbSet<Tenant> Tenants => Set<Tenant>();
+        public DbSet<Client> Clients => Set<Client>();
+        public DbSet<Proposal> Proposals => Set<Proposal>();
+        public DbSet<ProposalItem> ProposalItems => Set<ProposalItem>();
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -1,6 +1,6 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Contracts.Data;
-using PropostaFacil.Domain.ValueObjects;
+using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Tenants.Queries.GetTenantById

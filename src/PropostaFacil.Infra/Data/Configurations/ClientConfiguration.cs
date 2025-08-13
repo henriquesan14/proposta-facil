@@ -5,23 +5,22 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Configurations
 {
-    public class EnqueteConfiguration : IEntityTypeConfiguration<Tenant>
+    public class ClientConfiguration : IEntityTypeConfiguration<Client>
     {
-        public void Configure(EntityTypeBuilder<Tenant> builder)
+        public void Configure(EntityTypeBuilder<Client> builder)
         {
-            builder.ToTable("Tenants");
+            builder.ToTable("Clients");
 
-            builder.HasKey(t => t.Id);
+            builder.HasKey(c => c.Id);
 
-            builder.Property(t => t.Id)
+            builder.Property(c => c.Id)
                 .HasConversion(
                     id => id.Value,
-                    value => TenantId.Of(value)
-                );
+                    value => ClientId.Of(value));
 
-            builder.Property(e => e.Name)
-            .IsRequired()
-            .HasMaxLength(100);
+            builder.Property(c => c.Name)
+                .IsRequired()
+                .HasMaxLength(200);
 
             builder.OwnsOne(c => c.Document, doc =>
             {
@@ -51,14 +50,16 @@ namespace PropostaFacil.Infra.Data.Configurations
                 address.Property(a => a.ZipCode).HasMaxLength(10);
             });
 
-            builder.Property(d => d.Domain)
-                .IsRequired()
-                .HasMaxLength(300);
+            builder.Property(c => c.TenantId)
+                .HasConversion(
+                    id => id.Value,
+                    value => TenantId.Of(value))
+                .IsRequired();
 
-            builder.HasMany(t => t.Clients)
-                .WithOne(c => c.Tenant)
-                .HasForeignKey(c => c.TenantId);
-
+            builder.HasMany(c => c.Proposals)
+                .WithOne(p => p.Client)
+                .HasForeignKey(p => p.ClientId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

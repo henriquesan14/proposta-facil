@@ -1,30 +1,41 @@
 ﻿using PropostaFacil.Domain.Abstractions;
 using PropostaFacil.Domain.ValueObjects;
+using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Domain.Entities
 {
     public class Tenant : Aggregate<TenantId>
     {
-        public static Tenant Create(string name, string cnpj, string domain)
+        public static Tenant Create(string name, string domain, Document document, Contact contact, Address address)
         {
             return new Tenant
             {
                 Id = TenantId.Of(Guid.NewGuid()),
                 Name = name,
-                Cnpj = cnpj,
-                Domain = domain
+                Domain = domain,
+                Document = document,
+                Contact = contact,
+                Address = address
             };
         }
 
-        public void Update(string name, string cnpj, string domain)
+        public void Update(string name, string domain, Document document,  Contact contact, Address address)
         {
             Name = name;
-            Cnpj = cnpj;
             Domain = domain;
+            Document = document;
+            Contact = contact;
+            Address = address;
         }
         public string Name { get; private set; } = default!;
-        public string Cnpj { get; private set; } = default!;
         public string Domain { get; private set; } = default!;
+        public Document Document { get; private set; } = default!;
+
+        public Contact Contact { get; private set; } = default!;
+
+        public Address Address { get; private set; } = default!;
+
+        public ICollection<Client> Clients { get; private set; } = default!;
 
     }
 }

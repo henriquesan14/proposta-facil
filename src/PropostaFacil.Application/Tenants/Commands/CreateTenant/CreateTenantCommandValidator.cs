@@ -10,9 +10,9 @@ namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
                 .WithMessage("O campo {PropertyName} é obrigatório")
                 .MaximumLength(100).WithMessage("O campo {PropertyName} não pode ter mais de 1000 caracteres");
 
-            RuleFor(c => c.Cnpj).NotEmpty()
+            RuleFor(c => c.Document).NotEmpty()
                 .WithMessage("O campo {PropertyName} é obrigatório")
-                .Length(14).WithMessage("O campo {PropertyName} tem que ter 14 caracteres");
+                .MaximumLength(14).WithMessage("O campo {PropertyName} não pode ter mais de 14 caracteres");
 
             RuleFor(c => c.Domain).NotEmpty()
                 .WithMessage("O campo {PropertyName} é obrigatório")
