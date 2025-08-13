@@ -3,6 +3,8 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
+using PropostaFacil.Application.Tenants.Commands.DeleteTenant;
+using PropostaFacil.Application.Tenants.Commands.UpdateTenant;
 using PropostaFacil.Application.Tenants.Queries.GetTenantById;
 using PropostaFacil.Application.Tenants.Queries.GetTenants;
 
@@ -50,6 +52,33 @@ namespace PropostaFacil.API.Controllers
                     routeValues: new { id = result.Value.Id },
                     value: result.Value
                 ),
+                onFailure: Problem
+            );
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateTenantCommand command, IValidator<UpdateTenantCommand> validator, CancellationToken ct)
+        {
+            var badRequest = ValidateOrBadRequest(command, validator);
+            if (badRequest != null) return badRequest;
+
+            var result = await mediator.Send(command, ct);
+
+            return result.Match(
+                onSuccess: () => NoContent(),
+                onFailure: Problem
+            );
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+        {
+            var command = new DeleteTenantCommand(id);
+
+            var result = await mediator.Send(command, ct);
+
+            return result.Match(
+                onSuccess: () => NoContent(),
                 onFailure: Problem
             );
         }

@@ -3,5 +3,5 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Application.Contracts.Data
 {
-    public interface ITenantRepository : IAsyncRepository<Tenant, TenantId>;
+    public interface IClientRepository : IAsyncRepository<Client, ClientId>;
 }

@@ -4,9 +4,9 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Repositories
 {
-    public class TenantRepository : RepositoryBase<Tenant, TenantId>, ITenantRepository
+    public class ClientRepository : RepositoryBase<Client, ClientId>, IClientRepository
     {
-        public TenantRepository(PropostaFacilDbContext dbContext) : base(dbContext)
+        public ClientRepository(PropostaFacilDbContext dbContext) : base(dbContext)
         {
         }
     }

@@ -1,11 +1,14 @@
 ﻿using FluentValidation;
+using PropostaFacil.Application.Tenants.Commands.UpdateTenant;
 
 namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
 {
-    public class CreateTenantCommandValidator : AbstractValidator<CreateTenantCommand>
+    public class UpdateTenantCommandValidator : AbstractValidator<UpdateTenantCommand>
     {
-        public CreateTenantCommandValidator()
+        public UpdateTenantCommandValidator()
         {
+            RuleFor(c => c.Id).NotEmpty()
+                .WithMessage("O campo {PropertyName} é obrigatório");
             RuleFor(c => c.Name).NotEmpty()
                 .WithMessage("O campo {PropertyName} é obrigatório")
                 .MaximumLength(100).WithMessage("O campo {PropertyName} não pode ter mais de 1000 caracteres");

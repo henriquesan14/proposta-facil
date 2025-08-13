@@ -4,38 +4,39 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Domain.Entities
 {
-    public class Tenant : Aggregate<TenantId>
+    public class Client : Aggregate<ClientId>
     {
-        public static Tenant Create(string name, string domain, Document document, Contact contact, Address address)
+        public static Client Create(string name, TenantId tenantId, Document document, Contact contact, Address address)
         {
-            return new Tenant
+            return new Client
             {
-                Id = TenantId.Of(Guid.NewGuid()),
+                Id = ClientId.Of(Guid.NewGuid()),
                 Name = name,
-                Domain = domain,
+                TenantId = tenantId,
                 Document = document,
                 Contact = contact,
                 Address = address
             };
         }
 
-        public void Update(string name, string domain, Document document,  Contact contact, Address address)
+        public void Update(string name, TenantId tenantId, Document document, Contact contact, Address address)
         {
             Name = name;
-            Domain = domain;
+            TenantId = tenantId;
             Document = document;
             Contact = contact;
             Address = address;
         }
         public string Name { get; private set; } = default!;
-        public string Domain { get; private set; } = default!;
-        public Document Document { get; private set; } = default!;
 
+        public Document Document { get; private set; } = default!;
         public Contact Contact { get; private set; } = default!;
 
         public Address Address { get; private set; } = default!;
 
-        public ICollection<Client> Clients { get; private set; } = default!;
+        public TenantId TenantId { get; private set; } = default!;
 
+        public Tenant Tenant { get; private set; } = default!;
+        public ICollection<Proposal> Proposals { get; private set; } = default!;
     }
 }

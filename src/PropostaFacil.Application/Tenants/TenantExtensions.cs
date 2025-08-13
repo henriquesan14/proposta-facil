@@ -2,15 +2,24 @@
 
 namespace PropostaFacil.Application.Tenants
 {
-    public static class TenantExtensions
+    public static class ClientExtensions
     {
         public static TenantResponse ToDto(this Tenant tenant)
         {
             return new TenantResponse(
                 tenant.Id.Value,
                 tenant.Name,
-                tenant.Cnpj,
-                tenant.Domain
+                tenant.Domain,
+                tenant.Document.Number,
+                tenant.Contact.Email,
+                tenant.Contact.PhoneNumber,
+                tenant.Address.Street,
+                tenant.Address.Number,
+                tenant.Address.Complement,
+                tenant.Address.District,
+                tenant.Address.City,
+                tenant.Address.State,
+                tenant.Address.ZipCode
             );
         }
 

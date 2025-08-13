@@ -1,6 +1,6 @@
 ﻿using PropostaFacil.Domain.Exceptions;
 
-namespace PropostaFacil.Domain.ValueObjects
+namespace PropostaFacil.Domain.ValueObjects.Ids
 {
     public record TenantId
     {

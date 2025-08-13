@@ -2,13 +2,13 @@
 
 namespace PropostaFacil.Application.Tenants
 {
-    public static class TenantErrors
+    public static class ClientErrors
     {
         public static Error NotFound(Guid id) =>
             Error.NotFound("Tenants.NotFound", $"Tenant with Id: {id} not found");
 
-        public static Error Conflict(string name) =>
-            Error.Conflict("Tenants.Conflict", $"Tenant with Name: {name} already exists");
+        public static Error Conflict(string document) =>
+            Error.Conflict("Tenants.Conflict", $"Tenant with document: {document} already exists");
 
         public static Error CreateFailure =>
             Error.Failure("Tenants.CreateFailure", $"Something went wrong in creating company");

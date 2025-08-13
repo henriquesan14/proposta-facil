@@ -1,6 +1,7 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Contracts.Data;
 using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
@@ -9,11 +10,15 @@ namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
     {
         public async Task<ResultT<TenantResponse>> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
         {
-            var tenantExist = await unitOfWork.Tenants.GetSingleAsync(t => t.Name == request.Name);
+            var tenantExist = await unitOfWork.Tenants.GetSingleAsync(t => t.Document.Number == request.Document);
 
-            if (tenantExist != null) return TenantErrors.Conflict(request.Name);
+            if (tenantExist != null) return ClientErrors.Conflict(request.Document);
 
-            var tenant = Tenant.Create(request.Name, request.Cnpj, request.Domain);
+            var document = Document.Of(request.Document);
+            var contact = Contact.Of(request.Email, request.PhoneNumber);
+            var address = Address.Of(request.AddressStreet, request.AddressNumber, request.AddressComplement, request.AddressDistrict,
+                request.AddressCity, request.AddressState, request.AddressZipCode);
+            var tenant = Tenant.Create(request.Name, request.Domain, document, contact, address);
             await unitOfWork.Tenants.AddAsync(tenant);
 
             await unitOfWork.CompleteAsync();
