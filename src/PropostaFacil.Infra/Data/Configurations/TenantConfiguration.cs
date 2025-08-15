@@ -58,6 +58,10 @@ namespace PropostaFacil.Infra.Data.Configurations
                 .WithOne(c => c.Tenant)
                 .HasForeignKey(c => c.TenantId);
 
+            builder.HasMany(t => t.Users)
+                .WithOne(c => c.Tenant)
+                .HasForeignKey(c => c.TenantId);
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PropostaFacil.Infra.Data;
@@ -11,9 +12,11 @@ using PropostaFacil.Infra.Data;
 namespace PropostaFacil.Infra.Migrations
 {
     [DbContext(typeof(PropostaFacilDbContext))]
-    partial class PropostaFacilDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250815172351_UserMigrate")]
+    partial class UserMigrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,59 +155,6 @@ namespace PropostaFacil.Infra.Migrations
                     b.HasIndex("ProposalId");
 
                     b.ToTable("ProposalItems", (string)null);
-                });
-
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("timestamp");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CreatedByIp")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("timestamp");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("timestamp");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ReplacedByToken")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("timestamp");
-
-                    b.Property<string>("RevokedByIp")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Token")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("PropostaFacil.Domain.Entities.Tenant", b =>
@@ -450,17 +400,6 @@ namespace PropostaFacil.Infra.Migrations
                     b.Navigation("Proposal");
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("PropostaFacil.Domain.Entities.User", "User")
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("PropostaFacil.Domain.Entities.Tenant", b =>
                 {
                     b.OwnsOne("PropostaFacil.Domain.ValueObjects.Address", "Address", b1 =>
@@ -614,11 +553,6 @@ namespace PropostaFacil.Infra.Migrations
                     b.Navigation("Clients");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.User", b =>
-                {
-                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }
