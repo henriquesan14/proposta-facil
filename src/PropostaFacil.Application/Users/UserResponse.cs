@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PropostaFacil.Domain.Enums;
 
 namespace PropostaFacil.Application.Users
 {
-    internal class UserResponse
-    {
-    }
+    public record UserResponse(Guid Id, string Name, string Email, string PhoneNumber, UserRoleEnum Role, Guid TenantId);
 }

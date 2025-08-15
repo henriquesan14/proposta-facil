@@ -7,6 +7,17 @@ namespace PropostaFacil.Domain.Entities
 {
     public class User : Aggregate<UserId>
     {
+        public static User Create(string name, Contact contact, string passwordHash, UserRoleEnum role, TenantId tenantId)
+        {
+            return new User {
+                Id = UserId.Of(Guid.NewGuid()),
+                Name = name,
+                Contact = contact,
+                PasswordHash = passwordHash,
+                Role = role,
+                TenantId = tenantId
+            };
+        }
         public string Name { get; private set; } = default!;
         public Contact Contact { get; private set; } = default!;
         public string PasswordHash { get; private set; } = default!;
