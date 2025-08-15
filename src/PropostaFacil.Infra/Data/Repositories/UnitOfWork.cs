@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
+using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Tenants;
+using PropostaFacil.Application.Users;
 
 namespace PropostaFacil.Infra.Data.Repositories
 {
@@ -11,18 +13,21 @@ namespace PropostaFacil.Infra.Data.Repositories
         private IDbContextTransaction _transaction;
         private readonly PropostaFacilDbContext _dbContext;
 
-        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals)
+        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals, IUserRepository users, IRefreshTokenRepository refreshTokens)
         {
             _dbContext = dbContext;
             Tenants = tenants;
             Clients = clients;
             Proposals = proposals;
+            Users = users;
+            RefreshTokens = refreshTokens;
         }
 
         public ITenantRepository Tenants { get; }
         public IClientRepository Clients { get; }
-
         public IProposalRepository Proposals { get; }
+        public IUserRepository Users { get; }
+        public IRefreshTokenRepository RefreshTokens { get; }
 
         public async Task BeginTransaction()
         {

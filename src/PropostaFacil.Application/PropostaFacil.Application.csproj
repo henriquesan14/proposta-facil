@@ -15,4 +15,9 @@
     <ProjectReference Include="..\PropostaFacil.Shared\PropostaFacil.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Users\Commands\CreateUser\" />
+    <Folder Include="Users\Queries\" />
+  </ItemGroup>
+
 </Project>

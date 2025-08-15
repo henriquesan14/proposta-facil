@@ -15,6 +15,8 @@ namespace PropostaFacil.Domain.Entities
         public TenantId TenantId { get; private set; } = default!;
         public Tenant Tenant { get; private set; } = default!;
 
+        public ICollection<RefreshToken> RefreshTokens { get; private set; } = default!;
+
         public void Deactivate() => IsActive = false;
         public void Activate() => IsActive = true;
         public void ChangePassword(string newHash) => PasswordHash = newHash;

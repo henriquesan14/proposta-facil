@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Tenants;
+using PropostaFacil.Application.Users;
 using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
 using PropostaFacil.Infra.Data.Repositories;
@@ -33,6 +35,8 @@ namespace PropostaFacil.Infra
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IProposalRepository, ProposalRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
             return services;
         }
