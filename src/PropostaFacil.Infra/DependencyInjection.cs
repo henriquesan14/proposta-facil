@@ -2,7 +2,10 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PropostaFacil.Application.Contracts.Data;
+using PropostaFacil.Application.Clients;
+using PropostaFacil.Application.Proposals;
+using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Application.Tenants;
 using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
 using PropostaFacil.Infra.Data.Repositories;

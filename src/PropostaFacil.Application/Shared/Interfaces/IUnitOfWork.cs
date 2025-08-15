@@ -1,4 +1,8 @@
-﻿namespace PropostaFacil.Application.Contracts.Data
+﻿using PropostaFacil.Application.Clients;
+using PropostaFacil.Application.Proposals;
+using PropostaFacil.Application.Tenants;
+
+namespace PropostaFacil.Application.Shared.Interfaces
 {
     public interface IUnitOfWork
     {

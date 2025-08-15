@@ -1,4 +1,4 @@
-﻿using PropostaFacil.Application.Contracts.Data;
+﻿using PropostaFacil.Application.Proposals;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.ValueObjects.Ids;
 

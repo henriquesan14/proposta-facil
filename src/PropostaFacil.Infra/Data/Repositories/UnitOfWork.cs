@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
-using PropostaFacil.Application.Contracts.Data;
+using PropostaFacil.Application.Clients;
+using PropostaFacil.Application.Proposals;
+using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Application.Tenants;
 
 namespace PropostaFacil.Infra.Data.Repositories
 {

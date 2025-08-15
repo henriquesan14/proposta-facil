@@ -1,7 +1,7 @@
 ﻿using PropostaFacil.Domain.Abstractions;
 using System.Linq.Expressions;
 
-namespace PropostaFacil.Application.Contracts.Data
+namespace PropostaFacil.Application.Shared.Interfaces
 {
     public interface IAsyncRepository<TEntity, TId> where TEntity : IAggregate<TId>
     {
