@@ -29,6 +29,7 @@ namespace PropostaFacil.Infra
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IProposalRepository, ProposalRepository>();
 
             return services;
         }

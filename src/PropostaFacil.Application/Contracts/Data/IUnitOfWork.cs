@@ -4,6 +4,8 @@
     {
         ITenantRepository Tenants { get; }
         IClientRepository Clients { get; }
+
+        IProposalRepository Proposals { get; }
         Task<int> CompleteAsync();
         Task BeginTransaction();
         Task CommitAsync();

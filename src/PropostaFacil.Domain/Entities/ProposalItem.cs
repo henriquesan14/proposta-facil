@@ -5,6 +5,17 @@ namespace PropostaFacil.Domain.Entities
 {
     public class ProposalItem : Aggregate<ProposalItemId>
     {
+        public static ProposalItem Create(string name, string description, int quantity, decimal unitPrice)
+        {
+            return new ProposalItem {
+                Id = ProposalItemId.Of(Guid.NewGuid()),
+                Name = name,
+                Description = description,
+                Quantity = quantity,
+                UnitPrice = unitPrice
+            };
+        }
+
         public ProposalId ProposalId { get; private set; } = default!;
         public string Name { get; private set; } = default!;
         public string Description { get; private set; } = default!;

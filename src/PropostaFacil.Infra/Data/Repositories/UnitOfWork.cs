@@ -8,15 +8,18 @@ namespace PropostaFacil.Infra.Data.Repositories
         private IDbContextTransaction _transaction;
         private readonly PropostaFacilDbContext _dbContext;
 
-        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients)
+        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals)
         {
             _dbContext = dbContext;
             Tenants = tenants;
             Clients = clients;
+            Proposals = proposals;
         }
 
         public ITenantRepository Tenants { get; }
         public IClientRepository Clients { get; }
+
+        public IProposalRepository Proposals { get; }
 
         public async Task BeginTransaction()
         {

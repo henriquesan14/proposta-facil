@@ -7,26 +7,43 @@ namespace PropostaFacil.Domain.Entities
 {
     public class Proposal : Aggregate<ProposalId>
     {
+        private readonly List<ProposalItem> _items = new();
+        private string _currency = default!;
+        private Money _totalAmount = default!;
+        public static Proposal Create(TenantId tenantId, ClientId clientId, string number, string title, ProposalStatusEnum proposalStatus, string currency, DateTime validUntil)
+        {
+            return new Proposal {
+                Id = ProposalId.Of(Guid.NewGuid()),
+                TenantId = tenantId,
+                ClientId = clientId,
+                Number = number,
+                Title = title,
+                ProposalStatus = proposalStatus,
+                _currency  = currency,
+                _totalAmount = Money.Of(0, currency),
+                ValidUntil = validUntil
+            };
+        }
+
         public TenantId TenantId { get; private set; } = default!;
         public ClientId ClientId { get; private set; } = default!;
         public string Number { get; private set; } = default!;
         public string Title { get; private set; } = default!;
         public ProposalStatusEnum ProposalStatus { get; private set; } = default!;
-        public Money TotalAmount { get; private set; } = default!;
+        public Money TotalAmount => _totalAmount;
         public DateTime ValidUntil { get; private set; } = default!;
 
         public Tenant Tenant { get; private set; } = default!;
         public Client Client { get; private set; } = default!;
 
-        private readonly List<ProposalItem> _items = new();
         public IReadOnlyCollection<ProposalItem> Items => _items.AsReadOnly();
-
 
         public void AddItem(ProposalItem item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
 
             _items.Add(item);
+            RecalculateTotal();
         }
 
         public void RemoveItem(Guid itemId)
@@ -35,6 +52,12 @@ namespace PropostaFacil.Domain.Entities
             if (item == null) throw new ArgumentNullException(nameof(item));
 
             _items.Remove(item);
+            RecalculateTotal();
+        }
+
+        private void RecalculateTotal()
+        {
+            _totalAmount = Money.Of(_items.Sum(i => i.TotalPrice), _currency);
         }
     }
 }
