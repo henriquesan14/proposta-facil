@@ -13,7 +13,7 @@
 
         public static Contact Of(string email, string phoneNumber)
         {
-            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+            if (string.IsNullOrWhiteSpace(email) || !System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
                 throw new ArgumentException("E-mail inválido.");
             if (string.IsNullOrWhiteSpace(phoneNumber))
                 throw new ArgumentException("Telefone é obrigatório.");

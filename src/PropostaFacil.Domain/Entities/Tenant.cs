@@ -37,5 +37,7 @@ namespace PropostaFacil.Domain.Entities
 
         public ICollection<Client> Clients { get; private set; } = default!;
 
+        public ICollection<User> Users { get; private set; } = default!;
+
     }
 }

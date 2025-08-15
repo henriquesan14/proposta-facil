@@ -15,6 +15,8 @@ namespace PropostaFacil.Infra.Data
         public DbSet<Proposal> Proposals => Set<Proposal>();
         public DbSet<ProposalItem> ProposalItems => Set<ProposalItem>();
 
+        public DbSet<User> Users => Set<User>();
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
