@@ -3,5 +3,5 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Clients.Queries.GetClientsByTenant
 {
-    public record GetClientsByTenantQuery(Guid TenantId) : IQuery<ResultT<IEnumerable<ClientResponse>>>;
+    public record GetClientsByTenantQuery() : IQuery<ResultT<IEnumerable<ClientResponse>>>;
 }

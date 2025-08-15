@@ -1,7 +1,6 @@
 ﻿using Common.ResultPattern;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 using PropostaFacil.Application.Tenants.Commands.DeleteTenant;
@@ -12,7 +11,6 @@ using PropostaFacil.Application.Tenants.Queries.GetTenants;
 namespace PropostaFacil.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
     public class TenantController(IMediator mediator) : BaseController
     {
 

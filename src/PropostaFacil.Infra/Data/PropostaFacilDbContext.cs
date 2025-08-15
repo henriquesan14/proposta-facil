@@ -16,6 +16,7 @@ namespace PropostaFacil.Infra.Data
         public DbSet<ProposalItem> ProposalItems => Set<ProposalItem>();
 
         public DbSet<User> Users => Set<User>();
+
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
 

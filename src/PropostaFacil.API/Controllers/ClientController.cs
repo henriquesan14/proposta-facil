@@ -1,6 +1,7 @@
 ﻿using Common.ResultPattern;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Clients.Commands.CreateClient;
 using PropostaFacil.Application.Clients.Queries.GetClientsByTenant;
@@ -9,12 +10,13 @@ using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 namespace PropostaFacil.API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class ClientController(IMediator mediator) : BaseController
     {
-        [HttpGet("{tenantId}")]
-        public async Task<IActionResult> Get(Guid tenantId, CancellationToken ct)
+        [HttpGet]
+        public async Task<IActionResult> Get(CancellationToken ct)
         {
-            var query = new GetClientsByTenantQuery(tenantId);
+            var query = new GetClientsByTenantQuery();
             var result = await mediator.Send(query, ct);
 
             return result.Match(
