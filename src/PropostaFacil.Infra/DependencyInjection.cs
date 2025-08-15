@@ -42,6 +42,7 @@ namespace PropostaFacil.Infra
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ITokenCleanupService, TokenCleanupService>();
 
             return services;
         }
