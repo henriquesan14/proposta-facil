@@ -1,5 +1,5 @@
 ﻿using Common.ResultPattern;
-using PropostaFacil.Application.Contracts.Data;
+using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Shared.Common.CQRS;

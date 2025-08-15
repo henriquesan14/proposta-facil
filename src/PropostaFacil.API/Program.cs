@@ -1,3 +1,4 @@
+using PropostaFacil.API.Extensions;
 using PropostaFacil.Application;
 using PropostaFacil.Infra;
 
@@ -21,6 +22,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddJsonSerializationConfig();
 
 var app = builder.Build();
 

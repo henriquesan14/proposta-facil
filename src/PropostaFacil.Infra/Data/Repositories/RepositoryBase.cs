@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PropostaFacil.Application.Contracts.Data;
+using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Abstractions;
 using System.Linq.Expressions;
 
