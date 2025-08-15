@@ -7,7 +7,7 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Clients.Commands.CreateClient
 {
-    public class CreateClientCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<CreateClientCommand, ResultT<ClientResponse>>
+    public class CreateClientCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : ICommandHandler<CreateClientCommand, ResultT<ClientResponse>>
     {
         public async Task<ResultT<ClientResponse>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
         {
@@ -19,7 +19,7 @@ namespace PropostaFacil.Application.Clients.Commands.CreateClient
             var contact = Contact.Of(request.Email, request.PhoneNumber);
             var address = Address.Of(request.AddressStreet, request.AddressNumber, request.AddressComplement, request.AddressDistrict,
                 request.AddressCity, request.AddressState, request.AddressZipCode);
-            var client = Client.Create(request.Name, TenantId.Of(request.TenantId), document, contact, address);
+            var client = Client.Create(request.Name, TenantId.Of(currentUserService.TenantId), document, contact, address);
             await unitOfWork.Clients.AddAsync(client);
 
             await unitOfWork.CompleteAsync();

@@ -6,11 +6,11 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Proposals.Commands.CreateProposal
 {
-    public class CreateProposalCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<CreateProposalCommand, ResultT<ProposalResponse>>
+    public class CreateProposalCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : ICommandHandler<CreateProposalCommand, ResultT<ProposalResponse>>
     {
         public async Task<ResultT<ProposalResponse>> Handle(CreateProposalCommand request, CancellationToken cancellationToken)
         {
-            var proposal = Proposal.Create(TenantId.Of(request.TenantId), ClientId.Of(request.ClientId), request.Number, request.Title, request.ProposalStatus,
+            var proposal = Proposal.Create(TenantId.Of(currentUserService.TenantId), ClientId.Of(request.ClientId), request.Number, request.Title, request.ProposalStatus,
                 request.Currency, request.ValidUntil);
 
             foreach (var item in request.Items)

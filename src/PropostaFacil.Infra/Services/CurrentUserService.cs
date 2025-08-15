@@ -20,9 +20,13 @@ namespace PropostaFacil.Infra.Services
             ? Guid.Parse(id)
             : null;
 
-        public Guid? TenantId => User?.FindFirst("tenant_id")?.Value is string tenantId
-           ? Guid.Parse(tenantId)
-           : null;
+        public Guid TenantId {
+            get
+            {
+                var tenantId = User?.FindFirst("tenant_id")?.Value;
+                return Guid.Parse(tenantId!);
+            }
+        }
 
         public string? IpAddress
         {

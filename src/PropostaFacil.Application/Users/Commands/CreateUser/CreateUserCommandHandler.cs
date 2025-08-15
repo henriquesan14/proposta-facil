@@ -7,7 +7,7 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Users.Commands.CreateUser
 {
-    public class CreateUserCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<CreateUserCommand, ResultT<UserResponse>>
+    public class CreateUserCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : ICommandHandler<CreateUserCommand, ResultT<UserResponse>>
     {
         public async Task<ResultT<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -15,7 +15,7 @@ namespace PropostaFacil.Application.Users.Commands.CreateUser
             if(userExist != null) return UserErrors.Conflict(request.Email);
 
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password, 8);
-            var user = User.Create(request.Name, Contact.Of(request.Email, request.PhoneNumber), passwordHash, request.Role, TenantId.Of(request.TenantId));
+            var user = User.Create(request.Name, Contact.Of(request.Email, request.PhoneNumber), passwordHash, request.Role, TenantId.Of(currentUserService.TenantId));
 
             await unitOfWork.Users.AddAsync(user);
             await unitOfWork.CompleteAsync();

@@ -9,7 +9,7 @@ namespace PropostaFacil.Application.Users.Queries.GetUsersByTenant
     {
         public async Task<ResultT<IEnumerable<UserResponse>>> Handle(GetUsersByTenantQuery request, CancellationToken cancellationToken)
         {
-            var users = await unitOfWork.Users.GetAsync(u => u.TenantId == TenantId.Of(currentUserService.TenantId!.Value));
+            var users = await unitOfWork.Users.GetAsync(u => u.TenantId == TenantId.Of(currentUserService.TenantId));
 
             return users.ToDto();
         }
