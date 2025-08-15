@@ -11,6 +11,7 @@ using PropostaFacil.Application.Users;
 using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
 using PropostaFacil.Infra.Data.Repositories;
+using PropostaFacil.Infra.Services;
 
 namespace PropostaFacil.Infra
 {
@@ -37,6 +38,10 @@ namespace PropostaFacil.Infra
             services.AddScoped<IProposalRepository, ProposalRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             return services;
         }
