@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using PropostaFacil.Domain.Enums;
+using System.Security.Claims;
 using System.Text;
 
 namespace PropostaFacil.API.Extensions
@@ -10,8 +11,6 @@ namespace PropostaFacil.API.Extensions
         public static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
         {
             var isDevelopment = env.IsDevelopment();
-
-            const string claimType = "Permissions";
             var secretKey = Encoding.ASCII.GetBytes(configuration["TokenSettings:Secret"]!);
 
             services.AddAuthentication(x =>
@@ -53,7 +52,7 @@ namespace PropostaFacil.API.Extensions
                 foreach (var role in Enum.GetValues<UserRoleEnum>())
                 {
                     options.AddPolicy(role.ToString(), policy =>
-                        policy.RequireClaim("user_role", role.ToString()));
+                        policy.RequireClaim(ClaimTypes.Role, role.ToString()));
                 }
             });
 

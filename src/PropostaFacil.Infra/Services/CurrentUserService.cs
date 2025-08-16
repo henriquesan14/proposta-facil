@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.Enums;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -24,9 +25,11 @@ namespace PropostaFacil.Infra.Services
             ? Guid.Parse(tenantId)
             : null;
 
-        public string Role => User?.FindFirst("user_role")?.Value!;
+        public UserRoleEnum? Role => User?.FindFirst(ClaimTypes.Role)?.Value is string role
+            ? Enum.TryParse<UserRoleEnum>(role, out var parsed) ? parsed : null
+            : null;
 
-        public bool IsAdminSystem => Role == "AdminSystem";
+        public bool IsAdminSystem => Role == UserRoleEnum.AdminSystem;
 
         public string? IpAddress
         {

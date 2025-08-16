@@ -1,11 +1,12 @@
-﻿namespace PropostaFacil.Application.Shared.Interfaces
+﻿using PropostaFacil.Domain.Enums;
+
+namespace PropostaFacil.Application.Shared.Interfaces
 {
     public interface ICurrentUserService
     {
         Guid? UserId { get; }
         Guid? TenantId { get; }
-        string Role { get; }
-
+        UserRoleEnum? Role { get; }
         bool IsAdminSystem { get; }
         string? IpAddress { get; }
         string? RefreshToken { get; }

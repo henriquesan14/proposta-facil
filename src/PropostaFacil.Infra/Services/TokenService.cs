@@ -21,7 +21,7 @@ namespace PropostaFacil.Infra.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.Name),
-                new Claim("user_role", user.Role.ToString()),
+                new Claim(ClaimTypes.Role, user.Role.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             if (user.TenantId != null) claims.Add(new Claim("tenant_id", user.TenantId.Value.ToString()));
