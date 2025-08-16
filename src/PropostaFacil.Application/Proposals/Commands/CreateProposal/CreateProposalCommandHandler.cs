@@ -10,7 +10,7 @@ namespace PropostaFacil.Application.Proposals.Commands.CreateProposal
     {
         public async Task<ResultT<ProposalResponse>> Handle(CreateProposalCommand request, CancellationToken cancellationToken)
         {
-            var proposal = Proposal.Create(TenantId.Of(currentUserService.TenantId), ClientId.Of(request.ClientId), request.Number, request.Title, request.ProposalStatus,
+            var proposal = Proposal.Create(TenantId.Of(currentUserService.TenantId!.Value), ClientId.Of(request.ClientId), request.Number, request.Title, request.ProposalStatus,
                 request.Currency, request.ValidUntil);
 
             foreach (var item in request.Items)

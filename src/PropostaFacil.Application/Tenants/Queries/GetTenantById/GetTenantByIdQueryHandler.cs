@@ -10,7 +10,7 @@ namespace PropostaFacil.Application.Tenants.Queries.GetTenantById
         public async Task<ResultT<TenantResponse>> Handle(GetTenantByIdGuery request, CancellationToken cancellationToken)
         {
             var tenant = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(request.Id));
-            if (tenant == null) return ClientErrors.NotFound(request.Id);
+            if (tenant == null) return TenantErrors.NotFound(request.Id);
 
             return tenant.ToDto();
         }

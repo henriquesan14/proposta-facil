@@ -2,6 +2,7 @@
 using PropostaFacil.Domain.Entities;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace PropostaFacil.Infra.Data
 {

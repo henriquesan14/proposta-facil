@@ -2,7 +2,7 @@
 
 namespace PropostaFacil.Application.Tenants
 {
-    public static class ClientErrors
+    public static class TenantErrors
     {
         public static Error NotFound(Guid id) =>
             Error.NotFound("Tenants.NotFound", $"Tenant with Id: {id} not found");
@@ -11,12 +11,12 @@ namespace PropostaFacil.Application.Tenants
             Error.Conflict("Tenants.Conflict", $"Tenant with document: {document} already exists");
 
         public static Error CreateFailure =>
-            Error.Failure("Tenants.CreateFailure", $"Something went wrong in creating company");
+            Error.Failure("Tenants.CreateFailure", $"Something went wrong in creating tenant");
 
         public static Error UpdateFailure =>
-            Error.Failure("Tenants.UpdateFailure", $"Something went wrong in updating company");
+            Error.Failure("Tenants.UpdateFailure", $"Something went wrong in updating tenant");
 
         public static Error DeleteFailure =>
-            Error.Failure("Tenants.DeleteFailure", $"Something went wrong in deleting company");
+            Error.Failure("Tenants.DeleteFailure", $"Something went wrong in deleting tenant");
     }
 }

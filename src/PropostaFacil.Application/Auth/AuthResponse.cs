@@ -2,5 +2,5 @@
 
 namespace PropostaFacil.Application.Auth
 {
-    public record AuthResponse(Guid UserId, string Name, UserRoleEnum Role, Guid TenantId);
+    public record AuthResponse(Guid UserId, string Name, UserRoleEnum Role);
 }

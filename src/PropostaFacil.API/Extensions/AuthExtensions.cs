@@ -53,7 +53,7 @@ namespace PropostaFacil.API.Extensions
                 foreach (var role in Enum.GetValues<UserRoleEnum>())
                 {
                     options.AddPolicy(role.ToString(), policy =>
-                        policy.RequireClaim("role", role.ToString()));
+                        policy.RequireClaim("user_role", role.ToString()));
                 }
             });
 

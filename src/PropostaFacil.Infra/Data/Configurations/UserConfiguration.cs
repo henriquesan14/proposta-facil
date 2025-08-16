@@ -41,7 +41,6 @@ namespace PropostaFacil.Infra.Data.Configurations
                 .HasMaxLength(50);
 
             builder.Property(u => u.TenantId)
-                .IsRequired()
                 .HasConversion(
                     id => id.Value,
                     value => TenantId.Of(value));

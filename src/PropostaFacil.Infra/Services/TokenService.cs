@@ -17,21 +17,23 @@ namespace PropostaFacil.Infra.Services
             var accessTokenExpiration = DateTime.Now.AddHours(1);
             var refreshTokenExpiration = DateTime.Now.AddDays(7);
 
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Name),
+                new Claim("user_role", user.Role.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+            if (user.TenantId != null) claims.Add(new Claim("tenant_id", user.TenantId.Value.ToString()));
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
-                    new Claim(JwtRegisteredClaimNames.UniqueName, user.Name),
-                    new Claim("role", user.Role.ToString()),
-                    new Claim("tenant_id", user.TenantId.Value.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                }),
+                Subject = new ClaimsIdentity(claims),
                 NotBefore = DateTime.Now,
                 Expires = accessTokenExpiration,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
-            
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var accessToken = tokenHandler.WriteToken(token);
 

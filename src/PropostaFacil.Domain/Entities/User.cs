@@ -23,7 +23,7 @@ namespace PropostaFacil.Domain.Entities
         public string PasswordHash { get; private set; } = default!;
         public UserRoleEnum Role { get; private set; } = default!;
 
-        public TenantId TenantId { get; private set; } = default!;
+        public TenantId? TenantId { get; private set; } = default!;
         public Tenant Tenant { get; private set; } = default!;
 
         public ICollection<RefreshToken> RefreshTokens { get; private set; } = default!;

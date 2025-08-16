@@ -1,7 +1,7 @@
-﻿using PropostaFacil.Application.Shared.Interfaces;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using PropostaFacil.Application.Shared.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace PropostaFacil.Infra.Services
 {
@@ -20,13 +20,13 @@ namespace PropostaFacil.Infra.Services
             ? Guid.Parse(id)
             : null;
 
-        public Guid TenantId {
-            get
-            {
-                var tenantId = User?.FindFirst("tenant_id")?.Value;
-                return Guid.Parse(tenantId!);
-            }
-        }
+        public Guid? TenantId => User?.FindFirst("tenant_id")?.Value is string tenantId
+            ? Guid.Parse(tenantId)
+            : null;
+
+        public string Role => User?.FindFirst("user_role")?.Value!;
+
+        public bool IsAdminSystem => Role == "AdminSystem";
 
         public string? IpAddress
         {

@@ -10,7 +10,7 @@ using PropostaFacil.Application.Users.Queries.GetUsersByTenant;
 namespace PropostaFacil.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles ="Admin")]
+    [Authorize]
     public class UserController(IMediator mediator) : BaseController
     {
         [HttpGet]

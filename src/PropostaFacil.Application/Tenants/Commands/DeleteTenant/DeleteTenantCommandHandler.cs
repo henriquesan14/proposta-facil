@@ -10,7 +10,7 @@ namespace PropostaFacil.Application.Tenants.Commands.DeleteTenant
         public async Task<Result> Handle(DeleteTenantCommand request, CancellationToken cancellationToken)
         {
             var tenant = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(request.Id));
-            if (tenant == null) return ClientErrors.NotFound(request.Id);
+            if (tenant == null) return TenantErrors.NotFound(request.Id);
 
             unitOfWork.Tenants.Remove(tenant);
             await unitOfWork.CompleteAsync();

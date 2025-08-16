@@ -11,7 +11,7 @@ namespace PropostaFacil.Domain.ValueObjects.Ids
             ArgumentNullException.ThrowIfNull(value);
             if (value == Guid.Empty)
             {
-                throw new DomainException("CompanyId cannot be empty.");
+                throw new DomainException("TenantId cannot be empty.");
             }
             return new TenantId(value);
         }
