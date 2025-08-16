@@ -49,7 +49,12 @@ namespace PropostaFacil.Tests.Commands
                 .Build();
 
             _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
-            _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(It.IsAny<TenantId>(), false, null!))
+            _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(
+                It.IsAny<TenantId>(),
+                It.IsAny<bool>(),
+                It.IsAny<List<Expression<Func<Tenant, object>>>>()
+                )
+            )
                 .ReturnsAsync((Tenant?)null);
 
             var handler = CreateHandler();
@@ -135,7 +140,7 @@ namespace PropostaFacil.Tests.Commands
                 .ReturnsAsync(tenant);
 
             _unitOfWorkMock
-                .Setup(x => x.Users.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), false, null!))
+                .Setup(x => x.Users.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), null!))
                 .ReturnsAsync((User?)null);
 
             var handler = CreateHandler();
