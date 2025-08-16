@@ -24,15 +24,14 @@ namespace PropostaFacil.Application.Clients.Commands.CreateClient
                     return TenantErrors.TenantRequired();
 
                 tenantIdToUse = request.TenantId.Value;
+                var tenantExist = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(tenantIdToUse));
+                if (tenantExist is null)
+                    return TenantErrors.NotFound(tenantIdToUse);
             }
             else
             {
                 tenantIdToUse = loggedTenantId!.Value;
             }
-
-            var tenantExist = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(tenantIdToUse));
-            if (tenantExist is null)
-                return TenantErrors.NotFound(tenantIdToUse);
 
             var clientExist = await unitOfWork.Clients.GetSingleAsync(t => t.Document.Number == request.Document);
 
@@ -42,7 +41,7 @@ namespace PropostaFacil.Application.Clients.Commands.CreateClient
             var contact = Contact.Of(request.Email, request.PhoneNumber);
             var address = Address.Of(request.AddressStreet, request.AddressNumber, request.AddressComplement, request.AddressDistrict,
                 request.AddressCity, request.AddressState, request.AddressZipCode);
-            var client = Client.Create(request.Name, TenantId.Of(currentUserService.TenantId!.Value) , document, contact, address);
+            var client = Client.Create(request.Name, TenantId.Of(tenantIdToUse), document, contact, address);
             await unitOfWork.Clients.AddAsync(client);
 
             await unitOfWork.CompleteAsync();

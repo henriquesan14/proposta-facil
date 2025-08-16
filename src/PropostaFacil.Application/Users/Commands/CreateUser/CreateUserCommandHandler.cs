@@ -24,17 +24,17 @@ namespace PropostaFacil.Application.Users.Commands.CreateUser
                     return TenantErrors.TenantRequired();
 
                 tenantIdToUse = request.TenantId.Value;
-            }else
+                var tenantExist = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(tenantIdToUse));
+                if (tenantExist is null)
+                    return TenantErrors.NotFound(tenantIdToUse);
+            }
+            else
             {
                 tenantIdToUse = loggedTenantId!.Value;
 
                 if (request.Role == UserRoleEnum.AdminSystem)
                     return UserErrors.Forbidden();
             }
-
-            var tenantExist = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(tenantIdToUse));
-            if (tenantExist is null)
-                return TenantErrors.NotFound(tenantIdToUse);
 
             var userExist = await unitOfWork.Users.GetSingleAsync(u => u.Contact.Email == request.Email);
             if (userExist != null)
