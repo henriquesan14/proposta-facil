@@ -13,7 +13,5 @@ namespace PropostaFacil.Application.Users
         public static Error Forbidden() =>
             Error.AccessForbidden("Users.Forbidden", $"This user does not have permission to do this.");
 
-        public static Error TenantRequired() =>
-            Error.Validation("Users.Validation", $"TenantId is required.");
     }
 }

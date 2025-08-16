@@ -1,6 +1,8 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Application.Tenants;
 using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
@@ -11,6 +13,27 @@ namespace PropostaFacil.Application.Clients.Commands.CreateClient
     {
         public async Task<ResultT<ClientResponse>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
         {
+            var loggedRole = currentUserService.Role;
+            var loggedTenantId = currentUserService.TenantId;
+
+            Guid tenantIdToUse;
+
+            if (loggedRole == UserRoleEnum.AdminSystem)
+            {
+                if (request.TenantId is null)
+                    return TenantErrors.TenantRequired();
+
+                tenantIdToUse = request.TenantId.Value;
+            }
+            else
+            {
+                tenantIdToUse = loggedTenantId!.Value;
+            }
+
+            var tenantExist = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(tenantIdToUse));
+            if (tenantExist is null)
+                return TenantErrors.NotFound(tenantIdToUse);
+
             var clientExist = await unitOfWork.Clients.GetSingleAsync(t => t.Document.Number == request.Document);
 
             if (clientExist != null) return ClientErrors.Conflict(request.Document);

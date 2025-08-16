@@ -4,8 +4,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Clients.Commands.CreateClient;
-using PropostaFacil.Application.Clients.Queries.GetClientsByTenant;
+using PropostaFacil.Application.Clients.Queries.GetClients;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
+using PropostaFacil.Shared.Common.Pagination;
 
 namespace PropostaFacil.API.Controllers
 {
@@ -14,9 +15,9 @@ namespace PropostaFacil.API.Controllers
     public class ClientController(IMediator mediator) : BaseController
     {
         [HttpGet]
-        public async Task<IActionResult> Get(CancellationToken ct)
+        public async Task<IActionResult> Get([FromQuery] PaginationRequest paginationRequest, CancellationToken ct)
         {
-            var query = new GetClientsByTenantQuery();
+            var query = new GetClientsQuery(paginationRequest);
             var result = await mediator.Send(query, ct);
 
             return result.Match(

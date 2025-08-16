@@ -10,6 +10,9 @@ namespace PropostaFacil.Application.Tenants
         public static Error Conflict(string document) =>
             Error.Conflict("Tenants.Conflict", $"Tenant with document: {document} already exists");
 
+        public static Error TenantRequired() =>
+            Error.Validation("Tenants.Validation", $"TenantId is required.");
+
         public static Error CreateFailure =>
             Error.Failure("Tenants.CreateFailure", $"Something went wrong in creating tenant");
 

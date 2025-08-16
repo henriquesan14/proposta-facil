@@ -1,5 +1,6 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Application.Tenants;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.ValueObjects;
@@ -17,28 +18,23 @@ namespace PropostaFacil.Application.Users.Commands.CreateUser
 
             Guid tenantIdToUse;
 
-            if (loggedRole == UserRoleEnum.AdminTenant)
+            if (loggedRole == UserRoleEnum.AdminSystem)
+            {
+                if (request.TenantId is null)
+                    return TenantErrors.TenantRequired();
+
+                tenantIdToUse = request.TenantId.Value;
+            }else
             {
                 tenantIdToUse = loggedTenantId!.Value;
 
                 if (request.Role == UserRoleEnum.AdminSystem)
                     return UserErrors.Forbidden();
             }
-            else if (loggedRole == UserRoleEnum.AdminSystem)
-            {
-                if (request.TenantId is null)
-                    return UserErrors.TenantRequired();
-
-                tenantIdToUse = request.TenantId.Value;
-            }
-            else
-            {
-                return UserErrors.Forbidden();
-            }
 
             var tenantExist = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(tenantIdToUse));
             if (tenantExist is null)
-                return UserErrors.NotFound(tenantIdToUse);
+                return TenantErrors.NotFound(tenantIdToUse);
 
             var userExist = await unitOfWork.Users.GetSingleAsync(u => u.Contact.Email == request.Email);
             if (userExist != null)
