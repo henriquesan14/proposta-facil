@@ -12,7 +12,7 @@ namespace PropostaFacil.Application.Users
                 user.Contact.Email,
                 user.Contact.PhoneNumber,
                 user.Role,
-                user.TenantId.Value
+                user.TenantId?.Value
             );
         }
 

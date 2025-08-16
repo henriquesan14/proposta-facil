@@ -35,7 +35,7 @@ namespace PropostaFacil.Application.Auth.Commands.GenerateAccessToken
             currentUserService.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
 
             var authResponse = new AuthResponse(user.Id.Value, user.Name, user.Role);
-            return ResultT<AuthResponse>.Success(authResponse);
+            return authResponse;
         }
     }
 }
