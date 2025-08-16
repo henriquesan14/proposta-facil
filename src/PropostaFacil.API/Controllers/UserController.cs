@@ -1,20 +1,23 @@
 ﻿using Common.ResultPattern;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 using PropostaFacil.Application.Users.Commands.CreateUser;
-using PropostaFacil.Application.Users.Queries.GetUsersByTenant;
+using PropostaFacil.Application.Users.Queries.GetUsers;
+using PropostaFacil.Shared.Common.Pagination;
 
 namespace PropostaFacil.API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class UserController(IMediator mediator) : BaseController
     {
-        [HttpGet("{tenantId}")]
-        public async Task<IActionResult> Get(Guid tenantId, CancellationToken ct)
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] PaginationRequest paginationRequest,CancellationToken ct)
         {
-            var query = new GetUsersByTenantQuery(tenantId);
+            var query = new GetUsersQuery(paginationRequest);
             var result = await mediator.Send(query, ct);
 
             return result.Match(

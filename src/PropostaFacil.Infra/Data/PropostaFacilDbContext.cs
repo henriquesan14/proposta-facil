@@ -2,6 +2,7 @@
 using PropostaFacil.Domain.Entities;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace PropostaFacil.Infra.Data
 {
@@ -16,6 +17,7 @@ namespace PropostaFacil.Infra.Data
         public DbSet<ProposalItem> ProposalItems => Set<ProposalItem>();
 
         public DbSet<User> Users => Set<User>();
+
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
 

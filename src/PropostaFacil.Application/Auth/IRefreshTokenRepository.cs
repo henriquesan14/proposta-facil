@@ -4,5 +4,7 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Application.Auth
 {
-    public interface IRefreshTokenRepository : IAsyncRepository<RefreshToken, RefreshTokenId>;
+    public interface IRefreshTokenRepository : IAsyncRepository<RefreshToken, RefreshTokenId> {
+        Task DeleteRange(List<RefreshTokenId> RefreshTokenIds);
+    }
 }

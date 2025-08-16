@@ -6,13 +6,13 @@ namespace PropostaFacil.Domain.Entities
 {
     public class Client : Aggregate<ClientId>
     {
-        public static Client Create(string name, TenantId tenantId, Document document, Contact contact, Address address)
+        public static Client Create(string name, TenantId? tenantId, Document document, Contact contact, Address address)
         {
             return new Client
             {
                 Id = ClientId.Of(Guid.NewGuid()),
                 Name = name,
-                TenantId = tenantId,
+                TenantId = tenantId!,
                 Document = document,
                 Contact = contact,
                 Address = address

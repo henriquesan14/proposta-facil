@@ -277,7 +277,7 @@ namespace PropostaFacil.Infra.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<Guid>("TenantId")
+                    b.Property<Guid?>("TenantId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -567,8 +567,7 @@ namespace PropostaFacil.Infra.Migrations
                     b.HasOne("PropostaFacil.Domain.Entities.Tenant", "Tenant")
                         .WithMany("Users")
                         .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.OwnsOne("PropostaFacil.Domain.ValueObjects.Contact", "Contact", b1 =>
                         {

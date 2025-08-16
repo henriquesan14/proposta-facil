@@ -1,4 +1,5 @@
-﻿using PropostaFacil.Application.Clients;
+﻿using PropostaFacil.Application.Auth;
+using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Application.Users;
@@ -11,6 +12,7 @@ namespace PropostaFacil.Application.Shared.Interfaces
         IClientRepository Clients { get; }
         IProposalRepository Proposals { get; }
         IUserRepository Users { get; }
+        IRefreshTokenRepository RefreshTokens { get; }
         Task<int> CompleteAsync();
         Task BeginTransaction();
         Task CommitAsync();

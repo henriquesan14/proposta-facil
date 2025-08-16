@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Abstractions;
 
 namespace PropostaFacil.Infra.Data.Interceptors
 {
-    public class AuditableEntityInterceptor : SaveChangesInterceptor
+    public class AuditableEntityInterceptor(ICurrentUserService currentUserService) : SaveChangesInterceptor
     {
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
         {
@@ -27,13 +28,13 @@ namespace PropostaFacil.Infra.Data.Interceptors
             {
                 if (entry.State == EntityState.Added)
                 {
-                    //if (currentUserService!.UserId != null) entry.Entity.CreatedBy = currentUserService.UserId;
+                    if (currentUserService!.UserId != null) entry.Entity.CreatedBy = currentUserService.UserId;
                     entry.Entity.CreatedAt = DateTime.Now;
                 }
 
                 if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
                 {
-                    //if (currentUserService!.UserId != null) entry.Entity.LastModifiedBy = currentUserService.UserId;
+                    if (currentUserService!.UserId != null) entry.Entity.LastModifiedBy = currentUserService.UserId;
                     entry.Entity.LastModified = DateTime.Now;
                 }
             }
