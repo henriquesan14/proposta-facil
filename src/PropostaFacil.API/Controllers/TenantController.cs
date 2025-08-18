@@ -17,9 +17,8 @@ namespace PropostaFacil.API.Controllers
     {
 
         [HttpGet]
-        public async Task<IActionResult> Get(CancellationToken ct)
+        public async Task<IActionResult> Get([FromQuery] GetTenantsQuery query, CancellationToken ct)
         {
-            var query = new GetTenantsQuery();
             var result = await mediator.Send(query, ct);
 
             return result.Match(
