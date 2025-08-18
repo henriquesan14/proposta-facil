@@ -1,6 +1,6 @@
 ﻿using Moq;
+using PropostaFacil.Application.Proposals.Commands.CreateProposal;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Application.Users.Commands.CreateUser;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.ValueObjects.Ids;
@@ -10,20 +10,19 @@ using System.Linq.Expressions;
 
 namespace PropostaFacil.Tests.Commands
 {
-    public class CreateUserCommandTests
+    public class CreateProposalCommandTests
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
         private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
 
-        private CreateUserCommandHandler CreateHandler()
-        => new CreateUserCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object);
+        private CreateProposalCommandHandler CreateHandler()
+        => new CreateProposalCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object);
 
         [Fact]
         public async Task Handle_Should_Return_TenantRequired_When_AdminSystem_Without_TenantId()
         {
             // Arrange
-            var command = new CreateUserCommandBuilder()
-                .WithRole(UserRoleEnum.AdminTenant)
+            var command = new CreateProposalCommandBuilder()
                 .WithTenantId(null)
                 .Build();
 
@@ -43,7 +42,7 @@ namespace PropostaFacil.Tests.Commands
         public async Task Handle_Should_Return_NotFound_When_AdminSystem_Passes_Invalid_Tenant()
         {
             // Arrange
-            var command = new CreateUserCommandBuilder()
+            var command = new CreateProposalCommandBuilder()
                 .Build();
 
             _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
@@ -66,47 +65,18 @@ namespace PropostaFacil.Tests.Commands
         }
 
         [Fact]
-        public async Task Handle_Should_Return_Forbidden_When_AdminTenant_Tries_To_Create_AdminSystem()
+        public async Task Handle_Should_Return_Forbidden_When_ClientId_Not_Belong_To_Tenant()
         {
             // Arrange
-            var command = new CreateUserCommandBuilder()
-                .WithRole(UserRoleEnum.AdminSystem)
+            var command = new CreateProposalCommandBuilder()
                 .Build();
 
             _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
             _currentUserServiceMock.Setup(x => x.TenantId).Returns(Guid.NewGuid());
 
-            var handler = CreateHandler();
-
-            // Act
-            var result = await handler.Handle(command, CancellationToken.None);
-
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.Equal("Users.Forbidden", result.Error!.Code);
-        }
-
-        [Fact]
-        public async Task Handle_Should_Return_Conflict_When_Email_Already_Exist()
-        {
-            // Arrange
-            var command = new CreateUserCommandBuilder()
-                .Build();
-
-            var tenant = new TenantBuilder()
-                .Build();
-
-            var user = new UserBuilder()
-                .Build();
-
-            _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
-
-            _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(It.IsAny<TenantId>(), false, null!))
-                .ReturnsAsync(tenant);
-
             _unitOfWorkMock
-                .Setup(x => x.Users.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), false, null!))
-                .ReturnsAsync(user);
+                .Setup(x => x.Clients.GetSingleAsync(It.IsAny<Expression<Func<Client, bool>>>(), false, null!))
+                .ReturnsAsync((Client?)null);
 
             var handler = CreateHandler();
 
@@ -115,17 +85,22 @@ namespace PropostaFacil.Tests.Commands
 
             // Assert
             Assert.False(result.IsSuccess);
-            Assert.Equal("Users.Conflict", result.Error!.Code);
+            Assert.Equal("Proposals.Forbidden", result.Error!.Code);
         }
 
         [Fact]
-        public async Task Handle_Should_Create_User_When_Data_Is_Valid()
+        public async Task Handle_Should_Create_Proposal_When_Data_Is_Valid()
         {
             // Arrange
-            var command = new CreateUserCommandBuilder()
+            var tenant = new TenantBuilder()
                 .Build();
 
-            var tenant = new TenantBuilder()
+            var command = new CreateProposalCommandBuilder()
+                .WithTenantId(tenant.Id.Value)
+                .Build();
+
+            var client = new ClientBuilder()
+                .WithTenantId(tenant.Id)
                 .Build();
 
             _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
@@ -134,8 +109,12 @@ namespace PropostaFacil.Tests.Commands
                 .ReturnsAsync(tenant);
 
             _unitOfWorkMock
-                .Setup(x => x.Users.GetSingleAsync(It.IsAny<Expression<Func<User, bool>>>(), It.IsAny<bool>(), null!))
-                .ReturnsAsync((User?)null);
+                .Setup(x => x.Clients.GetSingleAsync(It.IsAny<Expression<Func<Client, bool>>>(), false, null!))
+                .ReturnsAsync(client);
+
+            _unitOfWorkMock
+                .Setup(x => x.Proposals.AddAsync(It.IsAny<Proposal>()))
+                .ReturnsAsync(It.IsAny<Proposal>());
 
             var handler = CreateHandler();
 
@@ -144,7 +123,7 @@ namespace PropostaFacil.Tests.Commands
 
             // Assert
             Assert.True(result.IsSuccess);
-            _unitOfWorkMock.Verify(x => x.Users.AddAsync(It.IsAny<User>()), Times.Once);
+            _unitOfWorkMock.Verify(x => x.Proposals.AddAsync(It.IsAny<Proposal>()), Times.Once);
             _unitOfWorkMock.Verify(x => x.CompleteAsync(), Times.Once);
         }
     }
