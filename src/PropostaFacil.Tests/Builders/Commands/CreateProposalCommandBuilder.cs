@@ -7,7 +7,6 @@ namespace PropostaFacil.Tests.Builders.Commands
     public class CreateProposalCommandBuilder
     {
         private Guid _clientId = Guid.NewGuid();
-        private string _number = "123456";
         private string _title = "teste";
         private ProposalStatusEnum _proposalStatus = ProposalStatusEnum.Draft;
         private string _currency = "BRL";
@@ -20,17 +19,11 @@ namespace PropostaFacil.Tests.Builders.Commands
         private Guid? _tenantId = Guid.NewGuid();
 
         public CreateProposalCommand Build()
-            => new CreateProposalCommand(_clientId, _number, _title, _proposalStatus, _currency, _validUntil, _items, _tenantId);
+            => new CreateProposalCommand(_clientId, _title, _proposalStatus, _currency, _validUntil, _items, _tenantId);
 
         public CreateProposalCommandBuilder WithClientId(Guid clientId)
         {
             _clientId = clientId;
-            return this;
-        }
-
-        public CreateProposalCommandBuilder WithNumber(string number)
-        {
-            _number = number;
             return this;
         }
 

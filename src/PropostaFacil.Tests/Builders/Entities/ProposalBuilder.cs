@@ -68,7 +68,6 @@ namespace PropostaFacil.Tests.Builders.Entities
             var proposal = Proposal.Create(
                 _tenantId,
                 _clientId,
-                _number,
                 _title,
                 _status,
                 _currency,
