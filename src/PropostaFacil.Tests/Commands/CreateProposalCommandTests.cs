@@ -1,4 +1,5 @@
 ﻿using Moq;
+using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Proposals.Commands.CreateProposal;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Entities;
@@ -103,6 +104,8 @@ namespace PropostaFacil.Tests.Commands
                 .WithTenantId(tenant.Id)
                 .Build();
 
+            var proposalRepositoryMock = new Mock<IProposalRepository>();
+
             _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
 
             _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(It.IsAny<TenantId>(), false, null!))
@@ -113,8 +116,8 @@ namespace PropostaFacil.Tests.Commands
                 .ReturnsAsync(client);
 
             _unitOfWorkMock
-                .Setup(x => x.Proposals.AddAsync(It.IsAny<Proposal>()))
-                .ReturnsAsync(It.IsAny<Proposal>());
+                .SetupGet(x => x.Proposals)
+                .Returns(proposalRepositoryMock.Object);
 
             var handler = CreateHandler();
 

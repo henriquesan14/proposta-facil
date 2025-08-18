@@ -22,33 +22,52 @@ namespace PropostaFacil.Application.Proposals.Queries.GetProposals
 
             if (currentUserService.Role == UserRoleEnum.AdminSystem)
             {
+
+                Expression<Func<Proposal, bool>> predicate = p =>
+                 (!request.ClientId.HasValue || p.ClientId == ClientId.Of(request.ClientId.Value)) &&
+                 (!request.TenantId.HasValue || p.TenantId == TenantId.Of(request.TenantId.Value)) &&
+                 (string.IsNullOrEmpty(request.Number) ||
+                    p.Number == request.Number) &&
+                (string.IsNullOrEmpty(request.Title) ||
+                    p.Title.ToLower().Contains(request.Title.ToLower())) &&
+                (!request.ProposalStatus.HasValue || p.ProposalStatus == request.ProposalStatus);
+
                 proposals = await unitOfWork.Proposals.GetAsync(
-                    pageNumber: request.PaginationRequest.PageIndex,
-                    pageSize: request.PaginationRequest.PageSize,
+                    predicate: predicate,
+                    pageNumber: request.PageNumber,
+                    pageSize: request.PageSize,
                     includes: includes
                 );
 
-                count = await unitOfWork.Proposals.GetCountAsync();
+                count = await unitOfWork.Proposals.GetCountAsync(predicate);
             }
             else
             {
                 var tenantId = TenantId.Of(currentUserService.TenantId!.Value);
+                Expression<Func<Proposal, bool>> predicate = p =>
+                 (p.TenantId == tenantId) &&
+                 (!request.ClientId.HasValue || p.ClientId == ClientId.Of(request.ClientId.Value)) &&
+                 (string.IsNullOrEmpty(request.Number) ||
+                    p.Number == request.Number) &&
+                (string.IsNullOrEmpty(request.Title) ||
+                    p.Title.ToLower().Contains(request.Title.ToLower())) &&
+                (!request.ProposalStatus.HasValue || p.ProposalStatus == request.ProposalStatus);
 
                 proposals = await unitOfWork.Proposals.GetAsync(
-                    u => u.TenantId == tenantId,
-                    pageNumber: request.PaginationRequest.PageIndex,
-                    pageSize: request.PaginationRequest.PageSize,
+                    predicate: predicate,
+                    pageNumber: request.PageNumber,
+                    pageSize: request.PageSize,
                     includes: includes
                 );
 
-                count = await unitOfWork.Proposals.GetCountAsync(u => u.TenantId == tenantId);
+                count = await unitOfWork.Proposals.GetCountAsync(predicate);
             }
 
             var dto = proposals.ToDto();
 
             var paginated = new PaginatedResult<ProposalResponse>(
-                request.PaginationRequest.PageIndex,
-                request.PaginationRequest.PageSize,
+                request.PageNumber,
+                request.PageSize,
                 count,
                 dto
             );
