@@ -36,7 +36,7 @@ namespace PropostaFacil.Application.Proposals.Commands.CreateProposal
 
             if (clientBelongsToTenant is null) return ProposalErrors.Forbidden(request.ClientId);
 
-            var proposal = Proposal.Create(TenantId.Of(tenantIdToUse), ClientId.Of(request.ClientId), request.Number, request.Title, request.ProposalStatus,
+            var proposal = Proposal.Create(TenantId.Of(tenantIdToUse), ClientId.Of(request.ClientId), request.Title, request.ProposalStatus,
                 request.Currency, request.ValidUntil);
 
             foreach (var item in request.Items)

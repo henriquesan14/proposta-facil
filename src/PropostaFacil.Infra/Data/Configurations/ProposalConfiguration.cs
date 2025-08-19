@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.ValueObjects.Ids;
+using System.Reflection.Emit;
 
 namespace PropostaFacil.Infra.Data.Configurations
 {
@@ -28,6 +29,10 @@ namespace PropostaFacil.Infra.Data.Configurations
             builder.Property(p => p.Number)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            builder
+            .HasIndex(p => p.Number)
+            .IsUnique();
 
             builder.Property(p => p.Title)
                 .IsRequired()

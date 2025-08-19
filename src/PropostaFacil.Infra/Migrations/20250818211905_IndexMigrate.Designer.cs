@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PropostaFacil.Infra.Data;
@@ -11,9 +12,11 @@ using PropostaFacil.Infra.Data;
 namespace PropostaFacil.Infra.Migrations
 {
     [DbContext(typeof(PropostaFacilDbContext))]
-    partial class PropostaFacilDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250818211905_IndexMigrate")]
+    partial class IndexMigrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -548,9 +551,6 @@ namespace PropostaFacil.Infra.Migrations
                                 .HasColumnType("character varying(20)");
 
                             b1.HasKey("TenantId");
-
-                            b1.HasIndex("Number")
-                                .IsUnique();
 
                             b1.ToTable("Tenants");
 

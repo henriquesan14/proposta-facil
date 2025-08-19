@@ -5,6 +5,7 @@ using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 using PropostaFacil.Shared.Common.Pagination;
+using System.Linq.Expressions;
 
 namespace PropostaFacil.Application.Clients.Queries.GetClients
 {
@@ -17,9 +18,16 @@ namespace PropostaFacil.Application.Clients.Queries.GetClients
 
             if (currentUserService.Role == UserRoleEnum.AdminSystem)
             {
+                Expression<Func<Client, bool>> predicate = p =>
+                (!request.TenantId.HasValue || p.TenantId == TenantId.Of(request.TenantId.Value)) &&
+                (string.IsNullOrEmpty(request.Name) ||
+                    p.Name.ToLower().Contains(request.Name.ToLower())) &&
+                (!string.IsNullOrEmpty(request.Document) ||
+                    p.Document.Number == request.Document);
                 clients = await unitOfWork.Clients.GetAsync(
-                    pageNumber: request.PaginationRequest.PageIndex,
-                    pageSize: request.PaginationRequest.PageSize
+                    predicate: predicate,
+                    pageNumber: request.PageNumber,
+                    pageSize: request.PageSize
                 );
 
                 count = await unitOfWork.Clients.GetCountAsync();
@@ -27,11 +35,16 @@ namespace PropostaFacil.Application.Clients.Queries.GetClients
             else
             {
                 var tenantId = TenantId.Of(currentUserService.TenantId!.Value);
-
+                Expression<Func<Client, bool>> predicate = p =>
+                (p.TenantId == tenantId) &&
+                (string.IsNullOrEmpty(request.Name) ||
+                    p.Name.ToLower().Contains(request.Name.ToLower())) &&
+                (!string.IsNullOrEmpty(request.Document) ||
+                    p.Document.Number == request.Document);
                 clients = await unitOfWork.Clients.GetAsync(
-                    u => u.TenantId == tenantId,
-                    pageNumber: request.PaginationRequest.PageIndex,
-                    pageSize: request.PaginationRequest.PageSize
+                    predicate,
+                    pageNumber: request.PageNumber,
+                    pageSize: request.PageSize
                 );
 
                 count = await unitOfWork.Clients.GetCountAsync(u => u.TenantId == tenantId);
@@ -40,8 +53,8 @@ namespace PropostaFacil.Application.Clients.Queries.GetClients
             var dto = clients.ToDto();
 
             var paginated = new PaginatedResult<ClientResponse>(
-                request.PaginationRequest.PageIndex,
-                request.PaginationRequest.PageSize,
+                request.PageNumber,
+                request.PageSize,
                 count,
                 dto
             );
