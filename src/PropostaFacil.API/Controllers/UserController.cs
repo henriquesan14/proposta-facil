@@ -15,9 +15,8 @@ namespace PropostaFacil.API.Controllers
     public class UserController(IMediator mediator) : BaseController
     {
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] PaginationRequest paginationRequest,CancellationToken ct)
+        public async Task<IActionResult> Get([FromQuery] GetUsersQuery query,CancellationToken ct)
         {
-            var query = new GetUsersQuery(paginationRequest);
             var result = await mediator.Send(query, ct);
 
             return result.Match(
