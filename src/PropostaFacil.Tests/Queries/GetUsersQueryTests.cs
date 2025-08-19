@@ -4,8 +4,8 @@ using PropostaFacil.Application.Users.Queries.GetUsers;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.ValueObjects.Ids;
-using PropostaFacil.Shared.Common.Pagination;
 using PropostaFacil.Tests.Builders.Entities;
+using PropostaFacil.Tests.Builders.Queries;
 using System.Linq.Expressions;
 
 namespace PropostaFacil.Tests.Queries
@@ -24,7 +24,7 @@ namespace PropostaFacil.Tests.Queries
         {
             // Arrange
             _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
-            var query = new GetUsersQuery(Guid.NewGuid(), "teste", UserRoleEnum.AdminSystem);
+            var query = new GetUsersQueryBuilder().Build();
 
             var users = Enumerable.Range(1, 5)
                 .Select(i => new UserBuilder().Build())
@@ -60,7 +60,7 @@ namespace PropostaFacil.Tests.Queries
             var tenantId = Guid.NewGuid();
             _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
             _currentUserServiceMock.Setup(x => x.TenantId).Returns(tenantId);
-            var query = new GetUsersQuery(Guid.NewGuid(), "teste", UserRoleEnum.AdminSystem);
+            var query = new GetUsersQueryBuilder().Build();
 
             var tenantUsers = Enumerable.Range(1, 3)
                 .Select(i => new UserBuilder().WithTenantId(TenantId.Of(tenantId)).Build())

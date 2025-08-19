@@ -4,7 +4,6 @@ using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.ValueObjects.Ids;
-using PropostaFacil.Shared.Common.Pagination;
 using PropostaFacil.Tests.Builders.Entities;
 using PropostaFacil.Tests.Builders.Queries;
 using System.Linq.Expressions;
