@@ -6,6 +6,7 @@ using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Application.Users;
 using PropostaFacil.Infra.Data;
@@ -38,6 +39,8 @@ namespace PropostaFacil.Infra
             services.AddScoped<IProposalRepository, ProposalRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddScoped<ISubscriptionPlanRepository, SubscriptionPlanRepository>();
 
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();

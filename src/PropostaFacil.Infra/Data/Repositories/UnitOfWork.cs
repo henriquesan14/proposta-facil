@@ -3,6 +3,7 @@ using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Application.Users;
 
@@ -13,7 +14,7 @@ namespace PropostaFacil.Infra.Data.Repositories
         private IDbContextTransaction _transaction;
         private readonly PropostaFacilDbContext _dbContext;
 
-        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals, IUserRepository users, IRefreshTokenRepository refreshTokens)
+        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals, IUserRepository users, IRefreshTokenRepository refreshTokens, ISubscriptionRepository subscriptions, ISubscriptionPlanRepository subscriptionPlans)
         {
             _dbContext = dbContext;
             Tenants = tenants;
@@ -21,6 +22,8 @@ namespace PropostaFacil.Infra.Data.Repositories
             Proposals = proposals;
             Users = users;
             RefreshTokens = refreshTokens;
+            Subscriptions = subscriptions;
+            SubscriptionPlans = subscriptionPlans;
         }
 
         public ITenantRepository Tenants { get; }
@@ -28,6 +31,8 @@ namespace PropostaFacil.Infra.Data.Repositories
         public IProposalRepository Proposals { get; }
         public IUserRepository Users { get; }
         public IRefreshTokenRepository RefreshTokens { get; }
+        public ISubscriptionRepository Subscriptions { get; }
+        public ISubscriptionPlanRepository SubscriptionPlans { get; }
 
         public async Task BeginTransaction()
         {

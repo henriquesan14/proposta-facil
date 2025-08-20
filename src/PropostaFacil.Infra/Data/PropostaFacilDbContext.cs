@@ -2,7 +2,6 @@
 using PropostaFacil.Domain.Entities;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Reflection.Emit;
 
 namespace PropostaFacil.Infra.Data
 {
@@ -15,11 +14,10 @@ namespace PropostaFacil.Infra.Data
         public DbSet<Client> Clients => Set<Client>();
         public DbSet<Proposal> Proposals => Set<Proposal>();
         public DbSet<ProposalItem> ProposalItems => Set<ProposalItem>();
-
         public DbSet<User> Users => Set<User>();
-
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
-
+        public DbSet<Subscription> Subscriptions => Set<Subscription>();
+        public DbSet<SubscriptionPlan> SubscriptionPlans => Set<SubscriptionPlan>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
