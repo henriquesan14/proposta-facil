@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 
@@ -6,7 +7,7 @@ namespace PropostaFacil.Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMediatR(cfg =>
             {
@@ -14,7 +15,6 @@ namespace PropostaFacil.Application
             });
 
             services.AddValidatorsFromAssemblyContaining<CreateTenantCommandValidator>();
-
             return services;
         }
     }

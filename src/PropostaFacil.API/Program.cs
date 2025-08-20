@@ -8,7 +8,7 @@ var configuration = builder.Configuration;
 
 builder.Services
     .AddInfrastructure(configuration)
-    .AddApplication()
+    .AddApplication(configuration)
     .AddApiServices(builder, configuration);
 
 

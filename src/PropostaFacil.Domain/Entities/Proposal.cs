@@ -1,5 +1,6 @@
 ﻿using PropostaFacil.Domain.Abstractions;
 using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Events;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
@@ -37,6 +38,12 @@ namespace PropostaFacil.Domain.Entities
         public Client Client { get; private set; } = default!;
 
         public IReadOnlyCollection<ProposalItem> Items => _items.AsReadOnly();
+
+        public void SendProposal()
+        {
+            ProposalStatus = ProposalStatusEnum.Sent;
+            AddDomainEvent(new ProposalSentEvent(this));
+        }
 
         public void AddItem(ProposalItem item)
         {
