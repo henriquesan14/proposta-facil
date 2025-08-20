@@ -16,6 +16,8 @@ namespace PropostaFacil.Application.Subscriptions.Commands.CreateSubscriptionPla
 
             await unitOfWork.SubscriptionPlans.AddAsync(subscriptionPlan);
 
+            await unitOfWork.CompleteAsync();
+
             return subscriptionPlan.ToDto();
         }
     }
