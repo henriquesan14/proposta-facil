@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.ValueObjects.Ids;
-using System.Reflection.Emit;
 
 namespace PropostaFacil.Infra.Data.Configurations
 {
