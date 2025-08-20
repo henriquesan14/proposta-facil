@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Subscriptions.Commands.CreateSubscriptionPlan;
+using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans;
 
 namespace PropostaFacil.API.Controllers
 {
@@ -10,6 +11,16 @@ namespace PropostaFacil.API.Controllers
     [Authorize(Roles = "AdminSystem")]
     public class SubscriptionPlanController(IMediator mediator) : BaseController
     {
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] GetSubscriptionPlansQuery query, CancellationToken ct)
+        {
+            var result = await mediator.Send(query, ct);
+
+            return result.Match(
+                onSuccess: Ok,
+                onFailure: Problem
+            );
+        }
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateSubscriptionPlanCommand command, CancellationToken ct)
