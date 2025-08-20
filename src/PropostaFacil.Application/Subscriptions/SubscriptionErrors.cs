@@ -12,5 +12,14 @@ namespace PropostaFacil.Application.Subscriptions
 
         public static Error Forbidden() =>
             Error.AccessForbidden("Subscriptions.Forbidden", $"This user does not have permission to do this.");
+
+        public static Error InactiveSubscription() =>
+            Error.Validation("Subscriptions.Validation", $"This tenant does not have an active subscription.");
+
+        public static Error SubscriptionLimit() =>
+            Error.Validation("Subscriptions.Validation", $"This tenant have already reached the subscription proposal limit.");
+
+        public static Error ProposalAlreadySent() =>
+            Error.Validation("Subscriptions.Validation", $"this proposal has already been sent.");
     }
 }

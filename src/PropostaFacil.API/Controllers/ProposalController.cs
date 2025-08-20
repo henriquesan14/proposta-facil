@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Proposals.Commands.CreateProposal;
+using PropostaFacil.Application.Proposals.Commands.SendProposal;
 using PropostaFacil.Application.Proposals.Queries.GetProposals;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 
@@ -34,6 +35,18 @@ namespace PropostaFacil.API.Controllers
 
             return result.Match(
                 onSuccess: Ok,
+                onFailure: Problem
+            );
+        }
+
+        [HttpPost("{id}/send")]
+        public async Task<IActionResult> Send(Guid id, CancellationToken ct)
+        {
+            var command = new SendProposalCommand(id);
+            var result = await mediator.Send(command, ct);
+
+            return result.Match(
+                onSuccess: () => NoContent(),
                 onFailure: Problem
             );
         }

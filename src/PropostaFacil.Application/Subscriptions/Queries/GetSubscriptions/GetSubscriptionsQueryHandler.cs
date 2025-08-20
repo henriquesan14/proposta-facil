@@ -18,11 +18,11 @@ namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptions
             (!request.Status.HasValue || s.Status == request.Status.Value) &&
             (!request.StartDate.HasValue || s.StartDate.Date >= request.StartDate.Value.Date) &&
             (!request.EndDate.HasValue || s.EndDate.HasValue && s.EndDate.Value.Date <= request.EndDate.Value.Date);
+
             List<Expression<Func<Subscription, object>>> includes = new List<Expression<Func<Subscription, object>>>()
             {
                 s => s.SubscriptionPlan
             };
-
 
             var subscriptions = await unitOfWork.Subscriptions.GetAsync(predicate, includes: includes);
             var count = await unitOfWork.Subscriptions.GetCountAsync(predicate);

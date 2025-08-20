@@ -13,6 +13,8 @@ using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
 using PropostaFacil.Infra.Data.Repositories;
 using PropostaFacil.Infra.Services;
+using System.Reflection;
+using PropostaFacil.Shared.Messaging.MassTransit;
 
 namespace PropostaFacil.Infra
 {
@@ -21,8 +23,9 @@ namespace PropostaFacil.Infra
         public static IServiceCollection AddInfrastructure
             (this IServiceCollection services, IConfiguration configuration)
         {
-
+            services.AddMessageBroker(configuration, Assembly.GetExecutingAssembly());
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+            services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
             var connectionString = configuration.GetConnectionString("DbConnection");
 
             services.AddDbContext<PropostaFacilDbContext>((sp, options) =>
@@ -46,6 +49,7 @@ namespace PropostaFacil.Infra
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITokenCleanupService, TokenCleanupService>();
+            services.AddScoped<IEmailSender, SendGridEmailSender>();
 
             return services;
         }
