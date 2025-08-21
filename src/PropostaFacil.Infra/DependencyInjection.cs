@@ -50,6 +50,7 @@ namespace PropostaFacil.Infra
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITokenCleanupService, TokenCleanupService>();
             services.AddScoped<IEmailSender, SendGridEmailSender>();
+            services.AddScoped<IPaymentService, AsaasService>();
 
             return services;
         }

@@ -64,12 +64,15 @@ namespace PropostaFacil.Infra.Data.Configurations
                 .HasForeignKey(p => p.ClientId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-
-
             builder.HasMany(p => p.Items)
                 .WithOne(i => i.Proposal)
                 .HasForeignKey(i => i.ProposalId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(p => p.Payment)
+               .WithOne(p => p.Proposal)
+               .HasForeignKey<Payment>(p => p.ProposalId)
+               .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

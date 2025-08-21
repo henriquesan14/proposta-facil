@@ -6,6 +6,7 @@ namespace PropostaFacil.Domain.Entities
 {
     public class Subscription : Aggregate<SubscriptionId>
     {
+        private readonly List<Payment> _payments = new();
         public static Subscription Create(TenantId tenantId, SubscriptionPlanId subscriptionPlanId, DateTime startDate, DateTime? endDate = null)
         {
             return new Subscription
@@ -29,6 +30,8 @@ namespace PropostaFacil.Domain.Entities
 
         public Tenant Tenant { get; private set; } = default!;
         public SubscriptionPlan SubscriptionPlan { get; private set; } = default!;
+
+        public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
 
         public void IncrementProposalsUsed()
         {
