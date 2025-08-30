@@ -2,9 +2,9 @@
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Shared.Common.CQRS;
 
-namespace PropostaFacil.Application.Subscriptions.Commands.ActivateSubscription
+namespace PropostaFacil.Application.Payments.Commands.ConfirmPaymentSubscription
 {
-    public record ActivateSubscriptionCommand(string @Event, PaymentAsaas Payment) : ICommand<Result>;
+    public record ConfirmPaymentSubscriptionCommand(string @Event, PaymentAsaas Payment) : ICommand<Result>;
 
     public record PaymentAsaas(
         string Id,

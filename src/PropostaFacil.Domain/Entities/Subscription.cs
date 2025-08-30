@@ -1,5 +1,6 @@
 ﻿using PropostaFacil.Domain.Abstractions;
 using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Events;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Domain.Entities
@@ -48,6 +49,7 @@ namespace PropostaFacil.Domain.Entities
             payment.SetSubscription(Id);
 
             _payments.Add(payment);
+            AddDomainEvent(new PaymentApprovedEvent(payment, this));
         }
 
         public void Activate() => Status = SubscriptionStatusEnum.Active;

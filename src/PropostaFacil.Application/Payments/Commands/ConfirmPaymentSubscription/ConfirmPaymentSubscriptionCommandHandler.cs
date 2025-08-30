@@ -1,17 +1,26 @@
 ﻿using Common.ResultPattern;
-using PropostaFacil.Application.Payments;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.Entities;
 using PropostaFacil.Shared.Common.CQRS;
+using System.Linq.Expressions;
 
-namespace PropostaFacil.Application.Subscriptions.Commands.ActivateSubscription
+namespace PropostaFacil.Application.Payments.Commands.ConfirmPaymentSubscription
 {
-    public record ActivateSubscriptionCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<ActivateSubscriptionCommand, Result>
+    public record ConfirmPaymentSubscriptionCommandHandler(IUnitOfWork unitOfWork) : ICommandHandler<ConfirmPaymentSubscriptionCommand, Result>
     {
-        public async Task<Result> Handle(ActivateSubscriptionCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(ConfirmPaymentSubscriptionCommand request, CancellationToken cancellationToken)
         {
             var paymentExists = await unitOfWork.Payments.GetSingleAsync(p => p.PaymentAsaasId == request.Payment.Id);
             if(paymentExists != null) return PaymentErrors.PaymentAlreadyExist(request.Payment.Id);
-            var subscription = await unitOfWork.Subscriptions.GetSingleAsync(s => s.SubscriptionAsaasId == request.Payment.Subscription);
+
+            List<Expression<Func<Subscription, object>>> includesSubscription = new List<Expression<Func<Subscription, object>>>()
+            {
+                s => s.SubscriptionPlan,
+                s => s.Tenant
+            };
+
+            var subscription = await unitOfWork.Subscriptions.GetSingleAsync(s => s.SubscriptionAsaasId == request.Payment.Subscription, includes: includesSubscription);
+
             if (subscription is null) return PaymentErrors.NotFound(request.Payment.Subscription); 
             if (request.Event != "PAYMENT_RECEIVED")
                 return PaymentErrors.InvalidEvent();

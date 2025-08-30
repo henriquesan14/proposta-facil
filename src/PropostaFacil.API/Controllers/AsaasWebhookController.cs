@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using PropostaFacil.Application.Subscriptions.Commands.ActivateSubscription;
+using PropostaFacil.Application.Payments.Commands.ConfirmPaymentSubscription;
 
 namespace PropostaFacil.API.Controllers
 {
@@ -8,7 +8,7 @@ namespace PropostaFacil.API.Controllers
     public class AsaasWebhookController(IMediator mediator) : BaseController
     {
         [HttpPost]
-        public async Task<IActionResult> Post(ActivateSubscriptionCommand command)
+        public async Task<IActionResult> Post(ConfirmPaymentSubscriptionCommand command)
         {
             await mediator.Send(command);
             return Ok();
