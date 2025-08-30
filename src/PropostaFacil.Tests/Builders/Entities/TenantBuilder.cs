@@ -10,6 +10,7 @@ namespace PropostaFacil.Tests.Builders.Entities
         private Document _document = Document.Of("12345678000199");
         private Contact _contact = Contact.Of("tenant@example.com", "11999999999");
         private Address _address = Address.Of("Street", "123", "Apt 1", "District", "City", "ST", "12345000");
+        private string _asassId = "123";
 
         public TenantBuilder WithName(string name)
         {
@@ -41,9 +42,15 @@ namespace PropostaFacil.Tests.Builders.Entities
             return this;
         }
 
+        public TenantBuilder WithAsaasId(string asaasId)
+        {
+            _asassId = asaasId;
+            return this;
+        }
+
         public Tenant Build()
         {
-            return Tenant.Create(_name, _domain, _document, _contact, _address);
+            return Tenant.Create(_name, _domain, _document, _contact, _address, _asassId);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace PropostaFacil.Domain.Entities
     public class Subscription : Aggregate<SubscriptionId>
     {
         private readonly List<Payment> _payments = new();
-        public static Subscription Create(TenantId tenantId, SubscriptionPlanId subscriptionPlanId, DateTime startDate, DateTime? endDate = null)
+        public static Subscription Create(TenantId tenantId, SubscriptionPlanId subscriptionPlanId, DateTime startDate, string subscriptionAsaasId, string paymentLink, DateTime? endDate = null)
         {
             return new Subscription
             {
@@ -16,8 +16,10 @@ namespace PropostaFacil.Domain.Entities
                 SubscriptionPlanId = subscriptionPlanId,
                 StartDate = startDate,
                 EndDate = endDate,
-                Status = SubscriptionStatusEnum.Active,
-                ProposalsUsed = 0
+                Status = SubscriptionStatusEnum.Pending,
+                ProposalsUsed = 0,
+                SubscriptionAsaasId = subscriptionAsaasId,
+                PaymentLink = paymentLink
             };
         }
 
@@ -27,6 +29,8 @@ namespace PropostaFacil.Domain.Entities
         public DateTime? EndDate { get; private set; }
         public SubscriptionStatusEnum Status { get; private set; }
         public int ProposalsUsed { get; private set; }
+        public string SubscriptionAsaasId { get; private set; } = default!;
+        public string PaymentLink { get; private set; } = default!;
 
         public Tenant Tenant { get; private set; } = default!;
         public SubscriptionPlan SubscriptionPlan { get; private set; } = default!;
@@ -38,6 +42,7 @@ namespace PropostaFacil.Domain.Entities
             ProposalsUsed++;
         }
 
+        public void Activate() => Status = SubscriptionStatusEnum.Active;
         public void Cancel() => Status = SubscriptionStatusEnum.Canceled;
         public void Suspend() => Status = SubscriptionStatusEnum.Suspended;
     }

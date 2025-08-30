@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Clients;
+using PropostaFacil.Application.Payments;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Subscriptions;
@@ -33,6 +34,7 @@ namespace PropostaFacil.Infra.Data.Repositories
         public IRefreshTokenRepository RefreshTokens { get; }
         public ISubscriptionRepository Subscriptions { get; }
         public ISubscriptionPlanRepository SubscriptionPlans { get; }
+        public IPaymentRepository Payments { get; }
 
         public async Task BeginTransaction()
         {
@@ -50,7 +52,6 @@ namespace PropostaFacil.Infra.Data.Repositories
                 await _transaction.RollbackAsync();
                 throw ex;
             }
-
         }
 
         public async Task<int> CompleteAsync()

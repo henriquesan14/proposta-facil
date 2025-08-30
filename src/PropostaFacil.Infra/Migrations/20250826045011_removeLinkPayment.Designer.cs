@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PropostaFacil.Infra.Data;
@@ -11,9 +12,11 @@ using PropostaFacil.Infra.Data;
 namespace PropostaFacil.Infra.Migrations
 {
     [DbContext(typeof(PropostaFacilDbContext))]
-    partial class PropostaFacilDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250826045011_removeLinkPayment")]
+    partial class removeLinkPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,10 +296,6 @@ namespace PropostaFacil.Infra.Migrations
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("PaymentLink")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.Property<int>("ProposalsUsed")
                         .HasColumnType("integer");

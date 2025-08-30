@@ -14,7 +14,9 @@ namespace PropostaFacil.Application.Subscriptions
                 subscription.StartDate,
                 subscription.EndDate,
                 subscription.Status,
-                subscription.ProposalsUsed
+                subscription.ProposalsUsed,
+                subscription.SubscriptionAsaasId,
+                subscription.PaymentLink
             );
         }
 

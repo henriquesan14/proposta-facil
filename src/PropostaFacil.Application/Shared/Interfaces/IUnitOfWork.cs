@@ -1,5 +1,6 @@
 ﻿using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Clients;
+using PropostaFacil.Application.Payments;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Tenants;
@@ -16,8 +17,8 @@ namespace PropostaFacil.Application.Shared.Interfaces
         IRefreshTokenRepository RefreshTokens { get; }
 
         ISubscriptionRepository Subscriptions { get; }
-
         ISubscriptionPlanRepository SubscriptionPlans { get; }
+        IPaymentRepository Payments { get; }
         Task<int> CompleteAsync();
         Task BeginTransaction();
         Task CommitAsync();

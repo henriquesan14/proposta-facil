@@ -13,8 +13,8 @@ using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
 using PropostaFacil.Infra.Data.Repositories;
 using PropostaFacil.Infra.Services;
-using System.Reflection;
 using PropostaFacil.Shared.Messaging.MassTransit;
+using System.Reflection;
 
 namespace PropostaFacil.Infra
 {
@@ -50,7 +50,8 @@ namespace PropostaFacil.Infra
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITokenCleanupService, TokenCleanupService>();
             services.AddScoped<IEmailSender, SendGridEmailSender>();
-            services.AddScoped<IPaymentService, AsaasService>();
+            services.AddScoped<IAsaasService, AsaasService>();
+            services.AddScoped<IRedisCacheService, RedisCacheService>();
 
             return services;
         }

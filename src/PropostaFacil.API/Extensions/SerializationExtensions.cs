@@ -11,7 +11,6 @@ namespace PropostaFacil.API.Extensions
 
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-
             });
 
             return services;

@@ -9,7 +9,7 @@ using System.Text.Json;
 
 namespace PropostaFacil.Infra.Services
 {
-    public class AsaasService : IPaymentService
+    public class AsaasService : IAsaasService
     {
         private readonly IConfiguration _configuration;
         private readonly string _accessToken;
@@ -22,10 +22,20 @@ namespace PropostaFacil.Infra.Services
             _baseUrl = _configuration["AsaasSettings:BaseUrl"]!;
         }
 
+        public async Task<AsaasResponse<PaymentResponse>> GetPaymentsBySubscription(string subscriptionId)
+        {
+            return await SendRequestAsync<AsaasResponse<PaymentResponse>>($"subscriptions/{subscriptionId}/payments", Method.Get);
+        }
+
         public async Task<GenerateChargeResponse> GenerateCharge(ChargeAsaasRequest request)
         {
             var response = await SendRequestAsync<GenerateChargeResponse>("payments", Method.Post, request);
             return response;
+        }
+
+        public async Task<SubscriptionAsaasResponse> CreateSubscriptionAsync(CreateSubscriptionRequest request)
+        {
+            return await SendRequestAsync<SubscriptionAsaasResponse>("subscriptions", Method.Post, request);
         }
 
         public async Task<DeleteChargeResponse> DeleteCharge(string chargeId)
@@ -37,11 +47,11 @@ namespace PropostaFacil.Infra.Services
         public async Task<AsaasResponse<PaymentResponse>> GetChargesByCustomerId(string customerId, int offset, int limit)
         {
             var queryParams = new Dictionary<string, string>
-        {
-            { "customer", customerId },
-            { "offset", offset.ToString() },
-            { "limit", limit.ToString() }
-        };
+            {
+                { "customer", customerId },
+                { "offset", offset.ToString() },
+                { "limit", limit.ToString() }
+            };
 
             return await SendRequestAsync<AsaasResponse<PaymentResponse>>("payments", Method.Get, queryParams: queryParams);
         }
@@ -61,6 +71,12 @@ namespace PropostaFacil.Infra.Services
         {
             var result = await SendRequestAsync<CustomerResponse>("customers", Method.Post, request);
             return result.Id;
+        }
+
+        public async Task<PaymentLinkAsaasResponse> CreatePaymentLink(PaymentLinkAsaasRequest request)
+        {
+            var result = await SendRequestAsync<PaymentLinkAsaasResponse>("paymentLinks", Method.Post, request);
+            return result;
         }
 
         private async Task<T> SendRequestAsync<T>(string resource, Method method, object? body = null, Dictionary<string, string>? queryParams = null)
