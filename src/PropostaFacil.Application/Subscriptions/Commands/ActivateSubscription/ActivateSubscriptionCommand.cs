@@ -1,16 +1,18 @@
 ﻿using Common.ResultPattern;
+using PropostaFacil.Domain.Enums;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Subscriptions.Commands.ActivateSubscription
 {
-    public record ActivateSubscriptionCommand(string @Event, Payment Payment) : ICommand<Result>;
+    public record ActivateSubscriptionCommand(string @Event, PaymentAsaas Payment) : ICommand<Result>;
 
-    public record Payment(
+    public record PaymentAsaas(
         string Id,
         string Customer,
         string Subscription,
-        int Value,
-        string BillingType,
-        string Status
+        decimal Value,
+        BillingTypeEnum BillingType,
+        DateOnly PaymentDate,
+        string InvoiceUrl
     );
 }

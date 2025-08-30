@@ -11,35 +11,33 @@ namespace PropostaFacil.Domain.Entities
         public decimal Amount { get; private set; } = default!;
         public string Currency { get; private set; } = "BRL";
         public BillingTypeEnum BillingType { get; private set; } = default!;
-        public PaymentStatus Status { get; private set; } = default!;
-        public DateTime DueDate { get; private set; } = default!;
-        public DateTime? PaidDate { get; private set; } = default!;
-        public string ExternalReference { get; private set; } = default!;
-
+        public DateOnly PaidDate { get; private set; } = default!;
+        public string PaymentAsaasId { get; private set; } = default!;
+        public string PaymentLink { get; private set; } = default!;
         public Subscription? Subscription { get; private set; } = default!;
         public Proposal? Proposal { get; private set; } = default!;
 
-        public static Payment Create(decimal amount, DateTime dueDate, BillingTypeEnum billingType, string currency = "BRL")
+        public static Payment Create(decimal amount, DateOnly paidDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink, string currency = "BRL")
         {
             return new Payment {
                 Id = PaymentId.Of(Guid.NewGuid()),
                 Amount = amount,
-                DueDate = dueDate,
+                PaidDate = paidDate,
                 Currency = currency,
                 BillingType = billingType,
-                Status = PaymentStatus.Pending
+                PaymentAsaasId = paymentAsaasId,
+                PaymentLink = paymentLink
             };
         }
 
-        public void MarkAsPaid(DateTime paidDate)
+        public void SetSubscription(SubscriptionId subscriptionId)
         {
-            Status = PaymentStatus.Paid;
-            PaidDate = paidDate;
+            SubscriptionId = subscriptionId;
         }
 
-        public void MarkAsFailed()
+        public void SetProposal(ProposalId proposalId)
         {
-            Status = PaymentStatus.Failed;
+            ProposalId = proposalId;
         }
     }
 }

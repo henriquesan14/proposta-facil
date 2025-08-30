@@ -15,7 +15,7 @@ namespace PropostaFacil.Infra.Data.Repositories
         private IDbContextTransaction _transaction;
         private readonly PropostaFacilDbContext _dbContext;
 
-        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals, IUserRepository users, IRefreshTokenRepository refreshTokens, ISubscriptionRepository subscriptions, ISubscriptionPlanRepository subscriptionPlans)
+        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals, IUserRepository users, IRefreshTokenRepository refreshTokens, ISubscriptionRepository subscriptions, ISubscriptionPlanRepository subscriptionPlans, IPaymentRepository payments)
         {
             _dbContext = dbContext;
             Tenants = tenants;
@@ -25,6 +25,7 @@ namespace PropostaFacil.Infra.Data.Repositories
             RefreshTokens = refreshTokens;
             Subscriptions = subscriptions;
             SubscriptionPlans = subscriptionPlans;
+            Payments = payments;
         }
 
         public ITenantRepository Tenants { get; }

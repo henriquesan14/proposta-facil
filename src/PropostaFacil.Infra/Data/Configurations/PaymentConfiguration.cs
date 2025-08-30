@@ -27,14 +27,15 @@ namespace PropostaFacil.Infra.Data.Configurations
             builder.Property(p => p.BillingType)
                 .IsRequired();
 
-            builder.Property(p => p.Status)
+            builder.Property(p => p.PaidDate)
+                .HasColumnType("date")
                 .IsRequired();
 
-            builder.Property(p => p.DueDate)
-                .IsRequired();
-
-            builder.Property(p => p.ExternalReference)
+            builder.Property(p => p.PaymentAsaasId)
                 .HasMaxLength(200);
+
+            builder.Property(p => p.PaymentLink)
+                .HasMaxLength(300);
 
             builder.HasOne(p => p.Subscription)
                    .WithMany(s => s.Payments)

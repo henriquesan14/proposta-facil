@@ -23,7 +23,7 @@ namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
             string customerId = await asaasService.GetCustomerIdByCpfCnpj(request.Document);
             if(customerId is null)
             {
-                var customerAsaas = new CustomerAsaasRequest(request.Document, request.Name, request.Email);
+                var customerAsaas = new CustomerAsaasRequest(request.Document, request.Name, request.Email, request.PhoneNumber, true);
                 customerId = await asaasService.CreateCustomer(customerAsaas);
             }
 

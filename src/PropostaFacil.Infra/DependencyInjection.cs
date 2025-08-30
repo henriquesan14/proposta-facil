@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Clients;
+using PropostaFacil.Application.Payments;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Subscriptions;
@@ -44,6 +45,7 @@ namespace PropostaFacil.Infra
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<ISubscriptionPlanRepository, SubscriptionPlanRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
 
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();

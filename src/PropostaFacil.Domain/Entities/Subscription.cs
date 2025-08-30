@@ -42,6 +42,17 @@ namespace PropostaFacil.Domain.Entities
             ProposalsUsed++;
         }
 
+        public void AddPayment(decimal amount, DateOnly paidDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink)
+        {
+            //if (_payments.Any(p => p.PaymentAsaasId == paymentAsaasId))
+            //    throw new InvalidOperationException($"Pagamento {paymentAsaasId} já registrado para esta assinatura.");
+
+            var payment = Payment.Create(amount, paidDate, billingType, paymentAsaasId, paymentLink);
+            payment.SetSubscription(Id);
+
+            _payments.Add(payment);
+        }
+
         public void Activate() => Status = SubscriptionStatusEnum.Active;
         public void Cancel() => Status = SubscriptionStatusEnum.Canceled;
         public void Suspend() => Status = SubscriptionStatusEnum.Suspended;

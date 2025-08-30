@@ -12,5 +12,8 @@ namespace PropostaFacil.Application.Payments
 
         public static Error NotFound(string id) =>
             Error.NotFound("Payments.NotFound", $"Subscription with {id} not found.");
+
+        public static Error PaymentAlreadyExist(string id) =>
+            Error.Conflict("Payments.Conflict", $"Already exists payment with {id}.");
     }
 }
