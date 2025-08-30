@@ -44,9 +44,6 @@ namespace PropostaFacil.Domain.Entities
 
         public void AddPayment(decimal amount, DateOnly paidDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink)
         {
-            //if (_payments.Any(p => p.PaymentAsaasId == paymentAsaasId))
-            //    throw new InvalidOperationException($"Pagamento {paymentAsaasId} já registrado para esta assinatura.");
-
             var payment = Payment.Create(amount, paidDate, billingType, paymentAsaasId, paymentLink);
             payment.SetSubscription(Id);
 
