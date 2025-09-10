@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Clients;
+using PropostaFacil.Application.Payments;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Subscriptions;
@@ -13,8 +14,8 @@ using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
 using PropostaFacil.Infra.Data.Repositories;
 using PropostaFacil.Infra.Services;
-using System.Reflection;
 using PropostaFacil.Shared.Messaging.MassTransit;
+using System.Reflection;
 
 namespace PropostaFacil.Infra
 {
@@ -44,12 +45,15 @@ namespace PropostaFacil.Infra
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             services.AddScoped<ISubscriptionPlanRepository, SubscriptionPlanRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
 
             services.AddHttpContextAccessor();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITokenCleanupService, TokenCleanupService>();
             services.AddScoped<IEmailSender, SendGridEmailSender>();
+            services.AddScoped<IAsaasService, AsaasService>();
+            services.AddScoped<IRedisCacheService, RedisCacheService>();
 
             return services;
         }

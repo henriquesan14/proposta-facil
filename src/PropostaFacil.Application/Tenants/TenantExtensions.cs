@@ -19,7 +19,8 @@ namespace PropostaFacil.Application.Tenants
                 tenant.Address.District,
                 tenant.Address.City,
                 tenant.Address.State,
-                tenant.Address.ZipCode
+                tenant.Address.ZipCode,
+                tenant.AsaasId
             );
         }
 

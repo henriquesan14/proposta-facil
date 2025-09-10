@@ -11,9 +11,10 @@ namespace PropostaFacil.Tests.Commands
     public class CreateTenantCommandTests
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
+        private readonly Mock<IAsaasService> _paymentService = new();
 
         private CreateTenantCommandHandler CreateHandler()
-        => new CreateTenantCommandHandler(_unitOfWorkMock.Object);
+        => new CreateTenantCommandHandler(_unitOfWorkMock.Object, _paymentService.Object);
 
         [Fact]
         public async Task Handle_Should_Return_Conflict_When_Document_Already_Exist()

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Clients;
+using PropostaFacil.Application.Payments;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Subscriptions;
@@ -14,7 +15,7 @@ namespace PropostaFacil.Infra.Data.Repositories
         private IDbContextTransaction _transaction;
         private readonly PropostaFacilDbContext _dbContext;
 
-        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals, IUserRepository users, IRefreshTokenRepository refreshTokens, ISubscriptionRepository subscriptions, ISubscriptionPlanRepository subscriptionPlans)
+        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals, IUserRepository users, IRefreshTokenRepository refreshTokens, ISubscriptionRepository subscriptions, ISubscriptionPlanRepository subscriptionPlans, IPaymentRepository payments)
         {
             _dbContext = dbContext;
             Tenants = tenants;
@@ -24,6 +25,7 @@ namespace PropostaFacil.Infra.Data.Repositories
             RefreshTokens = refreshTokens;
             Subscriptions = subscriptions;
             SubscriptionPlans = subscriptionPlans;
+            Payments = payments;
         }
 
         public ITenantRepository Tenants { get; }
@@ -33,6 +35,7 @@ namespace PropostaFacil.Infra.Data.Repositories
         public IRefreshTokenRepository RefreshTokens { get; }
         public ISubscriptionRepository Subscriptions { get; }
         public ISubscriptionPlanRepository SubscriptionPlans { get; }
+        public IPaymentRepository Payments { get; }
 
         public async Task BeginTransaction()
         {
@@ -50,7 +53,6 @@ namespace PropostaFacil.Infra.Data.Repositories
                 await _transaction.RollbackAsync();
                 throw ex;
             }
-
         }
 
         public async Task<int> CompleteAsync()

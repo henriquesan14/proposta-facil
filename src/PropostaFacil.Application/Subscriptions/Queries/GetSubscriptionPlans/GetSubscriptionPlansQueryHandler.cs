@@ -1,29 +1,30 @@
 ﻿using Common.ResultPattern;
+using Microsoft.Extensions.Caching.Distributed;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Entities;
 using PropostaFacil.Shared.Common.CQRS;
 using PropostaFacil.Shared.Common.Pagination;
-using System.Linq.Expressions;
+using System.Text.Json;
 
 namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans
 {
-    public class GetSubscriptionPlansQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>>
+    public class GetSubscriptionPlansQueryHandler(IUnitOfWork unitOfWork, IDistributedCache cache) : IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>>
     {
         public async Task<ResultT<PaginatedResult<SubscriptionPlanResponse>>> Handle(GetSubscriptionPlansQuery request, CancellationToken cancellationToken)
         {
-            Expression<Func<SubscriptionPlan, bool>> predicate = p =>
-                (string.IsNullOrEmpty(request.Name) ||
-                    p.Name.ToLower().Contains(request.Name.ToLower()));
-            var subscriptionPlans = await unitOfWork.SubscriptionPlans.GetAsync(predicate);
-            var count = await unitOfWork.SubscriptionPlans.GetCountAsync(predicate);
+            var result = await unitOfWork.SubscriptionPlans.GetAllByNameAsync(
+                request.Name!,
+                request.PageNumber,
+                request.PageSize
+            );
 
-            var dto = subscriptionPlans.ToDto();
+            var subscriptionPlans = result.ToDto();
+            var count = await unitOfWork.SubscriptionPlans.GetCountByNameAsync(request.Name!);
 
             var paginated = new PaginatedResult<SubscriptionPlanResponse>(
                 request.PageNumber,
                 request.PageSize,
                 count,
-                dto
+                subscriptionPlans
             );
 
             return paginated;

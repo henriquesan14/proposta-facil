@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using PropostaFacil.Application.Shared.Exceptions;
 using PropostaFacil.Domain.Exceptions;
 
 namespace PropostaFacil.API.ErrorHandling
@@ -23,6 +24,11 @@ namespace PropostaFacil.API.ErrorHandling
                     exception.Message,
                     exception.GetType().Name,
                     context.Response.StatusCode = StatusCodes.Status400BadRequest
+                ),
+                IntegrationException => (
+                    exception.Message,
+                    exception.GetType().Name,
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized
                 ),
                 DbUpdateException dbEx when dbEx.InnerException is PostgresException pgEx && pgEx.SqlState == "23503" => (
                     "Não foi possível concluir a operação porque o registro está associado a outro recurso no sistema.",

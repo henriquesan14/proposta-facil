@@ -6,7 +6,7 @@ namespace PropostaFacil.Domain.Entities
 {
     public class Tenant : Aggregate<TenantId>
     {
-        public static Tenant Create(string name, string domain, Document document, Contact contact, Address address)
+        public static Tenant Create(string name, string domain, Document document, Contact contact, Address address, string asaasId)
         {
             return new Tenant
             {
@@ -15,7 +15,8 @@ namespace PropostaFacil.Domain.Entities
                 Domain = domain,
                 Document = document,
                 Contact = contact,
-                Address = address
+                Address = address,
+                AsaasId = asaasId
             };
         }
 
@@ -29,6 +30,7 @@ namespace PropostaFacil.Domain.Entities
         }
         public string Name { get; private set; } = default!;
         public string Domain { get; private set; } = default!;
+        public string AsaasId { get; private set; } = default!;
         public Document Document { get; private set; } = default!;
 
         public Contact Contact { get; private set; } = default!;

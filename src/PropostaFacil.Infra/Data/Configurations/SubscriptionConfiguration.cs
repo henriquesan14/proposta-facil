@@ -48,6 +48,10 @@ namespace PropostaFacil.Infra.Data.Configurations
             builder.HasOne(s => s.SubscriptionPlan)
                 .WithMany(sp => sp.Subscriptions)
                 .HasForeignKey(s => s.SubscriptionPlanId);
+
+            builder.HasMany(s => s.Payments)
+                .WithOne(p => p.Subscription)
+                .HasForeignKey(p => p.SubscriptionId);
         }
     }
 }

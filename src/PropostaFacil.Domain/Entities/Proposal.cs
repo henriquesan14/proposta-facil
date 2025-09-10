@@ -33,9 +33,10 @@ namespace PropostaFacil.Domain.Entities
         public ProposalStatusEnum ProposalStatus { get; private set; } = default!;
         public Money TotalAmount => _totalAmount;
         public DateTime ValidUntil { get; private set; } = default!;
-
         public Tenant Tenant { get; private set; } = default!;
         public Client Client { get; private set; } = default!;
+
+        public Payment? Payment { get; private set; } = default!;
 
         public IReadOnlyCollection<ProposalItem> Items => _items.AsReadOnly();
 

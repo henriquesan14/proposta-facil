@@ -57,6 +57,69 @@ namespace PropostaFacil.Infra.Migrations
                     b.ToTable("Clients", (string)null);
                 });
 
+            modelBuilder.Entity("PropostaFacil.Domain.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BillingType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsFirstInvoice")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateOnly>("PaidDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("PaymentAsaasId")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("PaymentLink")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<Guid?>("ProposalId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("SubscriptionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProposalId")
+                        .IsUnique();
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("Payments", (string)null);
+                });
+
             modelBuilder.Entity("PropostaFacil.Domain.Entities.Proposal", b =>
                 {
                     b.Property<Guid>("Id")
@@ -233,6 +296,10 @@ namespace PropostaFacil.Infra.Migrations
                     b.Property<Guid?>("LastModifiedBy")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("PaymentLink")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("ProposalsUsed")
                         .HasColumnType("integer");
 
@@ -240,6 +307,10 @@ namespace PropostaFacil.Infra.Migrations
                         .HasColumnType("timestamp");
 
                     b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SubscriptionAsaasId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -306,6 +377,10 @@ namespace PropostaFacil.Infra.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("AsaasId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -489,6 +564,23 @@ namespace PropostaFacil.Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Entities.Payment", b =>
+                {
+                    b.HasOne("PropostaFacil.Domain.Entities.Proposal", "Proposal")
+                        .WithOne("Payment")
+                        .HasForeignKey("PropostaFacil.Domain.Entities.Payment", "ProposalId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PropostaFacil.Domain.Entities.Subscription", "Subscription")
+                        .WithMany("Payments")
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Proposal");
+
+                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("PropostaFacil.Domain.Entities.Proposal", b =>
@@ -726,6 +818,13 @@ namespace PropostaFacil.Infra.Migrations
             modelBuilder.Entity("PropostaFacil.Domain.Entities.Proposal", b =>
                 {
                     b.Navigation("Items");
+
+                    b.Navigation("Payment");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Entities.Subscription", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("PropostaFacil.Domain.Entities.SubscriptionPlan", b =>
