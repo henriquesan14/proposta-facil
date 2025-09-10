@@ -26,9 +26,13 @@ namespace PropostaFacil.Application.Payments.Commands.ConfirmPaymentSubscription
                 return PaymentErrors.InvalidEvent();
             if (subscription.Status == Domain.Enums.SubscriptionStatusEnum.Active)
                 return PaymentErrors.SubscriptionAlreadyActive();
+
+            var countPayments = await unitOfWork.Payments.GetCountAsync(p => p.SubscriptionId == subscription.Id);
             
             subscription.Activate();
-            subscription.AddPayment(request.Payment.Value, request.Payment.PaymentDate, request.Payment.BillingType, request.Payment.Id, request.Payment.InvoiceUrl);
+            subscription.ResetProposalsUsed();
+            if(countPayments == 0) subscription.AddPayment(request.Payment.Value, request.Payment.PaymentDate, request.Payment.BillingType, request.Payment.Id, request.Payment.InvoiceUrl, true);
+            else subscription.AddPayment(request.Payment.Value, request.Payment.PaymentDate, request.Payment.BillingType, request.Payment.Id, request.Payment.InvoiceUrl);
 
             await unitOfWork.CompleteAsync();
 

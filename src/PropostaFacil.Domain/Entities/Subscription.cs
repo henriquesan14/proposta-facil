@@ -43,9 +43,14 @@ namespace PropostaFacil.Domain.Entities
             ProposalsUsed++;
         }
 
-        public void AddPayment(decimal amount, DateOnly paidDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink)
+        public void ResetProposalsUsed()
         {
-            var payment = Payment.Create(amount, paidDate, billingType, paymentAsaasId, paymentLink);
+            ProposalsUsed = 0;
+        }
+
+        public void AddPayment(decimal amount, DateOnly paidDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink, bool isFirstInvoice = false)
+        {
+            var payment = Payment.Create(amount, paidDate, billingType, paymentAsaasId, paymentLink, isFirstInvoice);
             payment.SetSubscription(Id);
 
             _payments.Add(payment);

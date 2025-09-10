@@ -13,5 +13,13 @@ namespace PropostaFacil.API.Controllers
             await mediator.Send(command);
             return Ok();
         }
+
+
+        [HttpPost("payment-created")]
+        public async Task<IActionResult> PaymentCreated(ConfirmPaymentSubscriptionCommand command)
+        {
+            await mediator.Send(command);
+            return Ok();
+        }
     }
 }
