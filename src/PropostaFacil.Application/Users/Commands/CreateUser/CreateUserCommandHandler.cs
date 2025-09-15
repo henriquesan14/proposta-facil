@@ -1,8 +1,9 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Tenants;
-using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Users;
+using PropostaFacil.Domain.Users.Specifications;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
@@ -36,7 +37,7 @@ namespace PropostaFacil.Application.Users.Commands.CreateUser
                     return UserErrors.Forbidden();
             }
 
-            var userExist = await unitOfWork.Users.GetSingleAsync(u => u.Contact.Email == request.Email);
+            var userExist = await unitOfWork.Users.FirstOrDefaultAsync(new GetUserByEmailGlobalSpecification(request.Email));
             if (userExist != null)
                 return UserErrors.Conflict(request.Email);
 

@@ -1,6 +1,8 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Users;
+using PropostaFacil.Domain.Users.Specifications;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 using System.Linq.Expressions;
@@ -12,7 +14,7 @@ namespace PropostaFacil.Application.Auth.Commands.GenerateAccessToken
         public async Task<ResultT<AuthResponse>> Handle(GenerateAccessTokenCommand request, CancellationToken cancellationToken)
         {
             Expression<Func<User, bool>> predicate = u => u.Contact.Email == request.Email;
-            var user = await unitOfWork.Users.GetSingleAsync(predicate);
+            var user = await unitOfWork.Users.FirstOrDefaultAsync(new GetUserByEmailGlobalSpecification(request.Email));
             if (user == null)
                 return AuthErrors.Unauthorized();
             bool password = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);

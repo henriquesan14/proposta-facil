@@ -12,7 +12,7 @@ using PropostaFacil.Application.Tenants.Queries.GetTenants;
 namespace PropostaFacil.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "AdminSystem")]
+    [Authorize(Roles = "AdminTenant")]
     public class TenantController(IMediator mediator) : BaseController
     {
 

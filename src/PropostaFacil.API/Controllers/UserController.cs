@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 using PropostaFacil.Application.Users.Commands.CreateUser;
 using PropostaFacil.Application.Users.Queries.GetUsers;
-using PropostaFacil.Shared.Common.Pagination;
 
 namespace PropostaFacil.API.Controllers
 {

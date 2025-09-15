@@ -1,8 +1,6 @@
-﻿using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Entities;
-using PropostaFacil.Domain.ValueObjects.Ids;
+﻿using Ardalis.Specification;
+using PropostaFacil.Domain.Users;
 
-namespace PropostaFacil.Application.Users
-{
-    public interface IUserRepository : IAsyncRepository<User, UserId>;
-}
+namespace PropostaFacil.Application.Users;
+
+public interface IUserRepository : IRepositoryBase<User>;

@@ -1,9 +1,10 @@
 ﻿using PropostaFacil.Domain.Abstractions;
+using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Domain.Entities
+namespace PropostaFacil.Domain.Users
 {
     public class User : Aggregate<UserId>
     {

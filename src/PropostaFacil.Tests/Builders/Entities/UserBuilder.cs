@@ -1,5 +1,5 @@
-﻿using PropostaFacil.Domain.Entities;
-using PropostaFacil.Domain.Enums;
+﻿using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Users;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
