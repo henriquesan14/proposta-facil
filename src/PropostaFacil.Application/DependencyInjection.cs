@@ -24,14 +24,13 @@ namespace PropostaFacil.Application
 
             services.AddStackExchangeRedisCache(options =>
             {
-                options.Configuration = "localhost:6379";
-                options.InstanceName = "PropostaFacil:";
+                options.Configuration = configuration["Redis:Host"];
+                options.InstanceName = configuration["Redis:InstanceName"];
             });
 
             services.AddSingleton<IConnectionMultiplexer>(sp =>
             {
-                var configuration = "localhost:6379";
-                return ConnectionMultiplexer.Connect(configuration);
+                return ConnectionMultiplexer.Connect(configuration["Redis:Host"]!);
             });
 
             services.AddScoped<IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>>, GetSubscriptionPlansQueryHandler>();
