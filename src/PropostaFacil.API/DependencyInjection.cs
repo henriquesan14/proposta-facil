@@ -37,6 +37,9 @@ namespace PropostaFacil.API
             services.AddHealthChecks()
                 .AddNpgSql(configuration.GetConnectionString("DbConnection")!);
 
+            services.AddHealthChecks()
+                .AddRedis(configuration["Redis:Host"]!, name: "redis", timeout: TimeSpan.FromSeconds(5), tags: new[] { "ready" });
+
             services.AddRateLimitingConfig(builder.Configuration);
 
             return services;

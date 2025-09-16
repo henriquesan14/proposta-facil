@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Configuration;
 using PropostaFacil.Application.Shared.Interfaces;
 using StackExchange.Redis;
 using System.Text.Json;
@@ -10,9 +11,11 @@ namespace PropostaFacil.Infra.Services
         private readonly IDistributedCache _cache;
         private readonly IConnectionMultiplexer _connection;
         private readonly JsonSerializerOptions _jsonOptions;
+        private readonly IConfiguration _configuration;
 
-        public RedisCacheService(IDistributedCache cache, IConnectionMultiplexer connection)
+        public RedisCacheService(IDistributedCache cache, IConnectionMultiplexer connection, IConfiguration configuration)
         {
+            _configuration = configuration;
             _cache = cache;
             _connection = connection;
             _jsonOptions = new JsonSerializerOptions
@@ -47,7 +50,7 @@ namespace PropostaFacil.Infra.Services
             var db = _connection.GetDatabase();
             var server = _connection.GetServer(_connection.GetEndPoints().First());
 
-            var prefixWithInstanceName = $"PropostaFacil:{prefix}";
+            var prefixWithInstanceName = $"{_configuration["Redis:InstanceName"]}{prefix}";
 
             var batch = new List<RedisKey>();
 
