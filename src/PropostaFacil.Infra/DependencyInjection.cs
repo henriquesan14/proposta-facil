@@ -10,6 +10,7 @@ using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Application.Users;
+using PropostaFacil.Domain.Clients.Contracts;
 using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
@@ -69,6 +70,7 @@ namespace PropostaFacil.Infra
             services.AddScoped<IEmailSender, SendGridEmailSender>();
             services.AddScoped<IAsaasService, AsaasService>();
             services.AddScoped<ICacheService, RedisCacheService>();
+            services.AddScoped<IClientRuleCheck, RuleCheckService>();
 
             services.AddSingleton<IPasswordCheck, PasswordService>();
             services.AddSingleton<IPasswordHash, PasswordService>();
