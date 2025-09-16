@@ -16,10 +16,9 @@ namespace PropostaFacil.Tests.Builders.Commands
             new ProposalItemRequest("teste", "teste", 1, 10),
             new ProposalItemRequest("teste", "teste", 1, 10)
         };
-        private Guid? _tenantId = Guid.NewGuid();
 
         public CreateProposalCommand Build()
-            => new CreateProposalCommand(_clientId, _title, _proposalStatus, _currency, _validUntil, _items, _tenantId);
+            => new CreateProposalCommand(_clientId, _title, _proposalStatus, _currency, _validUntil, _items);
 
         public CreateProposalCommandBuilder WithClientId(Guid clientId)
         {
@@ -54,12 +53,6 @@ namespace PropostaFacil.Tests.Builders.Commands
         public CreateProposalCommandBuilder WithItems(IEnumerable<ProposalItemRequest> items)
         {
             _items = items;
-            return this;
-        }
-
-        public CreateProposalCommandBuilder WithTenantId(Guid? tenantId)
-        {
-            _tenantId = tenantId;
             return this;
         }
     }

@@ -1,7 +1,8 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Tenants;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Clients;
+using PropostaFacil.Domain.Clients.Specifications;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
@@ -33,7 +34,7 @@ namespace PropostaFacil.Application.Clients.Commands.CreateClient
                 tenantIdToUse = loggedTenantId!.Value;
             }
 
-            var clientExist = await unitOfWork.Clients.GetSingleAsync(t => t.Document.Number == request.Document);
+            var clientExist = await unitOfWork.Clients.FirstOrDefaultAsync(new GetClientByDocumentGlobalSpecification(request.Document));
 
             if (clientExist != null) return ClientErrors.Conflict(request.Document);
 

@@ -1,4 +1,5 @@
 ﻿using PropostaFacil.Domain.Abstractions;
+using PropostaFacil.Domain.Clients;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Events;
 using PropostaFacil.Domain.ValueObjects;

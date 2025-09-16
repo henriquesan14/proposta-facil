@@ -3,11 +3,9 @@ using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Users.Commands.CreateUser;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
-using PropostaFacil.Domain.Users;
 using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Tests.Builders.Commands;
-using PropostaFacil.Tests.Builders.Entities;
 using System.Linq.Expressions;
 
 namespace PropostaFacil.Tests.Commands
@@ -27,7 +25,6 @@ namespace PropostaFacil.Tests.Commands
             // Arrange
             var command = new CreateUserCommandBuilder()
                 .WithRole(UserRoleEnum.AdminTenant)
-                .WithTenantId(null)
                 .Build();
 
             _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);

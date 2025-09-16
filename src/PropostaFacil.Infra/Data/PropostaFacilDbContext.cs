@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.Clients;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Users;
 using PropostaFacil.Domain.ValueObjects.Ids;
