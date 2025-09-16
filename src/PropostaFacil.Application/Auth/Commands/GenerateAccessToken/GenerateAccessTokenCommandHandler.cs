@@ -2,6 +2,7 @@
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Users;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.Users.Specifications;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
@@ -9,7 +10,7 @@ using System.Linq.Expressions;
 
 namespace PropostaFacil.Application.Auth.Commands.GenerateAccessToken
 {
-    public class GenerateAccessTokenCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, ICurrentUserService currentUserService) : ICommandHandler<GenerateAccessTokenCommand, ResultT<AuthResponse>>
+    public class GenerateAccessTokenCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, ICurrentUserService currentUserService, IPasswordCheck passwordCheck) : ICommandHandler<GenerateAccessTokenCommand, ResultT<AuthResponse>>
     {
         public async Task<ResultT<AuthResponse>> Handle(GenerateAccessTokenCommand request, CancellationToken cancellationToken)
         {
@@ -17,7 +18,7 @@ namespace PropostaFacil.Application.Auth.Commands.GenerateAccessToken
             var user = await unitOfWork.Users.FirstOrDefaultAsync(new GetUserByEmailGlobalSpecification(request.Email));
             if (user == null)
                 return AuthErrors.Unauthorized();
-            bool password = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+            bool password = user.CanUserLogin(request.Password, passwordCheck);
             if (!password)
             {
                 return AuthErrors.Unauthorized();

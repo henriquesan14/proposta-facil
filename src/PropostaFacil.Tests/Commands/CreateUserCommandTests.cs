@@ -4,6 +4,7 @@ using PropostaFacil.Application.Users.Commands.CreateUser;
 using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Users;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Tests.Builders.Commands;
 using PropostaFacil.Tests.Builders.Entities;
@@ -15,9 +16,10 @@ namespace PropostaFacil.Tests.Commands
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
         private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
+        private readonly Mock<IPasswordHash> _passwordHashMock = new();
 
         private CreateUserCommandHandler CreateHandler()
-        => new CreateUserCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object);
+        => new CreateUserCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object, _passwordHashMock.Object);
 
         [Fact]
         public async Task Handle_Should_Return_TenantRequired_When_AdminSystem_Without_TenantId()

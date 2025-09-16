@@ -1,5 +1,6 @@
 ﻿using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Users;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
@@ -9,9 +10,15 @@ namespace PropostaFacil.Tests.Builders.Entities
     {
         private string _name = "Default User";
         private Contact _contact = Contact.Of("user@example.com", "11999999999");
-        private string _passwordHash = BCrypt.Net.BCrypt.HashPassword("Password123", 8);
+        private string _password = "Password123";
         private UserRoleEnum _role = UserRoleEnum.AdminTenant;
         private TenantId? _tenantId = TenantId.Of(Guid.NewGuid());
+        private IPasswordHash _passwordHash;
+
+        public UserBuilder(IPasswordHash passwordHash)
+        {
+            _passwordHash = passwordHash;
+        }
 
         public UserBuilder WithName(string name)
         {
@@ -25,9 +32,9 @@ namespace PropostaFacil.Tests.Builders.Entities
             return this;
         }
 
-        public UserBuilder WithPasswordHash(string passwordHash)
+        public UserBuilder WithPassword(string password)
         {
-            _passwordHash = passwordHash;
+            _password = password;
             return this;
         }
 
@@ -45,7 +52,7 @@ namespace PropostaFacil.Tests.Builders.Entities
 
         public User Build()
         {
-            return User.Create(_name, _contact, _passwordHash, _role, _tenantId!);
+            return User.Create(_name, _contact, _password, _role, _tenantId!, _passwordHash);
         }
     }
 

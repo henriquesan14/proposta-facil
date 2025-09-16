@@ -3,6 +3,7 @@ using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Users;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.Users.Specifications;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
@@ -10,7 +11,7 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Users.Commands.CreateUser
 {
-    public class CreateUserCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : ICommandHandler<CreateUserCommand, ResultT<UserResponse>>
+    public class CreateUserCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IPasswordHash passwordHash) : ICommandHandler<CreateUserCommand, ResultT<UserResponse>>
     {
         public async Task<ResultT<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -41,13 +42,14 @@ namespace PropostaFacil.Application.Users.Commands.CreateUser
             if (userExist != null)
                 return UserErrors.Conflict(request.Email);
 
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password, 8);
+            
             var user = User.Create(
                 request.Name,
                 Contact.Of(request.Email, request.PhoneNumber),
-                passwordHash,
+                request.Password,
                 request.Role,
-                TenantId.Of(tenantIdToUse)
+                TenantId.Of(tenantIdToUse),
+                passwordHash
             );
 
             await unitOfWork.Users.AddAsync(user);
