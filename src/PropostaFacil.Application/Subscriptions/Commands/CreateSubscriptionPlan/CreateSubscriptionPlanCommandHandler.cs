@@ -5,7 +5,7 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Subscriptions.Commands.CreateSubscriptionPlan
 {
-    public class CreateSubscriptionPlanCommandHandler(IUnitOfWork unitOfWork, IRedisCacheService memoryCacheService) : ICommandHandler<CreateSubscriptionPlanCommand, ResultT<SubscriptionPlanResponse>>
+    public class CreateSubscriptionPlanCommandHandler(IUnitOfWork unitOfWork, ICacheService memoryCacheService) : ICommandHandler<CreateSubscriptionPlanCommand, ResultT<SubscriptionPlanResponse>>
     {
         public async Task<ResultT<SubscriptionPlanResponse>> Handle(CreateSubscriptionPlanCommand request, CancellationToken cancellationToken)
         {

@@ -1,6 +1,6 @@
 ﻿namespace PropostaFacil.Application.Shared.Interfaces
 {
-    public interface IRedisCacheService
+    public interface ICacheService
     {
         Task Set<T>(string key, T value, TimeSpan expiration);
         Task<T?> Get<T>(string key);
