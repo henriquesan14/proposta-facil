@@ -10,6 +10,7 @@ using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Application.Users;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
 using PropostaFacil.Infra.Data.Repositories;
@@ -35,8 +36,11 @@ namespace PropostaFacil.Infra
                 options.UseNpgsql(connectionString);
             });
 
+            services.AddSingleton<IPasswordCheck, PasswordService>();
+            services.AddSingleton<IPasswordHash, PasswordService>();
+
             //Repositories
-            services.AddScoped(typeof(IAsyncRepository<,>), typeof(RepositoryBase<,>));
+            services.AddScoped(typeof(INoSaveEfRepository<,>), typeof(NoSaveEfRepository<,>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();

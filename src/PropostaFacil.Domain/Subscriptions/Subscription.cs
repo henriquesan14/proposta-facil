@@ -1,9 +1,11 @@
 ﻿using PropostaFacil.Domain.Abstractions;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Events;
+using PropostaFacil.Domain.Payments;
+using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Domain.Entities
+namespace PropostaFacil.Domain.Subscriptions
 {
     public class Subscription : Aggregate<SubscriptionId>
     {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Payments;
+using PropostaFacil.Domain.Proposals;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Configurations

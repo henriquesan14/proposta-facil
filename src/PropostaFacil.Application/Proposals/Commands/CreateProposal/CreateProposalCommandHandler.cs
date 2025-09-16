@@ -1,8 +1,7 @@
 ﻿using Common.ResultPattern;
+using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Application.Tenants;
-using PropostaFacil.Domain.Entities;
-using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Proposals;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
@@ -12,31 +11,13 @@ namespace PropostaFacil.Application.Proposals.Commands.CreateProposal
     {
         public async Task<ResultT<ProposalResponse>> Handle(CreateProposalCommand request, CancellationToken cancellationToken)
         {
-            var loggedRole = currentUserService.Role;
-            var loggedTenantId = currentUserService.TenantId;
+            var loggedTenantId = TenantId.Of(currentUserService.TenantId!.Value);
 
-            Guid tenantIdToUse;
+            var clientExist = await unitOfWork.Clients.GetByIdAsync(ClientId.Of(request.ClientId));
 
-            if (loggedRole == UserRoleEnum.AdminSystem)
-            {
-                if (request.TenantId is null)
-                    return TenantErrors.TenantRequired();
+            if (clientExist is null) return ClientErrors.NotFound(request.ClientId);
 
-                tenantIdToUse = request.TenantId.Value;
-                var tenantExist = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(tenantIdToUse));
-                if (tenantExist is null)
-                    return TenantErrors.NotFound(tenantIdToUse);
-            }
-            else
-            {
-                tenantIdToUse = loggedTenantId!.Value;
-            }
-
-            var clientBelongsToTenant = await unitOfWork.Clients.GetSingleAsync(c => c.TenantId == TenantId.Of(tenantIdToUse) && c.Id == ClientId.Of(request.ClientId));
-
-            if (clientBelongsToTenant is null) return ProposalErrors.Forbidden(request.ClientId);
-
-            var proposal = Proposal.Create(TenantId.Of(tenantIdToUse), ClientId.Of(request.ClientId), request.Title, request.ProposalStatus,
+            var proposal = Proposal.Create(loggedTenantId, ClientId.Of(request.ClientId), request.Title, request.ProposalStatus,
                 request.Currency, request.ValidUntil);
 
             foreach (var item in request.Items)

@@ -412,16 +412,25 @@ namespace PropostaFacil.Infra.Migrations
                     b.ToTable("Tenants", (string)null);
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.User", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<bool?>("Active")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ForgottenToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("ForgottenTokenExpiry")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -449,6 +458,12 @@ namespace PropostaFacil.Infra.Migrations
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("Verified")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("VerifiedToken")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -639,7 +654,7 @@ namespace PropostaFacil.Infra.Migrations
 
             modelBuilder.Entity("PropostaFacil.Domain.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("PropostaFacil.Domain.Entities.User", "User")
+                    b.HasOne("PropostaFacil.Domain.Users.User", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -771,7 +786,7 @@ namespace PropostaFacil.Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.User", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Users.User", b =>
                 {
                     b.HasOne("PropostaFacil.Domain.Entities.Tenant", "Tenant")
                         .WithMany("Users")
@@ -841,7 +856,7 @@ namespace PropostaFacil.Infra.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.User", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Users.User", b =>
                 {
                     b.Navigation("RefreshTokens");
                 });

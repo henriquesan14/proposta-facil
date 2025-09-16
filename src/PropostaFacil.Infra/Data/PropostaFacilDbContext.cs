@@ -1,14 +1,25 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PropostaFacil.Domain.Entities;
-using System.Linq.Expressions;
+using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.Clients;
+using PropostaFacil.Domain.Payments;
+using PropostaFacil.Domain.Proposals;
+using PropostaFacil.Domain.RefreshTokens;
+using PropostaFacil.Domain.Subscriptions;
+using PropostaFacil.Domain.Tenants;
+using PropostaFacil.Domain.Users;
+using PropostaFacil.Domain.ValueObjects.Ids;
 using System.Reflection;
 
 namespace PropostaFacil.Infra.Data
 {
     public class PropostaFacilDbContext : DbContext
     {
-        public PropostaFacilDbContext(DbContextOptions<PropostaFacilDbContext> options)
-        : base(options) { }
+        private TenantId? _tenantId;
+        public PropostaFacilDbContext(DbContextOptions<PropostaFacilDbContext> options, ICurrentUserService currentUserService)
+        : base(options) 
+        {
+            _tenantId = currentUserService.TenantId.HasValue ? TenantId.Of(currentUserService.TenantId!.Value) : null;
+        }
 
         public DbSet<Tenant> Tenants => Set<Tenant>();
         public DbSet<Client> Clients => Set<Client>();
@@ -53,24 +64,15 @@ namespace PropostaFacil.Infra.Data
 
         private void ApplyGlobalIsActiveFilter(ModelBuilder modelBuilder)
         {
-            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-            {
-                var clrType = entityType.ClrType;
-                var isActiveProp = clrType.GetProperty("IsActive");
+            modelBuilder.Entity<Tenant>().HasQueryFilter(x => x.Id == _tenantId && x.IsActive);
+            modelBuilder.Entity<Client>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
+            modelBuilder.Entity<User>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
+            modelBuilder.Entity<Proposal>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
+            modelBuilder.Entity<Subscription>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
 
-                if (isActiveProp != null && isActiveProp.PropertyType == typeof(bool))
-                {
-                    var parameter = Expression.Parameter(clrType, "e");
-                    var property = Expression.Property(parameter, isActiveProp);
-                    var filter = Expression.Lambda(
-                        Expression.Equal(property, Expression.Constant(true)),
-                        parameter
-                    );
-
-                    modelBuilder.Entity(clrType).HasQueryFilter(filter);
-                }
-            }
+            modelBuilder.Entity<SubscriptionPlan>().HasQueryFilter(x => x.IsActive);
+            modelBuilder.Entity<Payment>().HasQueryFilter(x => x.IsActive);
+            modelBuilder.Entity<ProposalItem>().HasQueryFilter(x => x.IsActive);
         }
-
     }
 }

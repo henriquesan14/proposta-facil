@@ -1,5 +1,6 @@
 ﻿using PropostaFacil.Domain.Abstractions;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Payments;
+using PropostaFacil.Domain.Subscriptions;
 
 namespace PropostaFacil.Domain.Events
 {

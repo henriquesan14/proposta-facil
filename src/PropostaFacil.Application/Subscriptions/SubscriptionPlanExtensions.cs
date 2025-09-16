@@ -1,4 +1,4 @@
-﻿using PropostaFacil.Domain.Entities;
+﻿using PropostaFacil.Domain.Subscriptions;
 
 namespace PropostaFacil.Application.Subscriptions
 {

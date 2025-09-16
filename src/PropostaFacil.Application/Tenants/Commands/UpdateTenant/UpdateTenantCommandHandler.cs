@@ -1,5 +1,6 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.Tenants.Specifications;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
@@ -15,7 +16,7 @@ namespace PropostaFacil.Application.Tenants.Commands.UpdateTenant
 
             if (!request.Name.Equals(tenant.Name, StringComparison.OrdinalIgnoreCase))
             {
-                var tenantExist = await unitOfWork.Tenants.GetSingleAsync(t => t.Document.Equals(request.Document));
+                var tenantExist = await unitOfWork.Tenants.SingleOrDefaultAsync(new GetTenantByDocumentGlobalSpecification(request.Document));
                 if (tenantExist != null && tenantExist.Id != TenantId.Of(request.Id)) return TenantErrors.Conflict(request.Document);
             }
 

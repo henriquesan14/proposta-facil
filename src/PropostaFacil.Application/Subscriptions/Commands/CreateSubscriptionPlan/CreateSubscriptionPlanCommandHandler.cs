@@ -1,6 +1,6 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Subscriptions;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Subscriptions.Commands.CreateSubscriptionPlan

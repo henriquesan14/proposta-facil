@@ -1,8 +1,8 @@
-﻿using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Entities;
+﻿using Ardalis.Specification;
+using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.Payments;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Application.Payments
-{
-    public interface IPaymentRepository : IAsyncRepository<Payment, PaymentId>;
-}
+namespace PropostaFacil.Application.Payments;
+
+public interface IPaymentRepository : IReadRepositoryBase<Payment>, INoSaveEfRepository<Payment, PaymentId>;

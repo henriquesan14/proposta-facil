@@ -1,4 +1,4 @@
-﻿using PropostaFacil.Domain.Entities;
+﻿using PropostaFacil.Domain.Tenants;
 
 namespace PropostaFacil.Application.Tenants
 {

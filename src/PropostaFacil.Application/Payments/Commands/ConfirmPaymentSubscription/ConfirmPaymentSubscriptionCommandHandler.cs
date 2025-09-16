@@ -1,8 +1,8 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Payments.Specifications;
+using PropostaFacil.Domain.Subscriptions.Specifications;
 using PropostaFacil.Shared.Common.CQRS;
-using System.Linq.Expressions;
 
 namespace PropostaFacil.Application.Payments.Commands.ConfirmPaymentSubscription
 {
@@ -10,16 +10,11 @@ namespace PropostaFacil.Application.Payments.Commands.ConfirmPaymentSubscription
     {
         public async Task<Result> Handle(ConfirmPaymentSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            var paymentExists = await unitOfWork.Payments.GetSingleAsync(p => p.PaymentAsaasId == request.Payment.Id);
+            var paymentExists = await unitOfWork.Payments.FirstOrDefaultAsync(new GetPaymentByAsaasIdSpecification(request.Payment.Id));
             if(paymentExists != null) return PaymentErrors.PaymentAlreadyExist(request.Payment.Id);
 
-            List<Expression<Func<Subscription, object>>> includesSubscription = new List<Expression<Func<Subscription, object>>>()
-            {
-                s => s.SubscriptionPlan,
-                s => s.Tenant
-            };
-
-            var subscription = await unitOfWork.Subscriptions.GetSingleAsync(s => s.SubscriptionAsaasId == request.Payment.Subscription, includes: includesSubscription);
+            var spec = new GetSubscriptionByAsaasIdSpecification(request.Payment.Subscription);
+            var subscription = await unitOfWork.Subscriptions.FirstOrDefaultAsync(spec);
 
             if (subscription is null) return PaymentErrors.NotFound(request.Payment.Subscription); 
             if (request.Event != "PAYMENT_RECEIVED")
@@ -27,7 +22,7 @@ namespace PropostaFacil.Application.Payments.Commands.ConfirmPaymentSubscription
             if (subscription.Status == Domain.Enums.SubscriptionStatusEnum.Active)
                 return PaymentErrors.SubscriptionAlreadyActive();
 
-            var countPayments = await unitOfWork.Payments.GetCountAsync(p => p.SubscriptionId == subscription.Id);
+            var countPayments = await unitOfWork.Payments.CountAsync(new GetPaymentsBySubscriptionIdSpecification(subscription.Id));
             
             subscription.Activate();
             subscription.ResetProposalsUsed();

@@ -1,8 +1,9 @@
-﻿using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Entities;
+﻿using Ardalis.Specification;
+using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.Clients;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Application.Clients
 {
-    public interface IClientRepository : IAsyncRepository<Client, ClientId>;
+    public interface IClientRepository : IReadRepositoryBase<Client>, INoSaveEfRepository<Client, ClientId>;
 }

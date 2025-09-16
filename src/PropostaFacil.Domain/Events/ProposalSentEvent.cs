@@ -1,5 +1,5 @@
 ﻿using PropostaFacil.Domain.Abstractions;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Proposals;
 
 namespace PropostaFacil.Domain.Events
 {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PropostaFacil.Application.Auth;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.RefreshTokens;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Repositories
 {
-    public class RefreshTokenRepository : RepositoryBase<RefreshToken, RefreshTokenId>, IRefreshTokenRepository
+    public class RefreshTokenRepository : NoSaveEfRepository<RefreshToken, RefreshTokenId>, IRefreshTokenRepository
     {
         public RefreshTokenRepository(PropostaFacilDbContext dbContext) : base(dbContext)
         {

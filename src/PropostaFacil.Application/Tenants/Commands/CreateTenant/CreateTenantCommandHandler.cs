@@ -1,7 +1,8 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Shared.Request;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Tenants;
+using PropostaFacil.Domain.Tenants.Specifications;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Shared.Common.CQRS;
 
@@ -11,7 +12,7 @@ namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
     {
         public async Task<ResultT<TenantResponse>> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
         {
-            var tenantExist = await unitOfWork.Tenants.GetSingleAsync(t => t.Document.Number == request.Document);
+            var tenantExist = await unitOfWork.Tenants.SingleOrDefaultAsync(new GetTenantByDocumentGlobalSpecification(request.Document));
 
             if (tenantExist != null) return TenantErrors.Conflict(request.Document);
 

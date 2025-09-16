@@ -1,5 +1,5 @@
-﻿using PropostaFacil.Domain.Entities;
-using PropostaFacil.Domain.Enums;
+﻿using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Proposals;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Tests.Builders.Entities

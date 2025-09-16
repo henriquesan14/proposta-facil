@@ -1,8 +1,10 @@
 ﻿using PropostaFacil.Domain.Abstractions;
+using PropostaFacil.Domain.Proposals;
+using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Domain.Entities
+namespace PropostaFacil.Domain.Clients
 {
     public class Client : Aggregate<ClientId>
     {

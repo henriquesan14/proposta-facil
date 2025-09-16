@@ -3,7 +3,6 @@ using Microsoft.Extensions.Caching.Distributed;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Shared.Common.CQRS;
 using PropostaFacil.Shared.Common.Pagination;
-using System.Text.Json;
 
 namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans
 {

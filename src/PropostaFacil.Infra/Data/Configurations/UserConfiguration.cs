@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Users;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Configurations
@@ -33,8 +33,6 @@ namespace PropostaFacil.Infra.Data.Configurations
                 contact.Property(cn => cn.PhoneNumber)
                     .HasMaxLength(20);
             });
-
-            
 
             builder.Property(u => u.PasswordHash)
                 .IsRequired()

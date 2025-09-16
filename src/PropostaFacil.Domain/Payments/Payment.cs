@@ -1,8 +1,10 @@
 ﻿using PropostaFacil.Domain.Abstractions;
 using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Proposals;
+using PropostaFacil.Domain.Subscriptions;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Domain.Entities
+namespace PropostaFacil.Domain.Payments
 {
     public class Payment : Aggregate<PaymentId>
     {
