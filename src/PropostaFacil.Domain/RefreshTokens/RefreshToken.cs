@@ -2,7 +2,7 @@
 using PropostaFacil.Domain.Users;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Domain.Entities
+namespace PropostaFacil.Domain.RefreshTokens
 {
     public class RefreshToken : Aggregate<RefreshTokenId>
     {

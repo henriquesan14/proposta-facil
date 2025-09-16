@@ -1,10 +1,11 @@
 ﻿using Common.ResultPattern;
-using MediatR;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Shared.Request;
 using PropostaFacil.Application.Tenants;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Events;
+using PropostaFacil.Domain.Subscriptions;
+using PropostaFacil.Domain.Subscriptions.Specifications;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
@@ -14,7 +15,7 @@ namespace PropostaFacil.Application.Subscriptions.Commands.CreateSubscription
     {
         public async Task<ResultT<SubscriptionResponse>> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            var hasSubscriptionActive = await unitOfWork.Subscriptions.GetSingleAsync(s => s.TenantId == TenantId.Of(request.TenantId) && s.Status == Domain.Enums.SubscriptionStatusEnum.Active);
+            var hasSubscriptionActive = await unitOfWork.Subscriptions.SingleOrDefaultAsync(new GetSubscriptionsByStatusSpecification(SubscriptionStatusEnum.Active));
             if (hasSubscriptionActive != null) return SubscriptionErrors.Conflict();
 
             var tenant = await unitOfWork.Tenants.GetByIdAsync(TenantId.Of(request.TenantId));

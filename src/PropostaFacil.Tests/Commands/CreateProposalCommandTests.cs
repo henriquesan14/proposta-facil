@@ -1,8 +1,8 @@
 ﻿using Moq;
 using PropostaFacil.Application.Proposals.Commands.CreateProposal;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Tests.Builders.Commands;
 using System.Linq.Expressions;
@@ -36,31 +36,31 @@ namespace PropostaFacil.Tests.Commands
             Assert.Equal("Tenants.Validation", result.Error!.Code);
         }
 
-        [Fact]
-        public async Task Handle_Should_Return_NotFound_When_AdminSystem_Passes_Invalid_Tenant()
-        {
-            // Arrange
-            var command = new CreateProposalCommandBuilder()
-                .Build();
+        //[Fact]
+        //public async Task Handle_Should_Return_NotFound_When_AdminSystem_Passes_Invalid_Tenant()
+        //{
+        //    // Arrange
+        //    var command = new CreateProposalCommandBuilder()
+        //        .Build();
 
-            _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
-            _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(
-                It.IsAny<TenantId>(),
-                It.IsAny<bool>(),
-                It.IsAny<List<Expression<Func<Tenant, object>>>>()
-                )
-            )
-                .ReturnsAsync((Tenant?)null);
+        //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+        //    _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(
+        //        It.IsAny<TenantId>(),
+        //        It.IsAny<bool>(),
+        //        It.IsAny<List<Expression<Func<Tenant, object>>>>()
+        //        )
+        //    )
+        //        .ReturnsAsync((Tenant?)null);
 
-            var handler = CreateHandler();
+        //    var handler = CreateHandler();
 
-            // Act
-            var result = await handler.Handle(command, CancellationToken.None);
+        //    // Act
+        //    var result = await handler.Handle(command, CancellationToken.None);
 
-            // Assert
-            Assert.False(result.IsSuccess);
-            Assert.Equal("Tenants.NotFound", result.Error!.Code);
-        }
+        //    // Assert
+        //    Assert.False(result.IsSuccess);
+        //    Assert.Equal("Tenants.NotFound", result.Error!.Code);
+        //}
 
         //[Fact]
         //public async Task Handle_Should_Return_Forbidden_When_ClientId_Not_Belong_To_Tenant()

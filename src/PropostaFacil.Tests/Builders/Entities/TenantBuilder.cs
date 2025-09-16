@@ -1,4 +1,4 @@
-﻿using PropostaFacil.Domain.Entities;
+﻿using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects;
 
 namespace PropostaFacil.Tests.Builders.Entities

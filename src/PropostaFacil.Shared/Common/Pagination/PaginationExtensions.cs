@@ -5,7 +5,7 @@ namespace PropostaFacil.Shared.Common.Pagination;
 public static class PaginationExtensions
 {
     public static async Task<PaginatedResult<TDto>> ToPaginatedListAsync<TEntity, TDto>(
-        this IRepositoryBase<TEntity> repository,
+        this IReadRepositoryBase<TEntity> repository,
         ISpecification<TEntity> spec,
         int page,
         int pageSize,

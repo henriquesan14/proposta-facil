@@ -40,7 +40,7 @@ namespace PropostaFacil.Infra
             services.AddSingleton<IPasswordHash, PasswordService>();
 
             //Repositories
-            services.AddScoped(typeof(IAsyncRepository<,>), typeof(RepositoryBase<,>));
+            services.AddScoped(typeof(INoSaveEfRepository<,>), typeof(NoSaveEfRepository<,>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();

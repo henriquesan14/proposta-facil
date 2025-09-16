@@ -1,7 +1,7 @@
 ﻿using PropostaFacil.Domain.Abstractions;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Domain.Entities
+namespace PropostaFacil.Domain.Subscriptions
 {
     public class SubscriptionPlan : Aggregate<SubscriptionPlanId>
     {

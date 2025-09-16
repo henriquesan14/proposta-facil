@@ -1,6 +1,6 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.RefreshTokens;
 using PropostaFacil.Domain.Users;
 using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.Users.Specifications;

@@ -1,6 +1,7 @@
 ﻿using PropostaFacil.Domain.Abstractions;
-using PropostaFacil.Domain.Entities;
 using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.RefreshTokens;
+using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.Users.Rules;
 using PropostaFacil.Domain.ValueObjects;

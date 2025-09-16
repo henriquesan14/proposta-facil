@@ -1,7 +1,7 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Proposals;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 

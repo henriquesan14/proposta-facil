@@ -1,26 +1,24 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PropostaFacil.Application.Subscriptions;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Subscriptions;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Repositories
 {
-    public class SubscriptionPlanRepository(PropostaFacilDbContext dbContext) : ISubscriptionPlanRepository
+    public class SubscriptionPlanRepository : NoSaveEfRepository<SubscriptionPlan, SubscriptionPlanId>, ISubscriptionPlanRepository
     {
-        public async Task<SubscriptionPlan> AddAsync(SubscriptionPlan subscriptionPlan)
+        public SubscriptionPlanRepository(PropostaFacilDbContext dbContext) : base(dbContext)
         {
-            await dbContext.Set<SubscriptionPlan>().AddAsync(subscriptionPlan);
-            return subscriptionPlan;
         }
 
         public async Task<SubscriptionPlan> GetByIdAsync(SubscriptionPlanId id)
         {
-            return await dbContext.Set<SubscriptionPlan>().SingleAsync(e => e.Id.Equals(id));
+            return await DbContext.Set<SubscriptionPlan>().SingleAsync(e => e.Id.Equals(id));
         }
 
         public async Task<IReadOnlyList<SubscriptionPlan>> GetAllByNameAsync(string name, int? pageNumber = null, int? pageSize = null)
         {
-            IQueryable<SubscriptionPlan> query = dbContext.Set<SubscriptionPlan>().AsNoTracking();
+            IQueryable<SubscriptionPlan> query = DbContext.Set<SubscriptionPlan>().AsNoTracking();
 
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -43,15 +41,15 @@ namespace PropostaFacil.Infra.Data.Repositories
         public async Task<int> GetCountByNameAsync(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
-                return await dbContext.Set<SubscriptionPlan>().CountAsync();
+                return await DbContext.Set<SubscriptionPlan>().CountAsync();
 
-            return await dbContext.Set<SubscriptionPlan>()
+            return await DbContext.Set<SubscriptionPlan>()
                 .CountAsync(s => EF.Functions.ILike(s.Name, $"%{name}%"));
         }
 
         public async Task<SubscriptionPlan> GetByNameAsync(string name)
         {
-            return await dbContext.Set<SubscriptionPlan>().FirstOrDefaultAsync(e => e.Name.Equals(name));
+            return await DbContext.Set<SubscriptionPlan>().FirstOrDefaultAsync(e => e.Name.Equals(name));
         }
     }
 }

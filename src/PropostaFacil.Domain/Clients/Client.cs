@@ -1,5 +1,6 @@
 ﻿using PropostaFacil.Domain.Abstractions;
-using PropostaFacil.Domain.Entities;
+using PropostaFacil.Domain.Proposals;
+using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 

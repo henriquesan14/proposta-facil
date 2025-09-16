@@ -1,14 +1,15 @@
-﻿using PropostaFacil.Domain.Entities;
+﻿using Ardalis.Specification;
+using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.Subscriptions;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Application.Subscriptions
+namespace PropostaFacil.Application.Subscriptions;
+
+public interface ISubscriptionPlanRepository : IReadRepositoryBase<SubscriptionPlan>, INoSaveEfRepository<SubscriptionPlan, SubscriptionPlanId>
 {
-    public interface ISubscriptionPlanRepository
-    {
-        Task<SubscriptionPlan> GetByIdAsync(SubscriptionPlanId id);
-        Task<IReadOnlyList<SubscriptionPlan>> GetAllByNameAsync(string name, int? pageNumber = null, int? pageSize = null);
-        Task<SubscriptionPlan> GetByNameAsync(string name);
-        Task<SubscriptionPlan> AddAsync(SubscriptionPlan subscriptionPlan);
-        Task<int> GetCountByNameAsync(string name);
-    }
+    Task<SubscriptionPlan> GetByIdAsync(SubscriptionPlanId id);
+    Task<IReadOnlyList<SubscriptionPlan>> GetAllByNameAsync(string name, int? pageNumber = null, int? pageSize = null);
+    Task<SubscriptionPlan> GetByNameAsync(string name);
+    Task<int> GetCountByNameAsync(string name);
+
 }

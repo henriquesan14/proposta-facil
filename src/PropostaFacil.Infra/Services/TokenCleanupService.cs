@@ -1,5 +1,6 @@
 ﻿using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.RefreshTokens.Specifications;
 
 namespace PropostaFacil.Infra.Services
 {
@@ -7,10 +8,8 @@ namespace PropostaFacil.Infra.Services
     {
         public async Task CleanupExpiredAndRevokedTokensAsync()
         {
-            var now = DateTime.Now;
-
             var tokensExpireds = await unitOfWork.RefreshTokens
-                .GetAsync(t => t.ExpiresAt <= now || t.RevokedAt != null);
+                .ListAsync(new ListInvalidRefreshTokensSpecification());
 
             await unitOfWork.RefreshTokens.DeleteRange(tokensExpireds.Select(t => t.Id).ToList());
 
