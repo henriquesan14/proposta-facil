@@ -1,12 +1,11 @@
 ﻿using Common.ResultPattern;
-using Microsoft.Extensions.Caching.Distributed;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Shared.Common.CQRS;
 using PropostaFacil.Shared.Common.Pagination;
 
 namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans
 {
-    public class GetSubscriptionPlansQueryHandler(IUnitOfWork unitOfWork, IDistributedCache cache) : IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>>
+    public class GetSubscriptionPlansQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>>
     {
         public async Task<ResultT<PaginatedResult<SubscriptionPlanResponse>>> Handle(GetSubscriptionPlansQuery request, CancellationToken cancellationToken)
         {

@@ -16,6 +16,7 @@ using PropostaFacil.Infra.Data.Interceptors;
 using PropostaFacil.Infra.Data.Repositories;
 using PropostaFacil.Infra.Services;
 using PropostaFacil.Shared.Messaging.MassTransit;
+using StackExchange.Redis;
 using System.Reflection;
 
 namespace PropostaFacil.Infra
@@ -36,8 +37,16 @@ namespace PropostaFacil.Infra
                 options.UseNpgsql(connectionString);
             });
 
-            services.AddSingleton<IPasswordCheck, PasswordService>();
-            services.AddSingleton<IPasswordHash, PasswordService>();
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration["Redis:Host"];
+                options.InstanceName = configuration["Redis:InstanceName"];
+            });
+
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                return ConnectionMultiplexer.Connect(configuration["Redis:Host"]!);
+            });
 
             //Repositories
             services.AddScoped(typeof(INoSaveEfRepository<,>), typeof(NoSaveEfRepository<,>));
@@ -52,12 +61,17 @@ namespace PropostaFacil.Infra
             services.AddScoped<IPaymentRepository, PaymentRepository>();
 
             services.AddHttpContextAccessor();
+
+            //Services
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITokenCleanupService, TokenCleanupService>();
             services.AddScoped<IEmailSender, SendGridEmailSender>();
             services.AddScoped<IAsaasService, AsaasService>();
-            services.AddScoped<IRedisCacheService, RedisCacheService>();
+            services.AddScoped<ICacheService, RedisCacheService>();
+
+            services.AddSingleton<IPasswordCheck, PasswordService>();
+            services.AddSingleton<IPasswordHash, PasswordService>();
 
             return services;
         }

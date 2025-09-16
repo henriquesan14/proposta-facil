@@ -6,7 +6,7 @@ using PropostaFacil.Shared.Common.Pagination;
 namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans
 {
     public class CachedGetSubscriptionPlansQueryHandler(IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>> inner,
-        IRedisCacheService memoryCacheService) : IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>>
+        ICacheService memoryCacheService) : IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>>
     {
         public async Task<ResultT<PaginatedResult<SubscriptionPlanResponse>>> Handle(GetSubscriptionPlansQuery request, CancellationToken cancellationToken)
         {

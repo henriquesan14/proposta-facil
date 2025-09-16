@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace PropostaFacil.Infra.Services
 {
-    public class RedisCacheService : IRedisCacheService
+    public class RedisCacheService : ICacheService
     {
         private readonly IDistributedCache _cache;
         private readonly IConnectionMultiplexer _connection;
