@@ -1,4 +1,5 @@
 ﻿using PropostaFacil.Domain.Clients;
+using PropostaFacil.Domain.Clients.Contracts;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
@@ -11,9 +12,15 @@ namespace PropostaFacil.Tests.Builders.Entities
         private Document _document = Document.Of("12345678900");
         private Contact _contact = Contact.Of("cliente@email.com", "+5511999999999");
         private Address _address = Address.Of("Rua Teste", "123", "","São Paulo", "SP", "Brasil", "01000-000");
+        private readonly IClientRuleCheck _clientRuleCheckMock;
+
+        public ClientBuilder(IClientRuleCheck clientRuleCheckMock)
+        {
+            _clientRuleCheckMock = clientRuleCheckMock;
+        }
 
         public Client Build()
-            => Client.Create(_name, _tenantId, _document, _contact, _address);
+            => Client.Create(_name, _tenantId, _document, _contact, _address, _clientRuleCheckMock);
 
         public ClientBuilder WithName(string name)
         {

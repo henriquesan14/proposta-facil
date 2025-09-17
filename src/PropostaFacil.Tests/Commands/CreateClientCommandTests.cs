@@ -2,6 +2,7 @@
 using PropostaFacil.Application.Clients.Commands.CreateClient;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Clients;
+using PropostaFacil.Domain.Clients.Contracts;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects.Ids;
@@ -15,9 +16,10 @@ namespace PropostaFacil.Tests.Commands
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
         private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
+        private readonly Mock<IClientRuleCheck> _ClientRuleCheckMock = new();
 
         private CreateClientCommandHandler CreateHandler()
-        => new CreateClientCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object);
+        => new CreateClientCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object, _ClientRuleCheckMock.Object);
 
         [Fact]
         public async Task Handle_Should_Return_TenantRequired_When_AdminSystem_Without_TenantId()

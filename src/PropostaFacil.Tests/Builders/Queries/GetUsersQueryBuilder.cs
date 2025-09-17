@@ -5,17 +5,10 @@ namespace PropostaFacil.Tests.Builders.Queries
 {
     public class GetUsersQueryBuilder
     {
-        private Guid _tenantId = Guid.NewGuid();
         private string _name = "Henrique";
         private UserRoleEnum _role = UserRoleEnum.AdminSystem;
 
-        public GetUsersQuery Build() => new GetUsersQuery(_tenantId, _name, _role);
-
-        public GetUsersQueryBuilder WithTenantId(Guid tenantId)
-        {
-            this._tenantId = tenantId;
-            return this;
-        }
+        public GetUsersQuery Build() => new GetUsersQuery(_name, _role);
 
         public GetUsersQueryBuilder WithName(String name)
         {
