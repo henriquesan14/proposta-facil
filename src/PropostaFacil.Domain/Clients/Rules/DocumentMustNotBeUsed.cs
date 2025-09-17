@@ -10,6 +10,6 @@ internal class DocumentMustNotBeUsed(Document document, IClientRuleCheck check) 
 
     public bool IsBroken()
     {
-        return check.DocumentExists(document);
+        return check.ClientDocumentExists(document);
     }
 }

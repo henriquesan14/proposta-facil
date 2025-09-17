@@ -4,6 +4,6 @@ namespace PropostaFacil.Domain.Clients.Contracts;
 
 public interface IClientRuleCheck
 {
-    bool DocumentExists(Document document);
-    bool EmailExists(string email);
+    bool ClientDocumentExists(Document document);
+    bool ClientEmailExists(string email);
 }

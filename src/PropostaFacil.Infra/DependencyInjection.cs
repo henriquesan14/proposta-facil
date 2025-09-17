@@ -71,6 +71,7 @@ namespace PropostaFacil.Infra
             services.AddScoped<IAsaasService, AsaasService>();
             services.AddScoped<ICacheService, RedisCacheService>();
             services.AddScoped<IClientRuleCheck, RuleCheckService>();
+            services.AddScoped<IUserRuleCheck, RuleCheckService>();
 
             services.AddSingleton<IPasswordCheck, PasswordService>();
             services.AddSingleton<IPasswordHash, PasswordService>();

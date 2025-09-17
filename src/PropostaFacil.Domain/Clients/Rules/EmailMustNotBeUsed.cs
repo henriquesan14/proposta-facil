@@ -9,6 +9,6 @@ internal class EmailMustNotBeUsed(string email, IClientRuleCheck check) : IBusin
 
     public bool IsBroken()
     {
-        return check.EmailExists(email);
+        return check.ClientEmailExists(email);
     }
 }

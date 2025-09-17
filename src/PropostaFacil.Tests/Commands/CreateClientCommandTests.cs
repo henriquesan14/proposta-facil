@@ -26,7 +26,6 @@ namespace PropostaFacil.Tests.Commands
         {
             // Arrange
             var command = new CreateClientCommandBuilder()
-                .WithTenantId(null)
                 .Build();
 
             _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
