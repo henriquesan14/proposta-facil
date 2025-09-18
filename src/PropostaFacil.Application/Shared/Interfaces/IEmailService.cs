@@ -1,0 +1,13 @@
+﻿using PropostaFacil.Domain.Users;
+using PropostaFacil.Shared.Messaging.Events;
+
+namespace PropostaFacil.Application.Shared.Interfaces;
+
+public interface IEmailService
+{
+    Task SendVerifyEmailAddress(User user);
+    Task SendForgotPassword(User user);
+    Task SendConfirmPayment(string email, string clientName, decimal amount, DateOnly paidDate, string planName);
+    Task SendConfirmSubscription(string email, string clientName, string planName, decimal price, string paymentLink);
+    Task SendProposal(string email, string proposalNumber, string clientName, DateTime validUntil, IEnumerable<ProposalItemIntegrationEvent> items, decimal totalAmount);
+}
