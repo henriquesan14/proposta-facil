@@ -12,7 +12,7 @@ namespace PropostaFacil.Domain.Subscriptions
         private readonly List<Payment> _payments = new();
         public static Subscription Create(TenantId tenantId, SubscriptionPlanId subscriptionPlanId, DateTime startDate, string subscriptionAsaasId, string paymentLink, DateTime? endDate = null)
         {
-            return new Subscription
+            var subscription =  new Subscription
             {
                 Id = SubscriptionId.Of(Guid.NewGuid()),
                 TenantId = tenantId,
@@ -24,6 +24,8 @@ namespace PropostaFacil.Domain.Subscriptions
                 SubscriptionAsaasId = subscriptionAsaasId,
                 PaymentLink = paymentLink
             };
+            subscription.AddDomainEvent(new SubscriptionCreatedEvent(subscription));
+            return subscription;
         }
 
         public TenantId TenantId { get; private set; } = default!;

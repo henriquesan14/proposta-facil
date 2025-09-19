@@ -5,7 +5,7 @@ namespace PropostaFacil.Application.Shared.Interfaces;
 
 public interface IEmailService
 {
-    Task SendVerifyEmailAddress(User user);
+    Task SendVerifyEmailAddress(string email, string name);
     Task SendForgotPassword(User user);
     Task SendConfirmPayment(string email, string clientName, decimal amount, DateOnly paidDate, string planName);
     Task SendConfirmSubscription(string email, string clientName, string planName, decimal price, string paymentLink);
