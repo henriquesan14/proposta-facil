@@ -1,30 +1,22 @@
 ﻿using MassTransit;
 using Microsoft.Extensions.Logging;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Application.Subscriptions.Email;
 using PropostaFacil.Shared.Messaging.Events;
 
 namespace PropostaFacil.Infra.Messaging.Consumers
 {
     public class SubscriptionCreatedConsumer(
-        IEmailSender emailSender,
+        IEmailService emailService,
         ILogger<SubscriptionCreatedConsumer> logger
     ) : IConsumer<SubscriptionCreatedIntegrationEvent>
     {
         public async Task Consume(ConsumeContext<SubscriptionCreatedIntegrationEvent> context)
         {
             var msg = context.Message;
-
-            var subject = $"Confirmação de assinatura";
-
-            var body = SubscriptionEmailBuilder.BuildHtml(msg.ClientName, msg.PlanName, msg.PlanPrice, msg.PaymentLink);
-
             try
             {
-                await emailSender.SendEmailAsync(
-                    toEmail: msg.ClientEmail,
-                    subject: subject,
-                    htmlBody: body
+                await emailService.SendConfirmSubscription(
+                    msg.ClientEmail, msg.ClientName, msg.PlanName, msg.PlanPrice, msg.PaymentLink
                 );
 
                 logger.LogInformation("Confirmação de assinatura enviada. ProposalId={ProposalId}", msg.SubscriptionId);

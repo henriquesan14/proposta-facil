@@ -1,5 +1,6 @@
 ﻿using PropostaFacil.Domain.Abstractions;
 using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Events;
 using PropostaFacil.Domain.RefreshTokens;
 using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.Users.Contracts;
@@ -11,9 +12,10 @@ namespace PropostaFacil.Domain.Users
 {
     public class User : Aggregate<UserId>
     {
-        public static User Create(string name, Contact contact, string passwordHash, UserRoleEnum role, TenantId tenantId, IPasswordHash hasher)
+        public static User Create(string name, Contact contact, string passwordHash, UserRoleEnum role, TenantId tenantId, IPasswordHash hasher, IUserRuleCheck userRuleCheck)
         {
-            return new User {
+            CheckRule(new EmailMustNotBeUsed(contact.Email, userRuleCheck));
+            var user = new User {
                 Id = UserId.Of(Guid.NewGuid()),
                 Name = name,
                 Contact = contact,
@@ -24,6 +26,8 @@ namespace PropostaFacil.Domain.Users
                 VerifiedToken = Guid.NewGuid().ToString(),
                 Active = null
             };
+            user.AddDomainEvent(new UserCreatedEvent(user));
+            return user;
         }
         public string Name { get; private set; } = default!;
         public Contact Contact { get; private set; } = default!;

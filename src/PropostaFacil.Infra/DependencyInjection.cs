@@ -10,10 +10,12 @@ using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Application.Users;
+using PropostaFacil.Domain.Clients.Contracts;
 using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
 using PropostaFacil.Infra.Data.Repositories;
+using PropostaFacil.Infra.Emails;
 using PropostaFacil.Infra.Services;
 using PropostaFacil.Shared.Messaging.MassTransit;
 using StackExchange.Redis;
@@ -67,8 +69,11 @@ namespace PropostaFacil.Infra
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITokenCleanupService, TokenCleanupService>();
             services.AddScoped<IEmailSender, SendGridEmailSender>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAsaasService, AsaasService>();
             services.AddScoped<ICacheService, RedisCacheService>();
+            services.AddScoped<IClientRuleCheck, RuleCheckService>();
+            services.AddScoped<IUserRuleCheck, RuleCheckService>();
 
             services.AddSingleton<IPasswordCheck, PasswordService>();
             services.AddSingleton<IPasswordHash, PasswordService>();

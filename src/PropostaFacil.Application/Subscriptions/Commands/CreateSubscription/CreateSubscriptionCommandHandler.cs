@@ -36,8 +36,6 @@ namespace PropostaFacil.Application.Subscriptions.Commands.CreateSubscription
             var subscription = Subscription.Create(TenantId.Of(request.TenantId), SubscriptionPlanId.Of(request.SubscriptionPlanId), request.StartDate, responseSubscriptionAsaas.Id,
                 firstPayment!.InvoiceUrl, request.EndDate);
 
-            subscription.AddDomainEvent(new SubscriptionCreatedEvent(subscription));
-
             await unitOfWork.Subscriptions.AddAsync(subscription);
             await unitOfWork.CompleteAsync();
 

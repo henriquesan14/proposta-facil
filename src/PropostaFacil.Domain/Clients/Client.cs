@@ -1,4 +1,6 @@
 ﻿using PropostaFacil.Domain.Abstractions;
+using PropostaFacil.Domain.Clients.Contracts;
+using PropostaFacil.Domain.Clients.Rules;
 using PropostaFacil.Domain.Proposals;
 using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects;
@@ -8,8 +10,10 @@ namespace PropostaFacil.Domain.Clients
 {
     public class Client : Aggregate<ClientId>
     {
-        public static Client Create(string name, TenantId? tenantId, Document document, Contact contact, Address address)
+        public static Client Create(string name, TenantId? tenantId, Document document, Contact contact, Address address, IClientRuleCheck clientDocumentCheck)
         {
+            CheckRule(new DocumentMustNotBeUsed(document, clientDocumentCheck));
+            CheckRule(new EmailMustNotBeUsed(contact.Email, clientDocumentCheck));
             return new Client
             {
                 Id = ClientId.Of(Guid.NewGuid()),

@@ -14,10 +14,12 @@ namespace PropostaFacil.Tests.Builders.Entities
         private UserRoleEnum _role = UserRoleEnum.AdminTenant;
         private TenantId? _tenantId = TenantId.Of(Guid.NewGuid());
         private IPasswordHash _passwordHash;
+        private IUserRuleCheck _userRuleCheck;
 
-        public UserBuilder(IPasswordHash passwordHash)
+        public UserBuilder(IPasswordHash passwordHash, IUserRuleCheck userRuleCheck)
         {
             _passwordHash = passwordHash;
+            _userRuleCheck = userRuleCheck;
         }
 
         public UserBuilder WithName(string name)
@@ -52,7 +54,7 @@ namespace PropostaFacil.Tests.Builders.Entities
 
         public User Build()
         {
-            return User.Create(_name, _contact, _password, _role, _tenantId!, _passwordHash);
+            return User.Create(_name, _contact, _password, _role, _tenantId!, _passwordHash, _userRuleCheck);
         }
     }
 

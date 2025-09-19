@@ -15,9 +15,10 @@ namespace PropostaFacil.Tests.Commands
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
         private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
         private readonly Mock<IPasswordHash> _passwordHashMock = new();
+        private readonly Mock<IUserRuleCheck> _userRuleCheckMock = new();
 
         private CreateUserCommandHandler CreateHandler()
-        => new CreateUserCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object, _passwordHashMock.Object);
+        => new CreateUserCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object, _passwordHashMock.Object, _userRuleCheckMock.Object);
 
         [Fact]
         public async Task Handle_Should_Return_TenantRequired_When_AdminSystem_Without_TenantId()

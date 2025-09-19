@@ -3,7 +3,7 @@ using PropostaFacil.Application.Shared.Interfaces;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace PropostaFacil.Infra.Services
+namespace PropostaFacil.Infra.Emails
 {
     public class SendGridEmailSender(IConfiguration configuration) : IEmailSender
     {
@@ -15,9 +15,7 @@ namespace PropostaFacil.Infra.Services
             var subjectLine = subject;
             var to = new EmailAddress(toEmail);
             var msg = MailHelper.CreateSingleEmail(from, to, subjectLine, htmlBody, htmlBody);
-            var response = await client.SendEmailAsync(msg);
-
-            Console.WriteLine(response.StatusCode);
+            await client.SendEmailAsync(msg);
         }
     }
 }

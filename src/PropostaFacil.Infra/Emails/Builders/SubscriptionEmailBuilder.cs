@@ -1,8 +1,8 @@
-﻿namespace PropostaFacil.Application.Subscriptions.Email
+﻿namespace PropostaFacil.Infra.Emails.Builders
 {
     public static class SubscriptionEmailBuilder
     { 
-        public static string BuildHtml(string customerName, string planName, decimal price, string paymentLink)
+        public static string BuildConfirmSubscription(string customerName, string planName, decimal price, string paymentLink)
         {
             return $@"
             <html>

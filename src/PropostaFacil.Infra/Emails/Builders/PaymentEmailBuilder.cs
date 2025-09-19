@@ -1,8 +1,8 @@
-﻿namespace PropostaFacil.Application.Payments.Email
+﻿namespace PropostaFacil.Infra.Emails.Builders
 {
     public static class PaymentEmailBuilder
     {
-        public static string BuildHtml(string ClientName, decimal Amount, DateOnly PaidDate, string PlanName)
+        public static string BuildConfirmPayment(string ClientName, decimal Amount, DateOnly PaidDate, string PlanName)
         {
             return $@"
                 <!DOCTYPE html>

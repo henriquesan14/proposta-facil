@@ -15,7 +15,6 @@ namespace PropostaFacil.Tests.Builders.Commands
         private string _addressCity = "city";
         private string _addressState = "ST";
         private string _addressZipCode = "12345000";
-        private Guid? _tenantId = Guid.NewGuid();
 
         public CreateClientCommandBuilder WithName(string name)
         {
@@ -83,12 +82,6 @@ namespace PropostaFacil.Tests.Builders.Commands
             return this;
         }
 
-        public CreateClientCommandBuilder WithTenantId(Guid? tenantId)
-        {
-            _tenantId = tenantId;
-            return this;
-        }
-
         public CreateClientCommand Build() =>
             new CreateClientCommand(
                 _name,
@@ -101,8 +94,7 @@ namespace PropostaFacil.Tests.Builders.Commands
                 _addressDistrict,
                 _addressCity,
                 _addressState,
-                _addressZipCode,
-                _tenantId
+                _addressZipCode
             );
     }
 
