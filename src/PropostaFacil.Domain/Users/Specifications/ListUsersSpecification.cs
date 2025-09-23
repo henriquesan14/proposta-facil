@@ -5,7 +5,7 @@ namespace PropostaFacil.Domain.Users.Specifications;
 
 public class ListUsersSpecification : Specification<User>
 {
-    public ListUsersSpecification(string? name, UserRoleEnum? role )
+    public ListUsersSpecification(string? name, UserRoleEnum? role)
     {
         Query
             .Where(p => (string.IsNullOrEmpty(name) ||

@@ -12,7 +12,7 @@ namespace PropostaFacil.Application.Users.Queries.GetUsers
         {
             var spec = new ListUsersSpecification(request.Name, request.Role);
             var paginated = await unitOfWork.Users
-                .ToPaginatedListAsync(spec, request.PageNumber, request.PageSize, u => u.ToDto());
+                .ToPaginatedListAsync(spec, request.PageIndex, request.PageSize, u => u.ToDto());
 
             return paginated;
         }

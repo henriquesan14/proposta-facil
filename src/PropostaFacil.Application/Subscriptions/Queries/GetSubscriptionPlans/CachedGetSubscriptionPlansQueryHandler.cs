@@ -11,7 +11,7 @@ namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans
         public async Task<ResultT<PaginatedResult<SubscriptionPlanResponse>>> Handle(GetSubscriptionPlansQuery request, CancellationToken cancellationToken)
         {
             var nameKey = request.Name?.ToLower() ?? "all";
-            var pageKey = $"{request.PageNumber}:{request.PageSize}";
+            var pageKey = $"{request.PageIndex}:{request.PageSize}";
             var cacheKey = $"SubscriptionPlans:{nameKey}:{pageKey}";
 
             var cached = await memoryCacheService.Get<PaginatedResult<SubscriptionPlanResponse>>(cacheKey);

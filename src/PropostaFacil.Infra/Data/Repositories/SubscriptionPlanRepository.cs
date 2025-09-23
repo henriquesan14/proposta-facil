@@ -16,7 +16,7 @@ namespace PropostaFacil.Infra.Data.Repositories
             return await DbContext.Set<SubscriptionPlan>().SingleAsync(e => e.Id.Equals(id));
         }
 
-        public async Task<IReadOnlyList<SubscriptionPlan>> GetAllByNameAsync(string name, int? pageNumber = null, int? pageSize = null)
+        public async Task<IReadOnlyList<SubscriptionPlan>> GetAllByNameAsync(string name, int? pageIndex = null, int? pageSize = null)
         {
             IQueryable<SubscriptionPlan> query = DbContext.Set<SubscriptionPlan>().AsNoTracking();
 
@@ -27,10 +27,10 @@ namespace PropostaFacil.Infra.Data.Repositories
 
             query = query.OrderBy(s => s.Name);
 
-            if (pageNumber.HasValue && pageSize.HasValue)
+            if (pageIndex.HasValue && pageSize.HasValue)
             {
                 query = query
-                    .Skip((pageNumber.Value - 1) * pageSize.Value)
+                    .Skip((pageIndex.Value - 1) * pageSize.Value)
                     .Take(pageSize.Value);
             }
 

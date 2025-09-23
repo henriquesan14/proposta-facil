@@ -4,5 +4,5 @@ using PropostaFacil.Shared.Common.Pagination;
 
 namespace PropostaFacil.Application.Clients.Queries.GetClients
 {
-    public record GetClientsQuery(string? Name, string? Document, Guid? TenantId, int PageNumber =1, int PageSize = 20) : IQuery<ResultT<PaginatedResult<ClientResponse>>>;
+    public record GetClientsQuery(string? Name, string? Document, Guid? TenantId, int PageIndex =1, int PageSize = 20) : IQuery<ResultT<PaginatedResult<ClientResponse>>>;
 }
