@@ -3,6 +3,7 @@ using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Users;
 using PropostaFacil.Domain.RefreshTokens;
 using PropostaFacil.Domain.RefreshTokens.Specifications;
+using PropostaFacil.Domain.Users.Specifications;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
@@ -21,7 +22,7 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, ICurrentUserServ
             return AuthErrors.SessionExpired();
         }
 
-        var user = await unitOfWork.Users.GetByIdAsync(existingToken.UserId);
+        var user = await unitOfWork.Users.SingleOrDefaultAsync(new GetUserByIdGlobalSpecification(existingToken.UserId));
         if (user is null)
         {
             return UserErrors.NotFound(existingToken.UserId.Value);

@@ -10,7 +10,7 @@ public class ListUsersSpecification : Specification<User>
         Query
             .Where(p => (string.IsNullOrEmpty(name) ||
                     p.Name.ToLower().Contains(name.ToLower())) &&
-                (!role.HasValue ||
-                    p.Role == role));
+                    (!role.HasValue || p.Role == role))
+            .OrderByDescending(p => p.CreatedAt);
     }
 }
