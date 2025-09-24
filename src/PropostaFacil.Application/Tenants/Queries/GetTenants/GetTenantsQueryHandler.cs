@@ -11,7 +11,7 @@ namespace PropostaFacil.Application.Tenants.Queries.GetTenants
         public async Task<ResultT<PaginatedResult<TenantResponse>>> Handle(GetTenantsQuery request, CancellationToken cancellationToken)
         {
             var spec = new ListTenantsGlobalSpecification(request.Name, request.Document);
-            var paginated = await unitOfWork.Tenants.ToPaginatedListAsync(spec, request.PageNumber, request.PageSize, t => t.ToDto());
+            var paginated = await unitOfWork.Tenants.ToPaginatedListAsync(spec, request.PageIndex, request.PageSize, t => t.ToDto());
 
             return paginated;
         }

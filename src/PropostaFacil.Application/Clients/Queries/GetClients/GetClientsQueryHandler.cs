@@ -12,7 +12,7 @@ namespace PropostaFacil.Application.Clients.Queries.GetClients
         {
             var spec = new ListClientsSpecification(request.Name, request.Document!);
             var paginated = await unitOfWork.Clients
-                .ToPaginatedListAsync(spec, request.PageNumber, request.PageSize, u => u.ToDto());
+                .ToPaginatedListAsync(spec, request.PageIndex, request.PageSize, u => u.ToDto());
 
             return paginated;
         }

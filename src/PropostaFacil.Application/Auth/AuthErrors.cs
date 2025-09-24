@@ -7,5 +7,10 @@ namespace PropostaFacil.Application.Auth
         public static Error Unauthorized() =>
             Error.AccessUnAuthorized("Auth.Unauthorized", $"Email/Password incorrect");
 
+        public static Error SessionExpired() =>
+            Error.AccessUnAuthorized("Auth.Unauthorized", $"Sua sessão expirou");
+        public static Error RefreshTokenNotFound() =>
+            Error.AccessUnAuthorized("Auth.Unauthorized", $"RefreshToken nao encontrado");
+
     }
 }

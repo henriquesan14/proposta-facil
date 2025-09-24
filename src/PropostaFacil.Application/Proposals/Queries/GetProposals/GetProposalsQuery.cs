@@ -6,5 +6,5 @@ using PropostaFacil.Shared.Common.Pagination;
 namespace PropostaFacil.Application.Proposals.Queries.GetProposals
 {
     public record GetProposalsQuery(Guid? TenantId, Guid? ClientId, string? Number,
-        string? Title, ProposalStatusEnum? ProposalStatus, int PageNumber = 1, int PageSize = 20) : IQuery<ResultT<PaginatedResult<ProposalResponse>>>;
+        string? Title, ProposalStatusEnum? ProposalStatus, int PageIndex = 1, int PageSize = 20) : IQuery<ResultT<PaginatedResult<ProposalResponse>>>;
 }

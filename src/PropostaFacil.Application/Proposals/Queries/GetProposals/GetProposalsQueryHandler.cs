@@ -13,7 +13,7 @@ namespace PropostaFacil.Application.Proposals.Queries.GetProposals
             var spec = new ListProposalsSpecification(request.ClientId, request.Number, request.Title, request.ProposalStatus);
             var paginated = await unitOfWork.Proposals.ToPaginatedListAsync(
                 spec,
-                request.PageNumber,
+                request.PageIndex,
                 request.PageSize,
                 p => p.ToDto()
             );

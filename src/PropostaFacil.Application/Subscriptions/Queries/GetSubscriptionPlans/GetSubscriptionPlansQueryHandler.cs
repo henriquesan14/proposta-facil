@@ -11,7 +11,7 @@ namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans
         {
             var result = await unitOfWork.SubscriptionPlans.GetAllByNameAsync(
                 request.Name!,
-                request.PageNumber,
+                request.PageIndex,
                 request.PageSize
             );
 
@@ -19,7 +19,7 @@ namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans
             var count = await unitOfWork.SubscriptionPlans.GetCountByNameAsync(request.Name!);
 
             var paginated = new PaginatedResult<SubscriptionPlanResponse>(
-                request.PageNumber,
+                request.PageIndex,
                 request.PageSize,
                 count,
                 subscriptionPlans
