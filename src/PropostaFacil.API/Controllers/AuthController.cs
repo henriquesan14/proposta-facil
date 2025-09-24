@@ -34,7 +34,7 @@ namespace PropostaFacil.API.Controllers
             var result = await mediator.Send(command, ct);
 
             return result.Match(
-                onSuccess: () => Ok(result),
+                onSuccess: () => Ok(result.Value),
                 onFailure: Problem
             );
         }

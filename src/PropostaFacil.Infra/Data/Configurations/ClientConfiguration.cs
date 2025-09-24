@@ -43,7 +43,7 @@ namespace PropostaFacil.Infra.Data.Configurations
             {
                 address.Property(a => a.Street).HasMaxLength(200);
                 address.Property(a => a.Number).HasMaxLength(20);
-                address.Property(a => a.Complement).HasMaxLength(100);
+                address.Property(a => a.Complement).HasMaxLength(100).IsRequired(false);
                 address.Property(a => a.District).HasMaxLength(100);
                 address.Property(a => a.City).HasMaxLength(100);
                 address.Property(a => a.State).HasMaxLength(2);

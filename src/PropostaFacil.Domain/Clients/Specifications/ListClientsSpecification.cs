@@ -10,6 +10,7 @@ public class ListClientsSpecification : Specification<Client>
             .Where(p => (string.IsNullOrEmpty(name) ||
                     p.Name.ToLower().Contains(name.ToLower())) &&
                 (string.IsNullOrEmpty(document) ||
-                    p.Document.Number == document));
+                    p.Document.Number == document))
+            .OrderByDescending(p => p.CreatedAt);
     }
 }
