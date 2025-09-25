@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 using PropostaFacil.Application.Users.Commands.CreateUser;
+using PropostaFacil.Application.Users.Queries.GetUserById;
 using PropostaFacil.Application.Users.Queries.GetUsers;
 
 namespace PropostaFacil.API.Controllers
@@ -25,15 +26,31 @@ namespace PropostaFacil.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUserCommand command, IValidator<CreateTenantCommand> validator, CancellationToken ct)
+        public async Task<IActionResult> Create(CreateUserCommand command, IValidator<CreateUserCommand> validator, CancellationToken ct)
         {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
+            var badRequest = ValidateOrBadRequest(command, validator);
+            if (badRequest != null) return badRequest;
 
             var result = await mediator.Send(command, ct);
 
             return result.Match(
-                onSuccess: () => Ok(),
+                onSuccess: () => CreatedAtAction(
+                    actionName: nameof(GetById),
+                    routeValues: new { id = result.Value.Id },
+                    value: result.Value
+                ),
+                onFailure: Problem
+            );
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
+        {
+            var query = new GetUserByIdQuery(id);
+            var result = await mediator.Send(query, ct);
+
+            return result.Match(
+                onSuccess: Ok,
                 onFailure: Problem
             );
         }

@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Proposals.Commands.CreateProposal;
 using PropostaFacil.Application.Proposals.Commands.SendProposal;
 using PropostaFacil.Application.Proposals.Queries.GetProposals;
@@ -29,6 +30,7 @@ namespace PropostaFacil.API.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ProposalResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get([FromQuery] GetProposalsQuery query, CancellationToken ct)
         {
             var result = await mediator.Send(query, ct);

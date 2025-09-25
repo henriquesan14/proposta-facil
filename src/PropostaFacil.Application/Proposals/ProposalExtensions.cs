@@ -1,4 +1,5 @@
-﻿using PropostaFacil.Domain.Proposals;
+﻿using PropostaFacil.Application.Clients;
+using PropostaFacil.Domain.Proposals;
 
 namespace PropostaFacil.Application.Proposals
 {
@@ -9,7 +10,7 @@ namespace PropostaFacil.Application.Proposals
             return new ProposalResponse(
                 proposal.Id.Value,
                 proposal.TenantId.Value,
-                proposal.ClientId.Value,
+                proposal.Client?.ToDto()!,
                 proposal.Number,
                 proposal.Title,
                 proposal.ProposalStatus,
