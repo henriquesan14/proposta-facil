@@ -17,7 +17,7 @@ namespace PropostaFacil.Application.Proposals.Commands.CreateProposal
 
             if (clientExist is null) return ClientErrors.NotFound(request.ClientId);
 
-            var proposal = Proposal.Create(loggedTenantId, ClientId.Of(request.ClientId), request.Title, request.ProposalStatus,
+            var proposal = Proposal.Create(loggedTenantId, ClientId.Of(request.ClientId), request.Title,
                 request.Currency, request.ValidUntil);
 
             foreach (var item in request.Items)

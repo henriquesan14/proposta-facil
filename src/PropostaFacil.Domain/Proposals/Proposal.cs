@@ -14,7 +14,7 @@ namespace PropostaFacil.Domain.Proposals
         private readonly List<ProposalItem> _items = new();
         private string _currency = default!;
         private Money _totalAmount = default!;
-        public static Proposal Create(TenantId tenantId, ClientId clientId, string title, ProposalStatusEnum proposalStatus, string currency, DateTime validUntil)
+        public static Proposal Create(TenantId tenantId, ClientId clientId, string title, string currency, DateTime validUntil)
         {
             return new Proposal {
                 Id = ProposalId.Of(Guid.NewGuid()),
@@ -22,7 +22,7 @@ namespace PropostaFacil.Domain.Proposals
                 ClientId = clientId,
                 Number = GenerateProposalNumber(tenantId, clientId),
                 Title = title,
-                ProposalStatus = proposalStatus,
+                ProposalStatus = ProposalStatusEnum.Draft,
                 _currency  = currency,
                 _totalAmount = Money.Of(0, currency),
                 ValidUntil = validUntil
@@ -73,7 +73,7 @@ namespace PropostaFacil.Domain.Proposals
 
         private static string GenerateProposalNumber(TenantId tenantId, ClientId clientId)
         {
-            var datePart = DateTime.Now.ToString("yyyyMMdd");
+            var datePart = DateTime.Now.ToString("ddMMyy-HHmmss");
             var tenantPart = tenantId.Value.ToString("N").Substring(0, 4).ToUpper();
             var clientPart = clientId.Value.ToString("N").Substring(0, 4).ToUpper();
             return $"{datePart}-{tenantPart}-{clientPart}";

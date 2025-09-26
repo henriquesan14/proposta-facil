@@ -14,7 +14,8 @@ namespace PropostaFacil.Application.Proposals
                 proposal.Number,
                 proposal.Title,
                 proposal.ProposalStatus,
-                proposal.TotalAmount.ToString(),
+                proposal.TotalAmount.Currency,
+                proposal.TotalAmount.Amount,
                 proposal.ValidUntil,
                 proposal.Items.ToDto()
             );
