@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Proposals.Commands.CreateProposal;
 using PropostaFacil.Application.Proposals.Commands.SendProposal;
+using PropostaFacil.Application.Proposals.Commands.UpdateProposal;
 using PropostaFacil.Application.Proposals.Queries.GetProposalById;
 using PropostaFacil.Application.Proposals.Queries.GetProposals;
+using System.ComponentModel.DataAnnotations;
 
 namespace PropostaFacil.API.Controllers
 {
@@ -66,6 +68,20 @@ namespace PropostaFacil.API.Controllers
 
             return result.Match(
                 onSuccess: Ok,
+                onFailure: Problem
+            );
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateProposalCommand command, CancellationToken ct)
+        {
+            //var badRequest = ValidateOrBadRequest(command, validator);
+            //if (badRequest != null) return badRequest;
+
+            var result = await mediator.Send(command, ct);
+
+            return result.Match(
+                onSuccess: () => NoContent(),
                 onFailure: Problem
             );
         }

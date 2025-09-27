@@ -16,6 +16,14 @@ namespace PropostaFacil.Domain.Proposals
             };
         }
 
+        public void Update(string name, string description, int quantity, decimal unitPrice)
+        {
+            Name = name;
+            Description = description;
+            Quantity = quantity;
+            UnitPrice = unitPrice;
+        }
+
         public ProposalId ProposalId { get; private set; } = default!;
         public string Name { get; private set; } = default!;
         public string Description { get; private set; } = default!;
