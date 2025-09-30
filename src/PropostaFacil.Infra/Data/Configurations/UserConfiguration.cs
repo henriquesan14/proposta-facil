@@ -28,7 +28,7 @@ namespace PropostaFacil.Infra.Data.Configurations
                     .HasMaxLength(255);
 
                 contact.HasIndex(c => c.Email)
-                .IsUnique();
+                    .IsUnique();
 
                 contact.Property(cn => cn.PhoneNumber)
                     .HasMaxLength(20);

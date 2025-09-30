@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using PropostaFacil.Application.Users.Commands.CreateUser;
 
 namespace PropostaFacil.Application.Proposals.Commands.CreateProposal;
 

@@ -2,6 +2,7 @@
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 using PropostaFacil.Domain.Tenants;
+using PropostaFacil.Domain.Tenants.Contracts;
 using PropostaFacil.Tests.Builders.Commands;
 using PropostaFacil.Tests.Builders.Entities;
 using System.Linq.Expressions;
@@ -12,9 +13,10 @@ namespace PropostaFacil.Tests.Commands
     {
         private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
         private readonly Mock<IAsaasService> _paymentService = new();
+        private readonly Mock<ITenantRuleCheck> _tenantRuleCheckMock = new();
 
         private CreateTenantCommandHandler CreateHandler()
-        => new CreateTenantCommandHandler(_unitOfWorkMock.Object, _paymentService.Object);
+        => new CreateTenantCommandHandler(_unitOfWorkMock.Object, _paymentService.Object, _tenantRuleCheckMock.Object);
 
         //[Fact]
         //public async Task Handle_Should_Return_Conflict_When_Document_Already_Exist()

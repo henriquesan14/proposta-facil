@@ -1,0 +1,3 @@
+﻿namespace PropostaFacil.Application.Subscriptions;
+
+public record SubscriptionAccountResponse(SubscriptionResponse? ActiveSubscription, IEnumerable<SubscriptionResponse> PreviousSubscriptions);

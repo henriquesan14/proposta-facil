@@ -284,9 +284,6 @@ namespace PropostaFacil.Infra.Migrations
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp");
-
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
@@ -303,7 +300,7 @@ namespace PropostaFacil.Infra.Migrations
                     b.Property<int>("ProposalsUsed")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("timestamp");
 
                     b.Property<string>("Status")
@@ -544,6 +541,9 @@ namespace PropostaFacil.Infra.Migrations
 
                             b1.HasKey("ClientId");
 
+                            b1.HasIndex("Email")
+                                .IsUnique();
+
                             b1.ToTable("Clients");
 
                             b1.WithOwner()
@@ -746,6 +746,9 @@ namespace PropostaFacil.Infra.Migrations
                                 .HasColumnType("character varying(20)");
 
                             b1.HasKey("TenantId");
+
+                            b1.HasIndex("Email")
+                                .IsUnique();
 
                             b1.ToTable("Tenants");
 

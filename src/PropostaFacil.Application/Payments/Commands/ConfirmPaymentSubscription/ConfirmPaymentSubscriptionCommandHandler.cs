@@ -14,7 +14,7 @@ namespace PropostaFacil.Application.Payments.Commands.ConfirmPaymentSubscription
             if(paymentExists != null) return PaymentErrors.PaymentAlreadyExist(request.Payment.Id);
 
             var spec = new GetSubscriptionByAsaasIdSpecification(request.Payment.Subscription);
-            var subscription = await unitOfWork.Subscriptions.FirstOrDefaultAsync(spec);
+            var subscription = await unitOfWork.Subscriptions.SingleOrDefaultAsync(spec);
 
             if (subscription is null) return PaymentErrors.NotFound(request.Payment.Subscription); 
             if (request.Event != "PAYMENT_RECEIVED")

@@ -3,9 +3,9 @@ using PropostaFacil.Domain.Enums;
 
 namespace PropostaFacil.Domain.Subscriptions.Specifications;
 
-public class GetSubscriptionsByStatusSpecification : SingleResultSpecification<Subscription>
+public class GetSubscriptionByStatusSpecification : SingleResultSpecification<Subscription>
 {
-    public GetSubscriptionsByStatusSpecification(SubscriptionStatusEnum status)
+    public GetSubscriptionByStatusSpecification(SubscriptionStatusEnum status)
     {
         Query
             .Where(s => s.Status == status)

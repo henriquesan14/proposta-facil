@@ -18,7 +18,7 @@ namespace PropostaFacil.Tests.Builders.Commands
         };
 
         public CreateProposalCommand Build()
-            => new CreateProposalCommand(_clientId, _title, _proposalStatus, _currency, _validUntil, _items);
+            => new CreateProposalCommand(_clientId, _title, _currency, _validUntil, _items);
 
         public CreateProposalCommandBuilder WithClientId(Guid clientId)
         {

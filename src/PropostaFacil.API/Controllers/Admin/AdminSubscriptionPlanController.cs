@@ -2,17 +2,17 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PropostaFacil.Application.Subscriptions.Commands.CreateSubscription;
-using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptions;
+using PropostaFacil.Application.Subscriptions.Commands.CreateSubscriptionPlan;
+using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans;
 
-namespace PropostaFacil.API.Controllers
+namespace PropostaFacil.API.Controllers.Admin
 {
-    [Route("api/[controller]")]
+    [Route("api/admin/subscriptionPlans")]
     [Authorize(Roles = "AdminSystem")]
-    public class SubscriptionController(IMediator mediator) : BaseController
+    public class AdminSubscriptionPlanController(IMediator mediator) : BaseController
     {
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] GetSubscriptionsQuery query, CancellationToken ct)
+        public async Task<IActionResult> Get([FromQuery] GetSubscriptionPlansQuery query, CancellationToken ct)
         {
             var result = await mediator.Send(query, ct);
 
@@ -23,7 +23,7 @@ namespace PropostaFacil.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateSubscriptionCommand command, CancellationToken ct)
+        public async Task<IActionResult> Create(CreateSubscriptionPlanCommand command, CancellationToken ct)
         {
             //var badRequest = ValidateOrBadRequest(command, validator);
             //if (badRequest != null) return badRequest;

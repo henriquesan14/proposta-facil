@@ -1,18 +1,16 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Subscriptions;
+using PropostaFacil.Domain.Subscriptions.Contracts;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Subscriptions.Commands.CreateSubscriptionPlan
 {
-    public class CreateSubscriptionPlanCommandHandler(IUnitOfWork unitOfWork, ICacheService memoryCacheService) : ICommandHandler<CreateSubscriptionPlanCommand, ResultT<SubscriptionPlanResponse>>
+    public class CreateSubscriptionPlanCommandHandler(IUnitOfWork unitOfWork, ICacheService memoryCacheService, ISubscriptionPlanRuleCheck subscriptionPlanRuleCheck) : ICommandHandler<CreateSubscriptionPlanCommand, ResultT<SubscriptionPlanResponse>>
     {
         public async Task<ResultT<SubscriptionPlanResponse>> Handle(CreateSubscriptionPlanCommand request, CancellationToken cancellationToken)
         {
-            var subscriptionPlanExist = await unitOfWork.SubscriptionPlans.GetByNameAsync(request.Name);
-            if (subscriptionPlanExist != null) return SubscriptionPlanErrors.Conflict(request.Name);
-
-            var subscriptionPlan = SubscriptionPlan.Create(request.Name, request.MaxProposalsPerMonth, request.Price, request.Description);
+            var subscriptionPlan = SubscriptionPlan.Create(request.Name, request.MaxProposalsPerMonth, request.Price, request.Description, subscriptionPlanRuleCheck);
 
             await unitOfWork.SubscriptionPlans.AddAsync(subscriptionPlan);
 

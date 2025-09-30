@@ -2,9 +2,9 @@
 
 namespace PropostaFacil.Application.Users.Commands.CreateUser;
 
-public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+public class AdminCreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
-    public CreateUserCommandValidator()
+    public AdminCreateUserCommandValidator()
     {
         RuleFor(c => c.Name).NotEmpty()
             .WithMessage("O campo {PropertyName} é obrigatório")

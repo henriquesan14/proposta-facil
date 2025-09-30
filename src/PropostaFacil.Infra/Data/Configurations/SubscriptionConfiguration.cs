@@ -30,9 +30,7 @@ namespace PropostaFacil.Infra.Data.Configurations
                 .IsRequired();
 
             builder.Property(s => s.StartDate)
-                .IsRequired();
-
-            builder.Property(s => s.EndDate);
+                .IsRequired(false);
 
             builder.Property(s => s.Status)
                 .HasConversion<string>()

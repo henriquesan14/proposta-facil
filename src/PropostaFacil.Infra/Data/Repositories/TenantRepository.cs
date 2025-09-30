@@ -2,12 +2,11 @@
 using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Infra.Data.Repositories
+namespace PropostaFacil.Infra.Data.Repositories;
+
+public class TenantRepository : NoSaveEfRepository<Tenant, TenantId>, ITenantRepository
 {
-    public class TenantRepository : NoSaveEfRepository<Tenant, TenantId>, ITenantRepository
+    public TenantRepository(PropostaFacilDbContext dbContext) : base(dbContext)
     {
-        public TenantRepository(PropostaFacilDbContext dbContext) : base(dbContext)
-        {
-        }
     }
 }

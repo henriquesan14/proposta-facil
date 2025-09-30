@@ -1,4 +1,6 @@
-﻿using PropostaFacil.Domain.Subscriptions;
+﻿using PropostaFacil.Application.Payments;
+using PropostaFacil.Application.Tenants;
+using PropostaFacil.Domain.Subscriptions;
 
 namespace PropostaFacil.Application.Subscriptions
 {
@@ -12,11 +14,12 @@ namespace PropostaFacil.Application.Subscriptions
                 subscription.SubscriptionPlanId.Value,
                 subscription.SubscriptionPlan?.ToDto()!,
                 subscription.StartDate,
-                subscription.EndDate,
                 subscription.Status,
                 subscription.ProposalsUsed,
                 subscription.SubscriptionAsaasId,
-                subscription.PaymentLink
+                subscription.PaymentLink,
+                subscription.Tenant?.ToDto()!,
+                subscription.Payments.ToDto()
             );
         }
 

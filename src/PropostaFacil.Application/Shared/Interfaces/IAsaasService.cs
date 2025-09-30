@@ -9,9 +9,10 @@ namespace PropostaFacil.Application.Shared.Interfaces
         Task<GenerateChargeResponse> GenerateCharge(ChargeAsaasRequest request);
         Task<SubscriptionAsaasResponse> CreateSubscriptionAsync(CreateSubscriptionRequest request);
         Task<AsaasResponse<PaymentResponse>> GetChargesByCustomerId(string customerId, int offset, int limit);
-        Task<DeleteChargeResponse> DeleteCharge(string chargeId);
+        Task<DeleteResponse> DeleteCharge(string chargeId);
         Task<string> GetCustomerIdByCpfCnpj(string cpfCnpj);
         Task<string> CreateCustomer(CustomerAsaasRequest request);
+        Task<DeleteResponse> DeleteCustomer(string clientId);
         Task<PaymentLinkAsaasResponse> CreatePaymentLink(PaymentLinkAsaasRequest request);
     }
 }

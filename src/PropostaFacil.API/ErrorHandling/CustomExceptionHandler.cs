@@ -28,7 +28,7 @@ namespace PropostaFacil.API.ErrorHandling
                 IntegrationException => (
                     exception.Message,
                     exception.GetType().Name,
-                    context.Response.StatusCode = StatusCodes.Status401Unauthorized
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest
                 ),
                 DbUpdateException dbEx when dbEx.InnerException is PostgresException pgEx && pgEx.SqlState == "23503" => (
                     "Não foi possível concluir a operação porque o registro está associado a outro recurso no sistema.",

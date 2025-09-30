@@ -1,4 +1,5 @@
 ﻿using PropostaFacil.Domain.Tenants;
+using PropostaFacil.Domain.Tenants.Contracts;
 using PropostaFacil.Domain.ValueObjects;
 
 namespace PropostaFacil.Tests.Builders.Entities
@@ -11,6 +12,12 @@ namespace PropostaFacil.Tests.Builders.Entities
         private Contact _contact = Contact.Of("tenant@example.com", "11999999999");
         private Address _address = Address.Of("Street", "123", "Apt 1", "District", "City", "ST", "12345000");
         private string _asassId = "123";
+        private ITenantRuleCheck _tenantRuleCheck;
+
+        public TenantBuilder(ITenantRuleCheck tenantRuleCheck)
+        {
+            _tenantRuleCheck = tenantRuleCheck;
+        }
 
         public TenantBuilder WithName(string name)
         {
@@ -50,7 +57,7 @@ namespace PropostaFacil.Tests.Builders.Entities
 
         public Tenant Build()
         {
-            return Tenant.Create(_name, _domain, _document, _contact, _address, _asassId);
+            return Tenant.Create(_name, _domain, _document, _contact, _address, _asassId, _tenantRuleCheck);
         }
     }
 }

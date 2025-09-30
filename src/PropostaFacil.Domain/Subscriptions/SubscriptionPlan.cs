@@ -1,12 +1,15 @@
 ﻿using PropostaFacil.Domain.Abstractions;
+using PropostaFacil.Domain.Subscriptions.Contracts;
+using PropostaFacil.Domain.Subscriptions.Rules;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Domain.Subscriptions
 {
     public class SubscriptionPlan : Aggregate<SubscriptionPlanId>
     {
-        public static SubscriptionPlan Create(string name, int maxProposalsPerMonth, decimal price, string description)
+        public static SubscriptionPlan Create(string name, int maxProposalsPerMonth, decimal price, string description, ISubscriptionPlanRuleCheck subscriptionPlanRuleCheck)
         {
+            CheckRule(new NameMustNotBeUsed(name, subscriptionPlanRuleCheck));
             return new SubscriptionPlan
             {
                 Id = SubscriptionPlanId.Of(Guid.NewGuid()),

@@ -1,21 +1,19 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Shared.Request;
+using PropostaFacil.Domain.Exceptions;
 using PropostaFacil.Domain.Tenants;
+using PropostaFacil.Domain.Tenants.Contracts;
 using PropostaFacil.Domain.Tenants.Specifications;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
 {
-    public class CreateTenantCommandHandler(IUnitOfWork unitOfWork, IAsaasService asaasService) : ICommandHandler<CreateTenantCommand, ResultT<TenantResponse>>
+    public class CreateTenantCommandHandler(IUnitOfWork unitOfWork, IAsaasService asaasService, ITenantRuleCheck tenantRuleCheck) : ICommandHandler<CreateTenantCommand, ResultT<TenantResponse>>
     {
         public async Task<ResultT<TenantResponse>> Handle(CreateTenantCommand request, CancellationToken cancellationToken)
         {
-            var tenantExist = await unitOfWork.Tenants.SingleOrDefaultAsync(new GetTenantByDocumentGlobalSpecification(request.Document));
-
-            if (tenantExist != null) return TenantErrors.Conflict(request.Document);
-
             var document = Document.Of(request.Document);
             var contact = Contact.Of(request.Email, request.PhoneNumber);
             var address = Address.Of(request.AddressStreet, request.AddressNumber, request.AddressComplement, request.AddressDistrict,
@@ -28,15 +26,19 @@ namespace PropostaFacil.Application.Tenants.Commands.CreateTenant
                 customerId = await asaasService.CreateCustomer(customerAsaas);
             }
 
-            await unitOfWork.BeginTransaction();
+            try
+            {
+                var tenant = Tenant.Create(request.Name, request.Domain, document, contact, address, customerId, tenantRuleCheck);
+                await unitOfWork.Tenants.AddAsync(tenant);
 
-            var tenant = Tenant.Create(request.Name, request.Domain, document, contact, address, customerId);
-            await unitOfWork.Tenants.AddAsync(tenant);
+                await unitOfWork.CompleteAsync();
 
-            await unitOfWork.CompleteAsync();
-            await unitOfWork.CommitAsync();
-
-            return tenant.ToDto();
+                return tenant.ToDto();
+            }
+            catch (Exception) {
+                await asaasService.DeleteCustomer(customerId);
+                throw;
+            }
         }
     }
 }

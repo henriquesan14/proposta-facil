@@ -6,7 +6,6 @@ using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 using PropostaFacil.Shared.Common.CQRS;
-using PropostaFacil.Shared.Common.Pagination;
 
 namespace PropostaFacil.Application
 {
@@ -21,8 +20,8 @@ namespace PropostaFacil.Application
 
             services.AddValidatorsFromAssemblyContaining<CreateTenantCommandValidator>();
 
-            services.AddScoped<IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>>, GetSubscriptionPlansQueryHandler>();
-            services.Decorate<IQueryHandler<GetSubscriptionPlansQuery, ResultT<PaginatedResult<SubscriptionPlanResponse>>>, CachedGetSubscriptionPlansQueryHandler>();
+            services.AddScoped<IQueryHandler<GetSubscriptionPlansQuery, ResultT<IEnumerable<SubscriptionPlanResponse>>>, GetSubscriptionPlansQueryHandler>();
+            services.Decorate<IQueryHandler<GetSubscriptionPlansQuery, ResultT<IEnumerable<SubscriptionPlanResponse>>>, CachedGetSubscriptionPlansQueryHandler>();
 
             return services;
         }

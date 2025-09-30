@@ -13,7 +13,7 @@ public class SendProposalCommandHandler(IUnitOfWork unitOfWork) : ICommandHandle
 {
     public async Task<Result> Handle(SendProposalCommand request, CancellationToken cancellationToken)
     {
-        var subscriptionActive = await unitOfWork.Subscriptions.SingleOrDefaultAsync(new GetSubscriptionsByStatusSpecification(SubscriptionStatusEnum.Active));
+        var subscriptionActive = await unitOfWork.Subscriptions.SingleOrDefaultAsync(new GetSubscriptionByStatusSpecification(SubscriptionStatusEnum.Active));
 
         if (subscriptionActive is null) return SubscriptionErrors.InactiveSubscription();
         if (subscriptionActive.ProposalsUsed >= subscriptionActive.SubscriptionPlan.MaxProposalsPerMonth) return SubscriptionErrors.SubscriptionLimit();

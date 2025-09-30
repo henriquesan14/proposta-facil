@@ -11,6 +11,8 @@ using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Application.Users;
 using PropostaFacil.Domain.Clients.Contracts;
+using PropostaFacil.Domain.Subscriptions.Contracts;
+using PropostaFacil.Domain.Tenants.Contracts;
 using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Infra.Data;
 using PropostaFacil.Infra.Data.Interceptors;
@@ -74,6 +76,8 @@ namespace PropostaFacil.Infra
             services.AddScoped<ICacheService, RedisCacheService>();
             services.AddScoped<IClientRuleCheck, RuleCheckService>();
             services.AddScoped<IUserRuleCheck, RuleCheckService>();
+            services.AddScoped<ITenantRuleCheck, RuleCheckService>();
+            services.AddScoped<ISubscriptionPlanRuleCheck, RuleCheckService>();
 
             services.AddSingleton<IPasswordCheck, PasswordService>();
             services.AddSingleton<IPasswordHash, PasswordService>();

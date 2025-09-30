@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using PropostaFacil.Application.Proposals;
 
-namespace PropostaFacil.Application.Users.Commands.CreateUser;
+namespace PropostaFacil.Application.Proposals.Commands.CreateProposal;
 
 public class ProposalItemRequestValidator : AbstractValidator<ProposalItemRequest>
 {

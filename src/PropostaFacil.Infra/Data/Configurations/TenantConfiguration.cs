@@ -37,6 +37,9 @@ namespace PropostaFacil.Infra.Data.Configurations
                 contact.Property(cn => cn.Email)
                     .HasMaxLength(255);
 
+                contact.HasIndex(c => c.Email)
+                    .IsUnique();
+
                 contact.Property(cn => cn.PhoneNumber)
                     .HasMaxLength(20);
             });

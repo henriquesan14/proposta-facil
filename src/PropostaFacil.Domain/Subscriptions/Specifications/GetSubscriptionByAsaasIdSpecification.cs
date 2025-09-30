@@ -1,8 +1,10 @@
 ﻿using Ardalis.Specification;
+using PropostaFacil.Domain.Specifications;
+using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Domain.Subscriptions.Specifications;
 
-public class GetSubscriptionByAsaasIdSpecification : Specification<Subscription>
+public class GetSubscriptionByAsaasIdSpecification : GlobalSingleResultSpecification<Subscription, SubscriptionId>
 {
     public GetSubscriptionByAsaasIdSpecification(string subscriptionId)
     {

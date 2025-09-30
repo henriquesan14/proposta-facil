@@ -3,7 +3,6 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 using PropostaFacil.Application.Users.Commands.CreateUser;
 using PropostaFacil.Application.Users.Queries.GetUserById;
 using PropostaFacil.Application.Users.Queries.GetUsers;

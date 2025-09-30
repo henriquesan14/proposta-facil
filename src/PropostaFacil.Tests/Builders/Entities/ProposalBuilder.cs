@@ -69,7 +69,6 @@ namespace PropostaFacil.Tests.Builders.Entities
                 _tenantId,
                 _clientId,
                 _title,
-                _status,
                 _currency,
                 _validUntil
             );

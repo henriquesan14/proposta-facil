@@ -38,9 +38,9 @@ namespace PropostaFacil.Infra.Services
             return await SendRequestAsync<SubscriptionAsaasResponse>("subscriptions", Method.Post, request);
         }
 
-        public async Task<DeleteChargeResponse> DeleteCharge(string chargeId)
+        public async Task<DeleteResponse> DeleteCharge(string chargeId)
         {
-            var response = await SendRequestAsync<DeleteChargeResponse>($"payments/{chargeId}", Method.Delete);
+            var response = await SendRequestAsync<DeleteResponse>($"payments/{chargeId}", Method.Delete);
             return response;
         }
 
@@ -130,6 +130,12 @@ namespace PropostaFacil.Infra.Services
             }
 
             return null;
+        }
+
+        public async Task<DeleteResponse> DeleteCustomer(string clientId)
+        {
+            var response = await SendRequestAsync<DeleteResponse>($"customers/{clientId}", Method.Delete);
+            return response;
         }
     }
 }
