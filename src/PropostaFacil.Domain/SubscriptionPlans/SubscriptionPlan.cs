@@ -1,9 +1,10 @@
 ﻿using PropostaFacil.Domain.Abstractions;
-using PropostaFacil.Domain.Subscriptions.Contracts;
-using PropostaFacil.Domain.Subscriptions.Rules;
+using PropostaFacil.Domain.SubscriptionPlans.Contracts;
+using PropostaFacil.Domain.SubscriptionPlans.Rules;
+using PropostaFacil.Domain.Subscriptions;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Domain.Subscriptions
+namespace PropostaFacil.Domain.SubscriptionPlans
 {
     public class SubscriptionPlan : Aggregate<SubscriptionPlanId>
     {

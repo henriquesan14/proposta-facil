@@ -79,6 +79,12 @@ namespace PropostaFacil.Infra.Services
             return result;
         }
 
+        public async Task<DeleteResponse> DeleteCustomer(string clientId)
+        {
+            var response = await SendRequestAsync<DeleteResponse>($"customers/{clientId}", Method.Delete);
+            return response;
+        }
+
         private async Task<T> SendRequestAsync<T>(string resource, Method method, object? body = null, Dictionary<string, string>? queryParams = null)
         {
             var client = new RestClient(_baseUrl);
@@ -130,12 +136,6 @@ namespace PropostaFacil.Infra.Services
             }
 
             return null;
-        }
-
-        public async Task<DeleteResponse> DeleteCustomer(string clientId)
-        {
-            var response = await SendRequestAsync<DeleteResponse>($"customers/{clientId}", Method.Delete);
-            return response;
         }
     }
 }

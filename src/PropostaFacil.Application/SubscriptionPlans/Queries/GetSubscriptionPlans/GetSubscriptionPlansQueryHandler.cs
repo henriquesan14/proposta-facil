@@ -1,9 +1,9 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Subscriptions.Specifications;
+using PropostaFacil.Domain.SubscriptionPlans.Specifications;
 using PropostaFacil.Shared.Common.CQRS;
 
-namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans
+namespace PropostaFacil.Application.SubscriptionPlans.Queries.GetSubscriptionPlans
 {
     public class GetSubscriptionPlansQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<GetSubscriptionPlansQuery, ResultT<IEnumerable<SubscriptionPlanResponse>>>
     {

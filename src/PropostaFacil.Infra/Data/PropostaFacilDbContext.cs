@@ -4,6 +4,7 @@ using PropostaFacil.Domain.Clients;
 using PropostaFacil.Domain.Payments;
 using PropostaFacil.Domain.Proposals;
 using PropostaFacil.Domain.RefreshTokens;
+using PropostaFacil.Domain.SubscriptionPlans;
 using PropostaFacil.Domain.Subscriptions;
 using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.Users;

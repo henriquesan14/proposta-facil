@@ -1,8 +1,8 @@
 ﻿using Ardalis.Specification;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Subscriptions;
+using PropostaFacil.Domain.SubscriptionPlans;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Application.Subscriptions;
+namespace PropostaFacil.Application.SubscriptionPlans;
 
 public interface ISubscriptionPlanRepository : IReadRepositoryBase<SubscriptionPlan>, INoSaveEfRepository<SubscriptionPlan, SubscriptionPlanId>;

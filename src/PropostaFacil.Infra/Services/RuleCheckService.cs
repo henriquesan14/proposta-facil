@@ -1,8 +1,8 @@
 ﻿using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Clients.Contracts;
 using PropostaFacil.Domain.Clients.Specifications;
-using PropostaFacil.Domain.Subscriptions.Contracts;
-using PropostaFacil.Domain.Subscriptions.Specifications;
+using PropostaFacil.Domain.SubscriptionPlans.Contracts;
+using PropostaFacil.Domain.SubscriptionPlans.Specifications;
 using PropostaFacil.Domain.Tenants.Contracts;
 using PropostaFacil.Domain.Tenants.Specifications;
 using PropostaFacil.Domain.Users.Contracts;

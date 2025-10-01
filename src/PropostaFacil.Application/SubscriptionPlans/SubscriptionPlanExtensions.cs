@@ -1,6 +1,6 @@
-﻿using PropostaFacil.Domain.Subscriptions;
+﻿using PropostaFacil.Domain.SubscriptionPlans;
 
-namespace PropostaFacil.Application.Subscriptions
+namespace PropostaFacil.Application.SubscriptionPlans
 {
     public static class SubscriptionPlanExtensions
     {

@@ -2,7 +2,7 @@
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Shared.Common.CQRS;
 
-namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans
+namespace PropostaFacil.Application.SubscriptionPlans.Queries.GetSubscriptionPlans
 {
     public class CachedGetSubscriptionPlansQueryHandler(IQueryHandler<GetSubscriptionPlansQuery, ResultT<IEnumerable<SubscriptionPlanResponse>>> inner,
         ICacheService memoryCacheService) : IQueryHandler<GetSubscriptionPlansQuery, ResultT<IEnumerable<SubscriptionPlanResponse>>>

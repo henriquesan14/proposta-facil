@@ -2,8 +2,8 @@
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PropostaFacil.Application.Subscriptions;
-using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans;
+using PropostaFacil.Application.SubscriptionPlans;
+using PropostaFacil.Application.SubscriptionPlans.Queries.GetSubscriptionPlans;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 using PropostaFacil.Shared.Common.CQRS;
 

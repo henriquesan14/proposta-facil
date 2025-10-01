@@ -9,6 +9,6 @@ public class GetTenantByIdGlobalSpecification : GlobalSingleResultSpecification<
     public GetTenantByIdGlobalSpecification(TenantId id)
     {
         Query
-            .Where(t => t.Id == id);
+            .Where(t => t.Id == id && t.IsActive);
     }
 }

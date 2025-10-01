@@ -2,6 +2,7 @@
 using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Payments;
 using PropostaFacil.Application.Proposals;
+using PropostaFacil.Application.SubscriptionPlans;
 using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Application.Users;

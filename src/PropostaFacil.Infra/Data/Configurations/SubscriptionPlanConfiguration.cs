@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PropostaFacil.Domain.Subscriptions;
+using PropostaFacil.Domain.SubscriptionPlans;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Configurations

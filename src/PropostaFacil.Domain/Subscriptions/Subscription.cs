@@ -2,6 +2,7 @@
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Events;
 using PropostaFacil.Domain.Payments;
+using PropostaFacil.Domain.SubscriptionPlans;
 using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects.Ids;
 

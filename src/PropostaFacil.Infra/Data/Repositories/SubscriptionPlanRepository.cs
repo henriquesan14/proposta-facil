@@ -1,5 +1,5 @@
-﻿using PropostaFacil.Application.Subscriptions;
-using PropostaFacil.Domain.Subscriptions;
+﻿using PropostaFacil.Application.SubscriptionPlans;
+using PropostaFacil.Domain.SubscriptionPlans;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Repositories;

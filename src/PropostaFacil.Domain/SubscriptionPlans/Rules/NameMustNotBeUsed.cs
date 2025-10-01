@@ -1,7 +1,7 @@
 ﻿using PropostaFacil.Domain.Abstractions;
-using PropostaFacil.Domain.Subscriptions.Contracts;
+using PropostaFacil.Domain.SubscriptionPlans.Contracts;
 
-namespace PropostaFacil.Domain.Subscriptions.Rules;
+namespace PropostaFacil.Domain.SubscriptionPlans.Rules;
 
 public class NameMustNotBeUsed(string subscriptionPlanName, ISubscriptionPlanRuleCheck check) : IBusinessRule
 {

@@ -15,6 +15,6 @@ public class ListTenantsGlobalSpecification : GlobalSpecification<Tenant, Tenant
                     p.Name.ToLower().Contains(name.ToLower())) &&
                 (string.IsNullOrEmpty(document) ||
                     p.Document.Number == document
-            ));
+            ) && p.IsActive);
     }
 }

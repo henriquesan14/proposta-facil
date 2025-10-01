@@ -1,4 +1,4 @@
-﻿namespace PropostaFacil.Domain.Subscriptions.Contracts;
+﻿namespace PropostaFacil.Domain.SubscriptionPlans.Contracts;
 
 public interface ISubscriptionPlanRuleCheck
 {

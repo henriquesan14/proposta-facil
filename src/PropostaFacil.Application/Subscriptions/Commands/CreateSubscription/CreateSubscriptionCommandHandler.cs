@@ -1,6 +1,7 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Shared.Request;
+using PropostaFacil.Application.SubscriptionPlans;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Subscriptions;

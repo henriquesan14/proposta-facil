@@ -1,4 +1,5 @@
 ﻿using PropostaFacil.Application.Payments;
+using PropostaFacil.Application.SubscriptionPlans;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Domain.Enums;
 

@@ -1,6 +1,6 @@
 ﻿using Common.ResultPattern;
 
-namespace PropostaFacil.Application.Subscriptions
+namespace PropostaFacil.Application.SubscriptionPlans
 {
     public class SubscriptionPlanErrors
     {

@@ -2,8 +2,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PropostaFacil.Application.Subscriptions.Commands.CreateSubscriptionPlan;
-using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionPlans;
+using PropostaFacil.Application.SubscriptionPlans.Commands.CreateSubscriptionPlan;
+using PropostaFacil.Application.SubscriptionPlans.Commands.DeleteSubscriptionPlan;
+using PropostaFacil.Application.SubscriptionPlans.Queries.GetSubscriptionPlans;
 
 namespace PropostaFacil.API.Controllers.Admin
 {
@@ -32,6 +33,20 @@ namespace PropostaFacil.API.Controllers.Admin
 
             return result.Match(
                 onSuccess: () => Ok(result),
+                onFailure: Problem
+            );
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+        {
+            //var badRequest = ValidateOrBadRequest(command, validator);
+            //if (badRequest != null) return badRequest;
+            var command = new DeleteSubscriptionPlanCommand(id);
+            var result = await mediator.Send(command, ct);
+
+            return result.Match(
+                onSuccess: () => NoContent(),
                 onFailure: Problem
             );
         }
