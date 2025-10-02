@@ -4,6 +4,7 @@ using PropostaFacil.Application.Auth.Commands.GenerateAccessToken;
 using Common.ResultPattern;
 using PropostaFacil.Application.Auth.Commands.RenewRefreshToken;
 using PropostaFacil.Application.Auth.Commands.RevokeRefreshToken;
+using PropostaFacil.Application.Auth.Commands.ActivateAccount;
 
 namespace PropostaFacil.API.Controllers
 {
@@ -49,6 +50,20 @@ namespace PropostaFacil.API.Controllers
 
             return result.Match(
                 onSuccess: () => Ok(result),
+                onFailure: Problem
+            );
+        }
+
+        [HttpPost("activate-account")]
+        public async Task<IActionResult> Activate(ActivateAccountCommand command, CancellationToken ct)
+        {
+            //var badRequest = ValidateOrBadRequest(command, validator);
+            //if (badRequest != null) return badRequest;
+
+            var result = await mediator.Send(command, ct);
+
+            return result.Match(
+                onSuccess: () => NoContent(),
                 onFailure: Problem
             );
         }

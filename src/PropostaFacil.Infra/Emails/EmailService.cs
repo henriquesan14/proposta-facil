@@ -7,15 +7,15 @@ namespace PropostaFacil.Infra.Emails;
 
 public class EmailService(IEmailSender sender) : IEmailService
 {
-    public async Task SendVerifyEmailAddress(string email, string name)
+    public async Task SendVerifyEmailAddress(string email, string name, string verificationLink)
     {
-        var html = UserEmailBuilder.BuildSendVerifyEmailAddress(email, name);
+        var html = UserEmailBuilder.BuildSendVerifyEmailAddress(name, verificationLink);
         await sender.SendEmailAsync(email, "Verificação de Email", html);
     }
 
     public async Task SendForgotPassword(User user)
     {
-        var html = UserEmailBuilder.BuildSendForgotPassword(user.Name, user.Contact.Email);
+        var html = UserEmailBuilder.BuildSendForgotPassword(user.Name);
         await sender.SendEmailAsync(user.Contact.Email, "Esqueceu sua senha", html);
     }
 

@@ -29,6 +29,24 @@ namespace PropostaFacil.Domain.Users
             user.AddDomainEvent(new UserCreatedEvent(user));
             return user;
         }
+
+        public static User CreateWithoutPassword(string name, Contact contact, UserRoleEnum role, TenantId tenantId, IPasswordHash hasher, IUserRuleCheck userRuleCheck)
+        {
+            CheckRule(new EmailMustNotBeUsed(contact.Email, userRuleCheck));
+            var user = new User
+            {
+                Id = UserId.Of(Guid.NewGuid()),
+                Name = name,
+                Contact = contact,
+                Role = role,
+                TenantId = tenantId,
+                Verified = false,
+                VerifiedToken = Guid.NewGuid().ToString(),
+                Active = null
+            };
+            user.AddDomainEvent(new UserCreatedEvent(user));
+            return user;
+        }
         public string Name { get; private set; } = default!;
         public Contact Contact { get; private set; } = default!;
         public string PasswordHash { get; private set; } = default!;
@@ -83,13 +101,14 @@ namespace PropostaFacil.Domain.Users
             Role = role;
         }
 
-        public void VerifyAndActivate(string verification)
+        public void VerifyAndActivate(string verification, string passwordHash)
         {
             CheckRule(new MustNotBeVerifiedRule(this));
             CheckRule(new VerificationTokenMustMatchRule(this, verification));
             Verified = true;
             VerifiedToken = null;
             Active = true;
+            PasswordHash = passwordHash;
         }
 
         public void Activate()

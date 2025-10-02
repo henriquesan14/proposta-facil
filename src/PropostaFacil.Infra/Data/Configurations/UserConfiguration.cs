@@ -35,7 +35,7 @@ namespace PropostaFacil.Infra.Data.Configurations
             });
 
             builder.Property(u => u.PasswordHash)
-                .IsRequired()
+                .IsRequired(false)
                 .HasMaxLength(500);
 
             builder.Property(u => u.Role)

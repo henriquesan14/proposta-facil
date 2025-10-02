@@ -1,4 +1,5 @@
 ﻿using PropostaFacil.Domain.Users.Contracts;
+using System.Text;
 
 namespace PropostaFacil.Infra.Services;
 

@@ -12,5 +12,8 @@ namespace PropostaFacil.Application.Auth
         public static Error RefreshTokenNotFound() =>
             Error.AccessUnAuthorized("Auth.Unauthorized", $"RefreshToken nao encontrado");
 
+        public static Error InvalidVerifiedToken() =>
+            Error.AccessUnAuthorized("Auth.Unauthorized", $"Token de verificação inválido");
+
     }
 }
