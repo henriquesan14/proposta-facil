@@ -18,8 +18,7 @@ public record ConfirmPaymentSubscriptionCommandHandler(IUnitOfWork unitOfWork, I
         var paymentExists = await unitOfWork.Payments.FirstOrDefaultAsync(new GetPaymentByAsaasIdSpecification(request.Payment.Id));
         if(paymentExists != null) return PaymentErrors.PaymentAlreadyExist(request.Payment.Id);
 
-        var spec = new GetSubscriptionByAsaasIdSpecification(request.Payment.Subscription);
-        var subscription = await unitOfWork.Subscriptions.SingleOrDefaultAsync(spec);
+        var subscription = await unitOfWork.Subscriptions.SingleOrDefaultAsync(new GetSubscriptionByAsaasIdSpecification(request.Payment.Subscription));
 
         if (subscription is null) return PaymentErrors.NotFound(request.Payment.Subscription); 
         if (request.Event != "PAYMENT_RECEIVED")
@@ -28,19 +27,17 @@ public record ConfirmPaymentSubscriptionCommandHandler(IUnitOfWork unitOfWork, I
             return PaymentErrors.SubscriptionAlreadyActive();
 
         var countPayments = await unitOfWork.Payments.CountAsync(new GetPaymentsBySubscriptionIdSpecification(subscription.Id));
-        
-        subscription.Activate();
-        subscription.ResetProposalsUsed();
 
         if (countPayments == 0) // Primeiro pagamento
         {
+            subscription.Activate();
+
             subscription.AddPayment(
                 request.Payment.Value,
                 request.Payment.PaymentDate,
                 request.Payment.BillingType,
                 request.Payment.Id,
-                request.Payment.InvoiceUrl,
-                true
+                request.Payment.InvoiceUrl
             );
 
             var tenant = await unitOfWork.Tenants.SingleOrDefaultAsync(new GetTenantByIdGlobalSpecification(subscription.TenantId));
@@ -62,6 +59,9 @@ public record ConfirmPaymentSubscriptionCommandHandler(IUnitOfWork unitOfWork, I
         }
         else
         {
+            subscription.Reactivate();
+            subscription.ResetProposalsUsed();
+
             subscription.AddPayment(
                 request.Payment.Value,
                 request.Payment.PaymentDate,

@@ -8,11 +8,10 @@ namespace PropostaFacil.Tests.Builders.Commands
         private string _name = "John Doe";
         private string _email = "john@email.com";
         private string _phone = "11999999999";
-        private string _password = "123456";
         private UserRoleEnum _role = UserRoleEnum.AdminTenant;
 
         public CreateUserCommand Build()
-            => new CreateUserCommand(_name, _email, _phone, _password, _role);
+            => new CreateUserCommand(_name, _email, _phone, _role);
 
         public CreateUserCommandBuilder WithRole(UserRoleEnum role)
         {

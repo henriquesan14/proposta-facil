@@ -19,9 +19,9 @@ namespace PropostaFacil.Domain.Payments
         public Subscription? Subscription { get; private set; } = default!;
         public Proposal? Proposal { get; private set; } = default!;
 
-        public bool IsFirstInvoice { get; private set; } = default!;
+        
 
-        public static Payment Create(decimal amount, DateOnly paidDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink, bool isFirstInvoice, string currency = "BRL")
+        public static Payment Create(decimal amount, DateOnly paidDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink, string currency = "BRL")
         {
             return new Payment {
                 Id = PaymentId.Of(Guid.NewGuid()),
@@ -31,7 +31,6 @@ namespace PropostaFacil.Domain.Payments
                 BillingType = billingType,
                 PaymentAsaasId = paymentAsaasId,
                 PaymentLink = paymentLink,
-                IsFirstInvoice = isFirstInvoice
             };
         }
 
