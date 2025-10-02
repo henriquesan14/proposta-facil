@@ -21,7 +21,6 @@ public class CreateUserCommandHandler(IUnitOfWork unitOfWork, ICurrentUserServic
         var user = User.Create(
             request.Name,
             Contact.Of(request.Email, request.PhoneNumber),
-            request.Password,
             request.Role,
             loggedTenantId,
             passwordHash,

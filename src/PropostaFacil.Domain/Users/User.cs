@@ -12,25 +12,7 @@ namespace PropostaFacil.Domain.Users
 {
     public class User : Aggregate<UserId>
     {
-        public static User Create(string name, Contact contact, string passwordHash, UserRoleEnum role, TenantId tenantId, IPasswordHash hasher, IUserRuleCheck userRuleCheck)
-        {
-            CheckRule(new EmailMustNotBeUsed(contact.Email, userRuleCheck));
-            var user = new User {
-                Id = UserId.Of(Guid.NewGuid()),
-                Name = name,
-                Contact = contact,
-                PasswordHash = hasher.HashPassword(passwordHash),
-                Role = role,
-                TenantId = tenantId,
-                Verified = false,
-                VerifiedToken = Guid.NewGuid().ToString(),
-                Active = null
-            };
-            user.AddDomainEvent(new UserCreatedEvent(user));
-            return user;
-        }
-
-        public static User CreateWithoutPassword(string name, Contact contact, UserRoleEnum role, TenantId tenantId, IPasswordHash hasher, IUserRuleCheck userRuleCheck)
+        public static User Create(string name, Contact contact, UserRoleEnum role, TenantId tenantId, IPasswordHash hasher, IUserRuleCheck userRuleCheck)
         {
             CheckRule(new EmailMustNotBeUsed(contact.Email, userRuleCheck));
             var user = new User

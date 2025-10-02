@@ -48,7 +48,7 @@ public record ConfirmPaymentSubscriptionCommandHandler(IUnitOfWork unitOfWork, I
 
             if (!hasUsers)
             {
-                var adminUser = User.CreateWithoutPassword(
+                var adminUser = User.Create(
                     tenant.Name,
                     tenant.Contact,
                     UserRoleEnum.AdminTenant,

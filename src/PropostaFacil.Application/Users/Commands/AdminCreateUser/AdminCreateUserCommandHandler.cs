@@ -15,7 +15,6 @@ public class AdminCreateUserCommandHandler(IUnitOfWork unitOfWork, IPasswordHash
         var user = User.Create(
             request.Name,
             Contact.Of(request.Email, request.PhoneNumber),
-            request.Password,
             request.Role,
             TenantId.Of(request.TenantId),
             passwordHash,

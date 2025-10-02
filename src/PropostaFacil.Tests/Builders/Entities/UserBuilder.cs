@@ -54,7 +54,7 @@ namespace PropostaFacil.Tests.Builders.Entities
 
         public User Build()
         {
-            return User.Create(_name, _contact, _password, _role, _tenantId!, _passwordHash, _userRuleCheck);
+            return User.Create(_name, _contact, _role, _tenantId!, _passwordHash, _userRuleCheck);
         }
     }
 

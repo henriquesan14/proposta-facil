@@ -22,11 +22,6 @@ public class AdminCreateUserCommandValidator : AbstractValidator<AdminCreateUser
             .WithMessage("O campo {PropertyName} é obrigatório")
             .Length(11).WithMessage("O campo {PropertyName} tem que ter 11 caracteres");
 
-        RuleFor(c => c.Password).NotEmpty()
-            .WithMessage("O campo {PropertyName} é obrigatório")
-            .MinimumLength(6).WithMessage("O campo {PropertyName} não pode ter menos de 6 caracteres")
-            .MaximumLength(72).WithMessage("O campo {PropertyName} não pode ter mais de 72 caracteres");
-
         RuleFor(c => c.Role)
             .IsInEnum().WithMessage("O campo {PropertyName} é inválido");
     }
