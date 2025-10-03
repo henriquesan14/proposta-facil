@@ -6,6 +6,7 @@
         Active,
         Suspended,
         Canceled,
-        Expired
+        Expired,
+        Overdue
     }
 }

@@ -40,6 +40,12 @@ public class EmailService(IEmailSender sender) : IEmailService
     public async Task SendPaymentLink(string email, string name, string paymentLink, decimal value, DateOnly dueDate)
     {
         var html = PaymentEmailBuilder.BuildPaymentCreated(name, paymentLink, value, dueDate);
-        await sender.SendEmailAsync(email, "Pagamento do plano", html);
+        await sender.SendEmailAsync(email, "Sua fatura de assinatura foi gerada", html);
+    }
+
+    public async Task SendPaymentOverdue(string email, string name, string paymentLink, decimal value, DateOnly dueDate)
+    {
+        var html = PaymentEmailBuilder.BuildPaymentOverdue(name, paymentLink, value, dueDate);
+        await sender.SendEmailAsync(email, "Sua fatura de assinatura está vencida", html);
     }
 }

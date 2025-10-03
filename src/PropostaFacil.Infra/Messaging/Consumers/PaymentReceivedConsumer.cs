@@ -30,7 +30,7 @@ public class PaymentReceivedConsumer(IUnitOfWork unitOfWork, ILogger<PaymentRece
 
         if (payment.Status == PaymentStatus.RECEIVED)
         {
-            logger.LogWarning("Payment not found. PaymentAsaasId={PaymentAsaasId}", msg.PaymentAsaasId);
+            logger.LogWarning("Payment already received. PaymentAsaasId={PaymentAsaasId}", msg.PaymentAsaasId);
             return;
         }
 
@@ -75,12 +75,15 @@ public class PaymentReceivedConsumer(IUnitOfWork unitOfWork, ILogger<PaymentRece
         }
         else if (subscription.Status is SubscriptionStatusEnum.Expired
         or SubscriptionStatusEnum.Canceled
-        or SubscriptionStatusEnum.Suspended)
+        or SubscriptionStatusEnum.Suspended or SubscriptionStatusEnum.Overdue)
         {
             subscription.Reactivate();
             subscription.ResetProposalsUsed();
             logger.LogInformation("Subscription reactivated. SubscriptionId={SubscriptionId}", subscription.Id);
         }
+
+        await unitOfWork.CompleteAsync();
+        await unitOfWork.CommitAsync();
 
         try
         {
@@ -94,8 +97,5 @@ public class PaymentReceivedConsumer(IUnitOfWork unitOfWork, ILogger<PaymentRece
         {
             logger.LogError(ex, "Failed to send confirmation email to {Email}", subscription.Tenant.Contact.Email);
         }
-
-        await unitOfWork.CompleteAsync();
-        await unitOfWork.CommitAsync();   
     }
 }

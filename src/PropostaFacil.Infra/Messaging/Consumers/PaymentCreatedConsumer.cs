@@ -47,6 +47,8 @@ public class PaymentCreatedConsumer(
             msg.PaymentInvoiceUrl
         );
 
+        await unitOfWork.CompleteAsync();
+
         // opcional: enviar email com link para pagamento
         var tenant = await unitOfWork.Tenants
             .SingleOrDefaultAsync(new GetTenantByIdGlobalSpecification(subscription.TenantId));
@@ -67,8 +69,6 @@ public class PaymentCreatedConsumer(
         {
             logger.LogWarning("Tenant not found for Subscription {SubscriptionId}", subscription.Id);
         }
-
-        await unitOfWork.CompleteAsync();
 
         logger.LogInformation("PaymentCreatedIntegrationEvent successfully processed. PaymentAsaasId={PaymentAsaasId}", msg.PaymentAsaasId);
     }

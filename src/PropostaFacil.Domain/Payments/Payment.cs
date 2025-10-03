@@ -51,5 +51,7 @@ namespace PropostaFacil.Domain.Payments
         {
             ProposalId = proposalId;
         }
+
+        public void Overdue() => Status = PaymentStatus.OVERDUE;
     }
 }

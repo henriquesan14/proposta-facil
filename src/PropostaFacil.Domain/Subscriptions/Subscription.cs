@@ -74,5 +74,6 @@ namespace PropostaFacil.Domain.Subscriptions
 
         public void Cancel() => Status = SubscriptionStatusEnum.Canceled;
         public void Suspend() => Status = SubscriptionStatusEnum.Suspended;
+        public void Overdue() => Status = SubscriptionStatusEnum.Overdue;
     }
 }

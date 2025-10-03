@@ -82,5 +82,32 @@
               </body>
             </html>";
         }
+
+        public static string BuildPaymentOverdue(string name, string paymentLink, decimal value, DateOnly dueDate)
+        {
+            return $@"
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset=""UTF-8"">
+                <title>Fatura vencida da sua assinatura</title>
+              </head>
+              <body style=""font-family: Arial, sans-serif; line-height:1.5; color:#333;"">
+                <h2>Olá, {name}!</h2>
+                <p>Identificamos que sua fatura da assinatura está <strong>vencida</strong>.</p>
+                <p><strong>Valor:</strong> R$ {value:F2}<br>
+                   <strong>Data de vencimento:</strong> {dueDate:dd/MM/yyyy}</p>
+                <p>Para evitar a suspensão da sua assinatura, regularize o pagamento através do link abaixo:</p>
+                <p>
+                  <a href=""{paymentLink}"" style=""display:inline-block; padding:12px 24px; color:#fff; background-color:#dc3545; text-decoration:none; border-radius:5px;"">
+                    Pagar Agora
+                  </a>
+                </p>
+                <p>Se você já realizou o pagamento, por favor desconsidere este aviso.</p>
+                <hr>
+                <p style=""font-size:12px; color:#999;"">&copy; {DateTime.Now.Year} Seu Sistema</p>
+              </body>
+            </html>";
+        }
     }
 }

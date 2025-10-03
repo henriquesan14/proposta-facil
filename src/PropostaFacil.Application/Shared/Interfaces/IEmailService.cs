@@ -11,4 +11,5 @@ public interface IEmailService
     Task SendConfirmSubscription(string email, string clientName, string planName, decimal price, string paymentLink);
     Task SendProposal(string email, string proposalNumber, string clientName, DateTime validUntil, IEnumerable<ProposalItemIntegrationEvent> items, decimal totalAmount);
     Task SendPaymentLink(string email, string name, string paymentLink, decimal value, DateOnly dueDate);
+    Task SendPaymentOverdue(string email, string name, string paymentLink, decimal value, DateOnly dueDate);
 }

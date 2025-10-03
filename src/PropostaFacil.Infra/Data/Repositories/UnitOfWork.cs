@@ -9,70 +9,70 @@ using PropostaFacil.Application.Subscriptions;
 using PropostaFacil.Application.Tenants;
 using PropostaFacil.Application.Users;
 
-namespace PropostaFacil.Infra.Data.Repositories
+namespace PropostaFacil.Infra.Data.Repositories;
+
+public class UnitOfWork : IUnitOfWork, IDisposable
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    private IDbContextTransaction _transaction;
+    private readonly PropostaFacilDbContext _dbContext;
+
+    public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals, IUserRepository users, IRefreshTokenRepository refreshTokens, ISubscriptionRepository subscriptions, ISubscriptionPlanRepository subscriptionPlans, IPaymentRepository payments)
     {
-        private IDbContextTransaction _transaction;
-        private readonly PropostaFacilDbContext _dbContext;
+        _dbContext = dbContext;
+        Tenants = tenants;
+        Clients = clients;
+        Proposals = proposals;
+        Users = users;
+        RefreshTokens = refreshTokens;
+        Subscriptions = subscriptions;
+        SubscriptionPlans = subscriptionPlans;
+        Payments = payments;
+    }
 
-        public UnitOfWork(PropostaFacilDbContext dbContext, ITenantRepository tenants, IClientRepository clients, IProposalRepository proposals, IUserRepository users, IRefreshTokenRepository refreshTokens, ISubscriptionRepository subscriptions, ISubscriptionPlanRepository subscriptionPlans, IPaymentRepository payments)
+    public ITenantRepository Tenants { get; }
+    public IClientRepository Clients { get; }
+    public IProposalRepository Proposals { get; }
+    public IUserRepository Users { get; }
+    public IRefreshTokenRepository RefreshTokens { get; }
+    public ISubscriptionRepository Subscriptions { get; }
+    public ISubscriptionPlanRepository SubscriptionPlans { get; }
+    public IPaymentRepository Payments { get; }
+
+    public async Task BeginTransaction()
+    {
+        _transaction = await _dbContext.Database.BeginTransactionAsync();
+    }
+
+    public async Task CommitAsync()
+    {
+        try
         {
-            _dbContext = dbContext;
-            Tenants = tenants;
-            Clients = clients;
-            Proposals = proposals;
-            Users = users;
-            RefreshTokens = refreshTokens;
-            Subscriptions = subscriptions;
-            SubscriptionPlans = subscriptionPlans;
-            Payments = payments;
+            await _transaction.CommitAsync();
         }
-
-        public ITenantRepository Tenants { get; }
-        public IClientRepository Clients { get; }
-        public IProposalRepository Proposals { get; }
-        public IUserRepository Users { get; }
-        public IRefreshTokenRepository RefreshTokens { get; }
-        public ISubscriptionRepository Subscriptions { get; }
-        public ISubscriptionPlanRepository SubscriptionPlans { get; }
-        public IPaymentRepository Payments { get; }
-
-        public async Task BeginTransaction()
+        catch (Exception ex)
         {
-            _transaction = await _dbContext.Database.BeginTransactionAsync();
+            await _transaction.RollbackAsync();
+            throw ex;
         }
+    }
 
-        public async Task CommitAsync()
-        {
-            try
-            {
-                await _transaction.CommitAsync();
-            }
-            catch (Exception ex)
-            {
-                await _transaction.RollbackAsync();
-                throw ex;
-            }
-        }
+    public async Task<int> CompleteAsync()
+    {
+        return await _dbContext.SaveChangesAsync();
+    }
 
-        public async Task<int> CompleteAsync()
-        {
-            return await _dbContext.SaveChangesAsync();
-        }
+    public void Dispose()
+    {
+        IsDisposing(true);
+        GC.SuppressFinalize(this);
+    }
 
-        public void Dispose()
+    protected virtual void IsDisposing(bool disposing)
+    {
+        if (disposing)
         {
-            IsDisposing(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void IsDisposing(bool disposing)
-        {
-            if (disposing)
-            {
-                _dbContext.Dispose();
-            }
+            _transaction?.Dispose();
+            _dbContext.Dispose();
         }
     }
 }
