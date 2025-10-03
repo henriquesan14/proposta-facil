@@ -11,6 +11,8 @@ public class PaymentCreatedCommandHandler(IUnitOfWork unitOfWork, IEmailService 
 {
     public async Task<Result> Handle(PaymentCreatedCommand request, CancellationToken cancellationToken)
     {
+        if (request.Event != "PAYMENT_RECEIVED")
+            return PaymentErrors.InvalidEvent();
         var payload = request.Payment;
 
         var subscription = await unitOfWork.Subscriptions
