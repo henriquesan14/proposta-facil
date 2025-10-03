@@ -10,6 +10,7 @@ public static class PaymentExtensions
             payment.Id.Value,
             payment.SubscriptionId?.Value,
             payment.ProposalId?.Value,
+            payment.Status,
             payment.Amount,
             payment.Currency,
             payment.BillingType,

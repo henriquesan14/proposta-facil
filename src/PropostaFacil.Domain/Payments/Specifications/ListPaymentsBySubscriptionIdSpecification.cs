@@ -3,9 +3,9 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Domain.Payments.Specifications;
 
-public class GetPaymentsBySubscriptionIdSpecification : Specification<Payment>
+public class ListPaymentsBySubscriptionIdSpecification : Specification<Payment>
 {
-    public GetPaymentsBySubscriptionIdSpecification(SubscriptionId subscriptionId)
+    public ListPaymentsBySubscriptionIdSpecification(SubscriptionId subscriptionId)
     {
         Query.Where(p => p.SubscriptionId == subscriptionId);
     }
