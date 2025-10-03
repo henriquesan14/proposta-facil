@@ -12,7 +12,7 @@ namespace PropostaFacil.Application.Payments.EventHandlers.Domain
             var payment = notification.Payment;
             var subscrition = notification.Subscription;
             var paymentApprovedIntegrationEvent = new PaymentApprovedIntegrationEvent(subscrition.Tenant.Contact.Email, subscrition.Tenant.Name, payment.Amount,
-                payment.BillingType.ToString(), payment.PaidDate, subscrition.SubscriptionPlan.Name);
+                payment.BillingType.ToString(), payment.PaymentDate, payment.DueDate, subscrition.SubscriptionPlan.Name);
 
             await publishEndpoint.Publish(paymentApprovedIntegrationEvent);
         }

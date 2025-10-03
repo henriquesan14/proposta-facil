@@ -2,7 +2,7 @@
 
 namespace PropostaFacil.Domain.Payments.Specifications;
 
-public class GetPaymentByAsaasIdSpecification : Specification<Payment>
+public class GetPaymentByAsaasIdSpecification : SingleResultSpecification<Payment>
 {
     public GetPaymentByAsaasIdSpecification(string paymentId)
     {

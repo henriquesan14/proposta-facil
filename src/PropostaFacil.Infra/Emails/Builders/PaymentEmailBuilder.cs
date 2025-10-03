@@ -2,7 +2,7 @@
 {
     public static class PaymentEmailBuilder
     {
-        public static string BuildConfirmPayment(string ClientName, decimal Amount, DateOnly PaidDate, string PlanName)
+        public static string BuildConfirmPayment(string ClientName, decimal Amount, DateOnly? PaymentDate, string PlanName)
         {
             return $@"
                 <!DOCTYPE html>
@@ -45,7 +45,7 @@
                     <p>Olá <strong>{ClientName}</strong>,</p>
                     <p>Recebemos seu pagamento do plano <strong>{PlanName}</strong>.</p>
                     <p><strong>Valor:</strong> R$ {Amount:F2}</p>
-                    <p><strong>Data de pagamento:</strong> {PaidDate:dd/MM/yyyy}</p>
+                    <p><strong>Data de pagamento:</strong> {PaymentDate:dd/MM/yyyy}</p>
 
                     <p>Obrigado por confiar em nossos serviços!</p>
                     <div class='footer'>
@@ -54,6 +54,33 @@
                   </div>
                 </body>
                 </html>";
+        }
+
+        public static string BuildPaymentCreated(string name, string paymentLink, decimal value, DateOnly dueDate)
+        {
+            return $@"
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta charset=""UTF-8"">
+                <title>Pagamento da sua assinatura</title>
+              </head>
+              <body style=""font-family: Arial, sans-serif; line-height:1.5; color:#333;"">
+                <h2>Olá, {name}!</h2>
+                <p>Foi gerada uma cobrança referente à sua assinatura.</p>
+                <p><strong>Valor:</strong> R$ {value:F2}<br>
+                   <strong>Vencimento:</strong> {dueDate:dd/MM/yyyy}</p>
+                <p>Você pode acessar o boleto ou realizar o pagamento através do link abaixo:</p>
+                <p>
+                  <a href=""{paymentLink}"" style=""display:inline-block; padding:12px 24px; color:#fff; background-color:#28a745; text-decoration:none; border-radius:5px;"">
+                    Pagar Agora
+                  </a>
+                </p>
+                <p>Se você já realizou o pagamento, por favor desconsidere este e-mail.</p>
+                <hr>
+                <p style=""font-size:12px; color:#999;"">&copy; {DateTime.UtcNow.Year} Seu Sistema</p>
+              </body>
+            </html>";
         }
     }
 }

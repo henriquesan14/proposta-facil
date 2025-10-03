@@ -13,7 +13,7 @@ namespace PropostaFacil.Infra.Messaging.Consumers
             try
             {
                 await emailService.SendConfirmPayment(
-                    msg.ClientEmail, msg.ClientName, msg.Amount, msg.PaidDate, msg.PlanName
+                    msg.ClientEmail, msg.ClientName, msg.Amount, msg.PaymentDate, msg.PlanName
                 );
 
                 logger.LogInformation("Email de pagamento aprovado enviado para {Email}\"", msg.ClientEmail);

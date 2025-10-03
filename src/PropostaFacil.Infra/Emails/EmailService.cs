@@ -19,9 +19,9 @@ public class EmailService(IEmailSender sender) : IEmailService
         await sender.SendEmailAsync(user.Contact.Email, "Esqueceu sua senha", html);
     }
 
-    public async Task SendConfirmPayment(string email, string clientName, decimal amount, DateOnly paidDate, string planName)
+    public async Task SendConfirmPayment(string email, string clientName, decimal amount, DateOnly? paymentDate, string planName)
     {
-        var html = PaymentEmailBuilder.BuildConfirmPayment(clientName, amount, paidDate, planName);
+        var html = PaymentEmailBuilder.BuildConfirmPayment(clientName, amount, paymentDate, planName);
         await sender.SendEmailAsync(email, "Seu pagamento foi aprovado", html);
     }
 
@@ -35,5 +35,11 @@ public class EmailService(IEmailSender sender) : IEmailService
     {
         var html = ProposalEmailBuilder.BuildProposal(proposalNumber, clientName, validUntil, items, totalAmount);
         await sender.SendEmailAsync(email, "Proposta recebida", html);
+    }
+
+    public async Task SendPaymentLink(string email, string name, string paymentLink, decimal value, DateOnly dueDate)
+    {
+        var html = PaymentEmailBuilder.BuildPaymentCreated(name, paymentLink, value, dueDate);
+        await sender.SendEmailAsync(email, "Pagamento do plano", html);
     }
 }

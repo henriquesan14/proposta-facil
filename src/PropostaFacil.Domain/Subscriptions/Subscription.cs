@@ -50,18 +50,16 @@ namespace PropostaFacil.Domain.Subscriptions
             ProposalsUsed = 0;
         }
 
-        public void AddPayment(decimal amount, DateOnly paidDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink)
+        public void AddPayment(decimal amount, DateOnly dueDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink)
         {
-            var payment = Payment.Create(amount, paidDate, billingType, paymentAsaasId, paymentLink);
+            var payment = Payment.Create(amount, dueDate, billingType, paymentAsaasId, paymentLink);
             payment.SetSubscription(Id);
 
             _payments.Add(payment);
-            AddDomainEvent(new PaymentApprovedEvent(payment, this));
         }
 
         public void Activate() {
-            if (Status == SubscriptionStatusEnum.Active)
-                return;
+            if (Status == SubscriptionStatusEnum.Active) return;
 
             Status = SubscriptionStatusEnum.Active;
             StartDate = DateTime.Now;

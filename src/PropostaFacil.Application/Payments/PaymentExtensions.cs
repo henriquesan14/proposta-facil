@@ -13,7 +13,8 @@ public static class PaymentExtensions
             payment.Amount,
             payment.Currency,
             payment.BillingType,
-            payment.PaidDate,
+            payment.PaymentDate,
+            payment.DueDate,
             payment.PaymentAsaasId,
             payment.PaymentLink
         );

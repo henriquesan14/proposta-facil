@@ -27,7 +27,11 @@ namespace PropostaFacil.Infra.Data.Configurations
             builder.Property(p => p.BillingType)
                 .IsRequired();
 
-            builder.Property(p => p.PaidDate)
+            builder.Property(p => p.PaymentDate)
+                .HasColumnType("date")
+                .IsRequired(false);
+
+            builder.Property(p => p.DueDate)
                 .HasColumnType("date")
                 .IsRequired();
 
