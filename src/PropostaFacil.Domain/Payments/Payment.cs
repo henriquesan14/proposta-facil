@@ -40,7 +40,6 @@ namespace PropostaFacil.Domain.Payments
         {
             PaymentDate = paymentDate;
             Status = PaymentStatus.RECEIVED;
-            AddDomainEvent(new PaymentApprovedEvent(this, Subscription!));
         }
 
         public void SetSubscription(SubscriptionId subscriptionId)
