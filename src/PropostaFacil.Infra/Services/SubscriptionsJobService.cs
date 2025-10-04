@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Payments.Specifications;
 using PropostaFacil.Domain.Subscriptions.Specifications;
-using Microsoft.Extensions.Configuration;
 
 namespace PropostaFacil.Infra.Services;
 

@@ -1,20 +1,19 @@
 ﻿using AspNetCoreRateLimit;
 
-namespace PropostaFacil.API.Extensions
+namespace PropostaFacil.API.Extensions;
+
+public static class RateLimitingExtensions
 {
-    public static class RateLimitingExtensions
+    public static IServiceCollection AddRateLimitingConfig(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddRateLimitingConfig(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddMemoryCache();
+        services.AddMemoryCache();
 
-            services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
+        services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));
 
-            services.AddInMemoryRateLimiting();
-            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
-            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+        services.AddInMemoryRateLimiting();
+        services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+        services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
-            return services;
-        }
+        return services;
     }
 }

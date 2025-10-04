@@ -1,22 +1,22 @@
 ﻿using PropostaFacil.Shared.Messaging.Events;
 
-namespace PropostaFacil.Infra.Emails.Builders
-{
-    public static class ProposalEmailBuilder
-    {
-        public static string BuildProposal(string ProposalNumber, string ClientName, DateTime ValidUntil, IEnumerable<ProposalItemIntegrationEvent> Items, decimal TotalAmount)
-        {
-            var itemsRows = string.Join("", Items.Select(i =>
-                $"<tr>" +
-                $"<td>{i.Name}</td>" +
-                $"<td>{i.Description}</td>" +
-                $"<td>{i.Quantity}</td>" +
-                $"<td>{i.UnitPrice:C}</td>" +
-                $"<td>{i.TotalPrice:C}</td>" +
-                $"</tr>"
-            ));
+namespace PropostaFacil.Infra.Emails.Builders;
 
-            return $@"
+public static class ProposalEmailBuilder
+{
+    public static string BuildProposal(string ProposalNumber, string ClientName, DateTime ValidUntil, IEnumerable<ProposalItemIntegrationEvent> Items, decimal TotalAmount)
+    {
+        var itemsRows = string.Join("", Items.Select(i =>
+            $"<tr>" +
+            $"<td>{i.Name}</td>" +
+            $"<td>{i.Description}</td>" +
+            $"<td>{i.Quantity}</td>" +
+            $"<td>{i.UnitPrice:C}</td>" +
+            $"<td>{i.TotalPrice:C}</td>" +
+            $"</tr>"
+        ));
+
+        return $@"
             <html>
                 <body>
                     <h2>Proposta #{ProposalNumber}</h2>
@@ -46,6 +46,5 @@ namespace PropostaFacil.Infra.Emails.Builders
                 </body>
             </html>
             ";
-        }
     }
 }

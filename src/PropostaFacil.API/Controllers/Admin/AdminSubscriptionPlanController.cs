@@ -6,49 +6,48 @@ using PropostaFacil.Application.SubscriptionPlans.Commands.CreateSubscriptionPla
 using PropostaFacil.Application.SubscriptionPlans.Commands.DeleteSubscriptionPlan;
 using PropostaFacil.Application.SubscriptionPlans.Queries.GetSubscriptionPlans;
 
-namespace PropostaFacil.API.Controllers.Admin
+namespace PropostaFacil.API.Controllers.Admin;
+
+[Route("api/admin/subscriptionPlans")]
+[Authorize(Roles = "AdminSystem")]
+public class AdminSubscriptionPlanController(IMediator mediator) : BaseController
 {
-    [Route("api/admin/subscriptionPlans")]
-    [Authorize(Roles = "AdminSystem")]
-    public class AdminSubscriptionPlanController(IMediator mediator) : BaseController
+    [HttpGet]
+    public async Task<IActionResult> Get([FromQuery] GetSubscriptionPlansQuery query, CancellationToken ct)
     {
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] GetSubscriptionPlansQuery query, CancellationToken ct)
-        {
-            var result = await mediator.Send(query, ct);
+        var result = await mediator.Send(query, ct);
 
-            return result.Match(
-                onSuccess: Ok,
-                onFailure: Problem
-            );
-        }
+        return result.Match(
+            onSuccess: Ok,
+            onFailure: Problem
+        );
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateSubscriptionPlanCommand command, CancellationToken ct)
-        {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateSubscriptionPlanCommand command, CancellationToken ct)
+    {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
 
-            var result = await mediator.Send(command, ct);
+        var result = await mediator.Send(command, ct);
 
-            return result.Match(
-                onSuccess: () => Ok(result),
-                onFailure: Problem
-            );
-        }
+        return result.Match(
+            onSuccess: () => Ok(result),
+            onFailure: Problem
+        );
+    }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
-        {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
-            var command = new DeleteSubscriptionPlanCommand(id);
-            var result = await mediator.Send(command, ct);
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
+        var command = new DeleteSubscriptionPlanCommand(id);
+        var result = await mediator.Send(command, ct);
 
-            return result.Match(
-                onSuccess: () => NoContent(),
-                onFailure: Problem
-            );
-        }
+        return result.Match(
+            onSuccess: () => NoContent(),
+            onFailure: Problem
+        );
     }
 }

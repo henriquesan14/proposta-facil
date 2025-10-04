@@ -5,39 +5,38 @@ using PropostaFacil.Application.Payments.Commands.PaymentReceived;
 using Common.ResultPattern;
 using PropostaFacil.Application.Payments.Commands.PaymentOverdue;
 
-namespace PropostaFacil.API.Controllers
+namespace PropostaFacil.API.Controllers;
+
+[Route("api/webhook/asaas")]
+public class AsaasWebhookController(IMediator mediator) : BaseController
 {
-    [Route("api/webhook/asaas")]
-    public class AsaasWebhookController(IMediator mediator) : BaseController
+    [HttpPost("payment-received")]
+    public async Task<IActionResult> Post(PaymentReceivedCommand command)
     {
-        [HttpPost("payment-received")]
-        public async Task<IActionResult> Post(PaymentReceivedCommand command)
-        {
-            var result = await mediator.Send(command);
-            return result.Match(
-                onSuccess: Ok,
-                onFailure: Problem
-            );
-        }
+        var result = await mediator.Send(command);
+        return result.Match(
+            onSuccess: Ok,
+            onFailure: Problem
+        );
+    }
 
-        [HttpPost("payment-created")]
-        public async Task<IActionResult> PaymentCreated(PaymentCreatedCommand command)
-        {
-            var result = await mediator.Send(command);
-            return result.Match(
-                onSuccess: Ok,
-                onFailure: Problem
-            );
-        }
+    [HttpPost("payment-created")]
+    public async Task<IActionResult> PaymentCreated(PaymentCreatedCommand command)
+    {
+        var result = await mediator.Send(command);
+        return result.Match(
+            onSuccess: Ok,
+            onFailure: Problem
+        );
+    }
 
-        [HttpPost("payment-overdue")]
-        public async Task<IActionResult> PaymentOverdue(PaymentOverdueCommand command)
-        {
-            var result = await mediator.Send(command);
-            return result.Match(
-                onSuccess: Ok,
-                onFailure: Problem
-            );
-        }
+    [HttpPost("payment-overdue")]
+    public async Task<IActionResult> PaymentOverdue(PaymentOverdueCommand command)
+    {
+        var result = await mediator.Send(command);
+        return result.Match(
+            onSuccess: Ok,
+            onFailure: Problem
+        );
     }
 }

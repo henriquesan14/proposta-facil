@@ -4,49 +4,48 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Abstractions;
 
-namespace PropostaFacil.Infra.Data.Interceptors
+namespace PropostaFacil.Infra.Data.Interceptors;
+
+public class AuditableEntityInterceptor(ICurrentUserService currentUserService) : SaveChangesInterceptor
 {
-    public class AuditableEntityInterceptor(ICurrentUserService currentUserService) : SaveChangesInterceptor
+    public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
-        public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
-        {
-            UpdateEntities(eventData.Context);
-            return base.SavingChanges(eventData, result);
-        }
+        UpdateEntities(eventData.Context);
+        return base.SavingChanges(eventData, result);
+    }
 
-        public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
-        {
-            UpdateEntities(eventData.Context);
-            return base.SavingChangesAsync(eventData, result, cancellationToken);
-        }
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+    {
+        UpdateEntities(eventData.Context);
+        return base.SavingChangesAsync(eventData, result, cancellationToken);
+    }
 
-        public void UpdateEntities(DbContext? context)
-        {
-            if (context == null) return;
+    public void UpdateEntities(DbContext? context)
+    {
+        if (context == null) return;
 
-            foreach (var entry in context.ChangeTracker.Entries<IEntity>())
+        foreach (var entry in context.ChangeTracker.Entries<IEntity>())
+        {
+            if (entry.State == EntityState.Added)
             {
-                if (entry.State == EntityState.Added)
-                {
-                    if (currentUserService!.UserId != null) entry.Entity.CreatedBy = currentUserService.UserId;
-                    entry.Entity.CreatedAt = DateTime.Now;
-                }
+                if (currentUserService!.UserId != null) entry.Entity.CreatedBy = currentUserService.UserId;
+                entry.Entity.CreatedAt = DateTime.Now;
+            }
 
-                if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
-                {
-                    if (currentUserService!.UserId != null) entry.Entity.LastModifiedBy = currentUserService.UserId;
-                    entry.Entity.LastModified = DateTime.Now;
-                }
+            if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
+            {
+                if (currentUserService!.UserId != null) entry.Entity.LastModifiedBy = currentUserService.UserId;
+                entry.Entity.LastModified = DateTime.Now;
             }
         }
     }
+}
 
-    public static class Extensions
-    {
-        public static bool HasChangedOwnedEntities(this EntityEntry entry) =>
-            entry.References.Any(r =>
-                r.TargetEntry != null &&
-                r.TargetEntry.Metadata.IsOwned() &&
-                (r.TargetEntry.State == EntityState.Added || r.TargetEntry.State == EntityState.Modified));
-    }
+public static class Extensions
+{
+    public static bool HasChangedOwnedEntities(this EntityEntry entry) =>
+        entry.References.Any(r =>
+            r.TargetEntry != null &&
+            r.TargetEntry.Metadata.IsOwned() &&
+            (r.TargetEntry.State == EntityState.Added || r.TargetEntry.State == EntityState.Modified));
 }

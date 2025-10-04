@@ -1,8 +1,5 @@
 ﻿namespace Common.ResultPattern;
 
-/// <summary>
-/// Represents the types of errors that can occur in the application.
-/// </summary>
 public enum ErrorType
 {
     Failure = 0,

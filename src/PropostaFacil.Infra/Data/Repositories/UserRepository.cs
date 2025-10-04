@@ -2,12 +2,11 @@
 using PropostaFacil.Domain.Users;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
-namespace PropostaFacil.Infra.Data.Repositories
+namespace PropostaFacil.Infra.Data.Repositories;
+
+public class UserRepository : NoSaveEfRepository<User, UserId>, IUserRepository
 {
-    public class UserRepository : NoSaveEfRepository<User, UserId>, IUserRepository
+    public UserRepository(PropostaFacilDbContext dbContext) : base(dbContext)
     {
-        public UserRepository(PropostaFacilDbContext dbContext) : base(dbContext)
-        {
-        }
     }
 }

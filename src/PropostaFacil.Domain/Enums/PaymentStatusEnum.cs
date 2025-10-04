@@ -1,11 +1,10 @@
-﻿namespace PropostaFacil.Domain.Enums
+﻿namespace PropostaFacil.Domain.Enums;
+
+public enum PaymentStatus
 {
-    public enum PaymentStatus
-    {
-        PENDING,
-        RECEIVED,
-        CONFIRMED,
-        OVERDUE,
-        REFUNDED
-    }
+    PENDING,
+    RECEIVED,
+    CONFIRMED,
+    OVERDUE,
+    REFUNDED
 }

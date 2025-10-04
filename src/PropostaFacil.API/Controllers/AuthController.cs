@@ -8,94 +8,93 @@ using PropostaFacil.Application.Auth.Commands.ActivateAccount;
 using PropostaFacil.Application.Auth.Commands.ForgotPassword;
 using PropostaFacil.Application.Auth.Commands.ResetPassword;
 
-namespace PropostaFacil.API.Controllers
+namespace PropostaFacil.API.Controllers;
+
+[Route("api/[controller]")]
+public class AuthController(IMediator mediator) : BaseController
 {
-    [Route("api/[controller]")]
-    public class AuthController(IMediator mediator) : BaseController
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(GenerateAccessTokenCommand command, CancellationToken ct)
     {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(GenerateAccessTokenCommand command, CancellationToken ct)
-        {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
+        var result = await mediator.Send(command, ct);
 
-            var result = await mediator.Send(command, ct);
+        return result.Match(
+            onSuccess: () => Ok(result.Value),
+            onFailure: Problem
+        );
+    }
 
-            return result.Match(
-                onSuccess: () => Ok(result.Value),
-                onFailure: Problem
-            );
-        }
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken(RefreshTokenCommand command, CancellationToken ct)
+    {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
 
-        [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken(RefreshTokenCommand command, CancellationToken ct)
-        {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
+        var result = await mediator.Send(command, ct);
 
-            var result = await mediator.Send(command, ct);
+        return result.Match(
+            onSuccess: () => Ok(result.Value),
+            onFailure: Problem
+        );
+    }
 
-            return result.Match(
-                onSuccess: () => Ok(result.Value),
-                onFailure: Problem
-            );
-        }
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout(RevokeRefreshTokenCommand command, CancellationToken ct)
+    {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
 
-        [HttpPost("logout")]
-        public async Task<IActionResult> Logout(RevokeRefreshTokenCommand command, CancellationToken ct)
-        {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
+        var result = await mediator.Send(command, ct);
 
-            var result = await mediator.Send(command, ct);
+        return result.Match(
+            onSuccess: () => Ok(result),
+            onFailure: Problem
+        );
+    }
 
-            return result.Match(
-                onSuccess: () => Ok(result),
-                onFailure: Problem
-            );
-        }
+    [HttpPost("activate-account")]
+    public async Task<IActionResult> Activate(ActivateAccountCommand command, CancellationToken ct)
+    {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
 
-        [HttpPost("activate-account")]
-        public async Task<IActionResult> Activate(ActivateAccountCommand command, CancellationToken ct)
-        {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
+        var result = await mediator.Send(command, ct);
 
-            var result = await mediator.Send(command, ct);
+        return result.Match(
+            onSuccess: () => NoContent(),
+            onFailure: Problem
+        );
+    }
 
-            return result.Match(
-                onSuccess: () => NoContent(),
-                onFailure: Problem
-            );
-        }
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand command, CancellationToken ct)
+    {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
 
-        [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordCommand command, CancellationToken ct)
-        {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
+        var result = await mediator.Send(command, ct);
 
-            var result = await mediator.Send(command, ct);
+        return result.Match(
+            onSuccess: () => NoContent(),
+            onFailure: Problem
+        );
+    }
 
-            return result.Match(
-                onSuccess: () => NoContent(),
-                onFailure: Problem
-            );
-        }
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword(ResetPasswordCommand command, CancellationToken ct)
+    {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
 
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordCommand command, CancellationToken ct)
-        {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
+        var result = await mediator.Send(command, ct);
 
-            var result = await mediator.Send(command, ct);
-
-            return result.Match(
-                onSuccess: () => NoContent(),
-                onFailure: Problem
-            );
-        }
+        return result.Match(
+            onSuccess: () => NoContent(),
+            onFailure: Problem
+        );
     }
 }

@@ -1,10 +1,10 @@
-﻿namespace PropostaFacil.Infra.Emails.Builders
+﻿namespace PropostaFacil.Infra.Emails.Builders;
+
+public static class PaymentEmailBuilder
 {
-    public static class PaymentEmailBuilder
+    public static string BuildConfirmPayment(string ClientName, decimal Amount, DateOnly? PaymentDate, string PlanName)
     {
-        public static string BuildConfirmPayment(string ClientName, decimal Amount, DateOnly? PaymentDate, string PlanName)
-        {
-            return $@"
+        return $@"
                 <!DOCTYPE html>
                 <html lang='pt-BR'>
                 <head>
@@ -54,11 +54,11 @@
                   </div>
                 </body>
                 </html>";
-        }
+    }
 
-        public static string BuildPaymentCreated(string name, string paymentLink, decimal value, DateOnly dueDate)
-        {
-            return $@"
+    public static string BuildPaymentCreated(string name, string paymentLink, decimal value, DateOnly dueDate)
+    {
+        return $@"
             <!DOCTYPE html>
             <html>
               <head>
@@ -81,11 +81,11 @@
                 <p style=""font-size:12px; color:#999;"">&copy; {DateTime.UtcNow.Year} Seu Sistema</p>
               </body>
             </html>";
-        }
+    }
 
-        public static string BuildPaymentOverdue(string name, string paymentLink, decimal value, DateOnly dueDate)
-        {
-            return $@"
+    public static string BuildPaymentOverdue(string name, string paymentLink, decimal value, DateOnly dueDate)
+    {
+        return $@"
             <!DOCTYPE html>
             <html>
               <head>
@@ -108,6 +108,5 @@
                 <p style=""font-size:12px; color:#999;"">&copy; {DateTime.Now.Year} Seu Sistema</p>
               </body>
             </html>";
-        }
     }
 }

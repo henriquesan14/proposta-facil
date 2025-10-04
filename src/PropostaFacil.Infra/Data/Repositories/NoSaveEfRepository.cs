@@ -3,37 +3,36 @@ using Microsoft.EntityFrameworkCore;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Abstractions;
 
-namespace PropostaFacil.Infra.Data.Repositories
+namespace PropostaFacil.Infra.Data.Repositories;
+
+public class NoSaveEfRepository<TEntity, TId> : RepositoryBase<TEntity>, INoSaveEfRepository<TEntity, TId> where TEntity : Entity<TId>, IAggregate<TId>
 {
-    public class NoSaveEfRepository<TEntity, TId> : RepositoryBase<TEntity>, INoSaveEfRepository<TEntity, TId> where TEntity : Entity<TId>, IAggregate<TId>
+    protected new readonly PropostaFacilDbContext DbContext;
+
+    public NoSaveEfRepository(PropostaFacilDbContext dbContext) : base(dbContext)
     {
-        protected new readonly PropostaFacilDbContext DbContext;
+        DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+    }
 
-        public NoSaveEfRepository(PropostaFacilDbContext dbContext) : base(dbContext)
-        {
-            DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        }
+    public async Task<TEntity> AddAsync(TEntity entity)
+    {
+        await DbContext.Set<TEntity>().AddAsync(entity);
+        return entity;
+    }
 
-        public async Task<TEntity> AddAsync(TEntity entity)
-        {
-            await DbContext.Set<TEntity>().AddAsync(entity);
-            return entity;
-        }
+    public void Update(TEntity entity)
+    {
+        DbContext.Entry(entity).State = EntityState.Modified;
+    }
 
-        public void Update(TEntity entity)
-        {
-            DbContext.Entry(entity).State = EntityState.Modified;
-        }
+    public void Remove(TEntity entity)
+    {
+        entity.IsActive = false;
 
-        public void Remove(TEntity entity)
-        {
-            entity.IsActive = false;
-
-            DbContext.Entry(entity).Property(e => e.IsActive).IsModified = true;
-        }
-        public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
-        {
-            await DbContext.Set<TEntity>().AddRangeAsync(entities);
-        }
+        DbContext.Entry(entity).Property(e => e.IsActive).IsModified = true;
+    }
+    public virtual async Task AddRangeAsync(IEnumerable<TEntity> entities)
+    {
+        await DbContext.Set<TEntity>().AddRangeAsync(entities);
     }
 }
