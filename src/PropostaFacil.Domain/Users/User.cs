@@ -42,7 +42,7 @@ namespace PropostaFacil.Domain.Users
 
         public string? ForgottenToken { get; set; } = default!;
 
-        public DateTimeOffset? ForgottenTokenExpiry { get; set; } = default!;
+        public DateTime? ForgottenTokenExpiry { get; set; } = default!;
 
         public TenantId? TenantId { get; private set; } = default!;
         public Tenant Tenant { get; private set; } = default!;
@@ -61,7 +61,8 @@ namespace PropostaFacil.Domain.Users
             CheckRule(new MustBeVerifiedRule(this));
             CheckRule(new MustBeActiveRule(this));
             ForgottenToken = Guid.NewGuid().ToString();
-            ForgottenTokenExpiry = DateTime.Now + TimeSpan.FromHours(24);
+            ForgottenTokenExpiry = DateTime.Now.AddHours(24);
+            AddDomainEvent(new ForgotPasswordEvent(this));
         }
 
         public void ResetPassword(string token, string password, IPasswordHash hasher)

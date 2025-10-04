@@ -7,4 +7,4 @@ public record PaymentCreatedIntegrationEvent(
     DateOnly PaymentDueDate,
     int PaymentBillingType,
     string PaymentInvoiceUrl
-);
+) : IntegrationEvent;

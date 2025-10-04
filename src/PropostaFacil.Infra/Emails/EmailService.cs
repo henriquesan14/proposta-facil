@@ -1,5 +1,4 @@
 ﻿using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Users;
 using PropostaFacil.Infra.Emails.Builders;
 using PropostaFacil.Shared.Messaging.Events;
 
@@ -13,10 +12,10 @@ public class EmailService(IEmailSender sender) : IEmailService
         await sender.SendEmailAsync(email, "Verificação de Email", html);
     }
 
-    public async Task SendForgotPassword(User user)
+    public async Task SendForgotPassword(string email, string name, string resetPasswordLink)
     {
-        var html = UserEmailBuilder.BuildSendForgotPassword(user.Name);
-        await sender.SendEmailAsync(user.Contact.Email, "Esqueceu sua senha", html);
+        var html = UserEmailBuilder.BuildSendForgotPassword(name, resetPasswordLink);
+        await sender.SendEmailAsync(email, "Esqueceu sua senha", html);
     }
 
     public async Task SendConfirmPayment(string email, string clientName, decimal amount, DateOnly? paymentDate, string planName)

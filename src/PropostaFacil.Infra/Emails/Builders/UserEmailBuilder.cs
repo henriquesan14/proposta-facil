@@ -27,7 +27,7 @@ public class UserEmailBuilder
             </html>";
     }
 
-    public static string BuildSendForgotPassword(string Name)
+    public static string BuildSendForgotPassword(string Name, string ResetPasswordLink)
     {
         return $@"
             <!DOCTYPE html>
@@ -41,7 +41,7 @@ public class UserEmailBuilder
                 <p>Recebemos uma solicitação para redefinir sua senha.</p>
                 <p>Clique no botão abaixo para criar uma nova senha:</p>
                 <p>
-                  <a href=""{{{{resetLink}}}}"" style=""display:inline-block; padding:10px 20px; color:#fff; background-color:#6a0dad; text-decoration:none; border-radius:5px;"">
+                  <a href=""{ResetPasswordLink}"" style=""display:inline-block; padding:10px 20px; color:#fff; background-color:#6a0dad; text-decoration:none; border-radius:5px;"">
                     Redefinir Senha
                   </a>
                 </p>

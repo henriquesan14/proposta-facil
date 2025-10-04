@@ -15,5 +15,8 @@ namespace PropostaFacil.Application.Auth
         public static Error InvalidVerifiedToken() =>
             Error.AccessUnAuthorized("Auth.Unauthorized", $"Token de verificação inválido");
 
+        public static Error UserEmailNotFound(string email) =>
+            Error.NotFound("Auth.Unauthorized", $"User with {email} not found");
+
     }
 }
