@@ -47,4 +47,10 @@ public class EmailService(IEmailSender sender) : IEmailService
         var html = PaymentEmailBuilder.BuildPaymentOverdue(name, paymentLink, value, dueDate);
         await sender.SendEmailAsync(email, "Sua fatura de assinatura está vencida", html);
     }
+
+    public async Task SendSubscriptionExpired(string email, string name, string paymentLink, decimal value, DateOnly dueDate)
+    {
+        var html = SubscriptionEmailBuilder.BuildSubscriptionExpired(name, paymentLink, value, dueDate);
+        await sender.SendEmailAsync(email, "Sua assinatura expirou por falta de pagamento", html);
+    }
 }

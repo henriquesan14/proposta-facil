@@ -71,6 +71,7 @@ namespace PropostaFacil.Infra
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ITokenCleanupService, TokenCleanupService>();
+            services.AddScoped<ISubscriptionsJobService, SubscriptionsJobService>();
             services.AddScoped<IEmailSender, SendGridEmailSender>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IAsaasService, AsaasService>();

@@ -1,4 +1,6 @@
 ﻿using Hangfire.Dashboard;
+using PropostaFacil.Domain.Enums;
+using System.Security.Claims;
 
 namespace PropostaFacil.API.Filters
 {
@@ -11,7 +13,7 @@ namespace PropostaFacil.API.Filters
             if (httpContext.User.Identity?.IsAuthenticated != true)
                 return false;
 
-            return httpContext.User.HasClaim("Permissions", "HANGFIRE");
+            return httpContext.User.HasClaim(ClaimTypes.Role, UserRoleEnum.AdminSystem.ToString());
         }
     }
 }

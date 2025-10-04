@@ -1,19 +1,22 @@
-﻿using PropostaFacil.Application.Auth;
+﻿using Microsoft.Extensions.Logging;
+using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.RefreshTokens.Specifications;
 
-namespace PropostaFacil.Infra.Services
+namespace PropostaFacil.Infra.Services;
+
+public class TokenCleanupService(IUnitOfWork unitOfWork, ILogger<TokenCleanupService> logger) : ITokenCleanupService
 {
-    public class TokenCleanupService(IUnitOfWork unitOfWork) : ITokenCleanupService
+    public async Task CleanupExpiredAndRevokedTokensAsync()
     {
-        public async Task CleanupExpiredAndRevokedTokensAsync()
-        {
-            var tokensExpireds = await unitOfWork.RefreshTokens
-                .ListAsync(new ListInvalidRefreshTokensSpecification());
+        logger.LogInformation("⏰ Iniciando job de limpeza de tokens revogados e expirados em {Date}", DateTime.Now);
+        var tokensExpireds = await unitOfWork.RefreshTokens
+            .ListAsync(new ListInvalidRefreshTokensSpecification());
 
-            await unitOfWork.RefreshTokens.DeleteRange(tokensExpireds.Select(t => t.Id).ToList());
+        await unitOfWork.RefreshTokens.DeleteRange(tokensExpireds.Select(t => t.Id).ToList());
 
-            await unitOfWork.CompleteAsync();
-        }
+        await unitOfWork.CompleteAsync();
+
+        logger.LogInformation("✅ Job de limpeza de tokens revogados e expirados concluído com sucesso ({Count} tokens apagados)", tokensExpireds.Count);
     }
 }
