@@ -65,9 +65,9 @@ public class PropostaFacilDbContext : DbContext
 
     private void ApplyGlobalIsActiveFilter(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Tenant>().HasQueryFilter(x => x.Id == _tenantId && x.IsActive);
-        modelBuilder.Entity<Client>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
-        modelBuilder.Entity<User>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
+        modelBuilder.Entity<Tenant>().HasQueryFilter(x => x.Id == _tenantId);
+        modelBuilder.Entity<Client>().HasQueryFilter(x => x.TenantId == _tenantId);
+        modelBuilder.Entity<User>().HasQueryFilter(x => x.TenantId == _tenantId);
         modelBuilder.Entity<Proposal>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
         modelBuilder.Entity<Subscription>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
 

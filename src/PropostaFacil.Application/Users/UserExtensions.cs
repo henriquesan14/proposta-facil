@@ -12,7 +12,9 @@ public static class UserExtensions
             user.Contact.Email,
             user.Contact.PhoneNumber,
             user.Role,
-            user.TenantId?.Value
+            user.TenantId?.Value,
+            user.IsActive,
+            user.CreatedAt
         );
     }
 

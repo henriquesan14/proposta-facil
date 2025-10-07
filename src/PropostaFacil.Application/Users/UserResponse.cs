@@ -2,4 +2,4 @@
 
 namespace PropostaFacil.Application.Users;
 
-public record UserResponse(Guid Id, string Name, string Email, string PhoneNumber, UserRoleEnum Role, Guid? TenantId);
+public record UserResponse(Guid Id, string Name, string Email, string PhoneNumber, UserRoleEnum Role, Guid? TenantId, bool IsActive, DateTime? CreatedAt);

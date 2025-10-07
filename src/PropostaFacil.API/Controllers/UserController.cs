@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Users.Commands.CreateUser;
+using PropostaFacil.Application.Users.Commands.DeleteUser;
 using PropostaFacil.Application.Users.Queries.GetUserById;
 using PropostaFacil.Application.Users.Queries.GetUsers;
 
@@ -47,6 +48,18 @@ public class UserController(IMediator mediator) : BaseController
     {
         var query = new GetUserByIdQuery(id);
         var result = await mediator.Send(query, ct);
+
+        return result.Match(
+            onSuccess: Ok,
+            onFailure: Problem
+        );
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var command = new DeleteUserCommand(id);
+        var result = await mediator.Send(command, ct);
 
         return result.Match(
             onSuccess: Ok,

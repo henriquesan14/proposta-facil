@@ -10,7 +10,7 @@ public class GetUsersQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<GetUse
 {
     public async Task<ResultT<PaginatedResult<UserResponse>>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
-        var spec = new ListUsersSpecification(request.Name, request.Role);
+        var spec = new ListUsersSpecification(request.Name, request.Role, request.OnlyActive);
         var paginated = await unitOfWork.Users
             .ToPaginatedListAsync(spec, request.PageIndex, request.PageSize, u => u.ToDto());
 
