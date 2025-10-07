@@ -6,15 +6,16 @@ namespace PropostaFacil.Domain.Tenants.Specifications;
 
 public class ListTenantsGlobalSpecification : GlobalSpecification<Tenant, TenantId>
 {
-    public ListTenantsGlobalSpecification(string? name, string? document)
+    public ListTenantsGlobalSpecification(string? name, string? document, bool onlyActive)
     {
         Query
             .Where(
                 p =>
+                (!onlyActive || p.IsActive) &&
                 (string.IsNullOrEmpty(name) ||
                     p.Name.ToLower().Contains(name.ToLower())) &&
                 (string.IsNullOrEmpty(document) ||
                     p.Document.Number == document
-            ) && p.IsActive);
+            ));
     }
 }

@@ -13,5 +13,7 @@ public interface IAsaasService
     Task<string> GetCustomerIdByCpfCnpj(string cpfCnpj);
     Task<string> CreateCustomer(CustomerAsaasRequest request);
     Task<DeleteResponse> DeleteCustomer(string clientId);
+
+    Task<DeleteResponse> DeleteSubscription(string subscriptionId);
     Task<PaymentLinkAsaasResponse> CreatePaymentLink(PaymentLinkAsaasRequest request);
 }

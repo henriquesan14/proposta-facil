@@ -20,7 +20,9 @@ public static class SubscriptionExtensions
             subscription.SubscriptionAsaasId,
             subscription.PaymentLink,
             subscription.Tenant?.ToDto()!,
-            subscription.Payments.ToDto()
+            subscription.Payments.ToDto(),
+            subscription.IsActive,
+            subscription.CreatedAt
         );
     }
 

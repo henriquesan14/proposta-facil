@@ -9,7 +9,7 @@ public class GetSubscriptionPlansQueryHandler(IUnitOfWork unitOfWork) : IQueryHa
 {
     public async Task<ResultT<IEnumerable<SubscriptionPlanResponse>>> Handle(GetSubscriptionPlansQuery request, CancellationToken cancellationToken)
     {
-        var result = await unitOfWork.SubscriptionPlans.ListAsync(new ListSubscriptionPlansGlobalSpecification(request.Name));
+        var result = await unitOfWork.SubscriptionPlans.ListAsync(new ListSubscriptionPlansGlobalSpecification(request.Name, request.OnlyActive));
 
         return result.ToDto();
     }

@@ -27,7 +27,7 @@ public class AdminTenantController(IMediator mediator) : BaseController
         );
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
     {
         var query = new GetTenantByIdGuery(id);

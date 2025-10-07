@@ -7,11 +7,13 @@ namespace PropostaFacil.Domain.SubscriptionPlans.Specifications;
 
 public class ListSubscriptionPlansGlobalSpecification : GlobalSpecification<SubscriptionPlan, SubscriptionPlanId>
 {
-    public ListSubscriptionPlansGlobalSpecification(string? name)
+    public ListSubscriptionPlansGlobalSpecification(string? name, bool onlyActive)
     {
         Query
-            .Where(sp => (string.IsNullOrEmpty(name) ||
-                    sp.Name.ToLower().Contains(name.ToLower())) && sp.IsActive)
+            .Where(sp =>
+                (!onlyActive || sp.IsActive) &&
+                (string.IsNullOrEmpty(name) ||
+                    sp.Name.ToLower().Contains(name.ToLower())))
             .OrderBy(sp => sp.Price);
     }
 }

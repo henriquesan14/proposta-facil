@@ -5,4 +5,4 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Application.Users;
 
-public interface IUserRepository : IReadRepositoryBase<User>, INoSaveEfRepository<User, UserId>;
+public interface IUserRepository : IReadRepositoryBase<User>, INoSaveSoftDeleteEfRepository<User, UserId>;

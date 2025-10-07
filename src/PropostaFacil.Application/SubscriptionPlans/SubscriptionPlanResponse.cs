@@ -1,3 +1,3 @@
 ﻿namespace PropostaFacil.Application.SubscriptionPlans;
 
-public record SubscriptionPlanResponse(Guid Id, string Name, int MaxProposalsPerMonth, decimal Price, string Description);
+public record SubscriptionPlanResponse(Guid Id, string Name, int MaxProposalsPerMonth, decimal Price, string Description, bool IsActive, DateTime? CreatedAt);

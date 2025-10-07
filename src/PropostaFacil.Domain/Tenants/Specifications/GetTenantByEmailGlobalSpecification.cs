@@ -9,6 +9,6 @@ public class GetTenantByEmailGlobalSpecification : GlobalSingleResultSpecificati
     public GetTenantByEmailGlobalSpecification(string email)
     {
         Query
-            .Where(x => x.Contact.Email.Equals(email));
+            .Where(x => x.Contact.Email.Equals(email) && x.IsActive);
     }
 }

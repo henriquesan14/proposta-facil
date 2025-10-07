@@ -54,7 +54,7 @@ public static class DependencyInjection
         });
 
         //Repositories
-        services.AddScoped(typeof(INoSaveEfRepository<,>), typeof(NoSaveEfRepository<,>));
+        services.AddScoped(typeof(INoSaveSoftDeleteEfRepository<,>), typeof(NoSaveSoftDeleteEfRepository<,>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ITenantRepository, TenantRepository>();
         services.AddScoped<IClientRepository, ClientRepository>();

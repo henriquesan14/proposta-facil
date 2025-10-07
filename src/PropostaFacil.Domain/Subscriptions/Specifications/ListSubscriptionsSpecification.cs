@@ -7,10 +7,11 @@ namespace PropostaFacil.Domain.Subscriptions.Specifications;
 
 public class ListSubscriptionsSpecification : GlobalSpecification<Subscription, SubscriptionId>
 {
-    public ListSubscriptionsSpecification(string? tenantName, Guid? subscriptionPlanId, SubscriptionStatusEnum? status, DateTime? startDate, DateTime? endDate)
+    public ListSubscriptionsSpecification(string? tenantName, Guid? subscriptionPlanId, SubscriptionStatusEnum? status, DateTime? startDate, DateTime? endDate, bool onlyActive)
     {
         Query
             .Where(s =>
+                (!onlyActive || s.IsActive) &&
                 (string.IsNullOrEmpty(tenantName) || s.Tenant.Name.ToLower().Contains(tenantName.ToLower())) &&
                 (!subscriptionPlanId.HasValue || s.SubscriptionPlanId == SubscriptionPlanId.Of(subscriptionPlanId.Value)) &&
                 (!status.HasValue || s.Status == status.Value) &&

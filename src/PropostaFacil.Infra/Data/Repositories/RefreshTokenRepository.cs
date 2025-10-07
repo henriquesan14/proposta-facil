@@ -5,7 +5,7 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Repositories;
 
-public class RefreshTokenRepository : NoSaveEfRepository<RefreshToken, RefreshTokenId>, IRefreshTokenRepository
+public class RefreshTokenRepository : NoSaveSoftDeleteEfRepository<RefreshToken, RefreshTokenId>, IRefreshTokenRepository
 {
     public RefreshTokenRepository(PropostaFacilDbContext dbContext) : base(dbContext)
     {

@@ -29,7 +29,9 @@ public class EnqueteConfiguration : IEntityTypeConfiguration<Tenant>
                .IsRequired()
                .HasMaxLength(20);
 
-            doc.HasIndex(d => d.Number).IsUnique();
+            doc.HasIndex(d => d.Number)
+                .IsUnique()
+                .HasFilter("\"IsActive\" = TRUE");
         });
 
         builder.OwnsOne(c => c.Contact, contact =>
@@ -38,7 +40,8 @@ public class EnqueteConfiguration : IEntityTypeConfiguration<Tenant>
                 .HasMaxLength(255);
 
             contact.HasIndex(c => c.Email)
-                .IsUnique();
+                .IsUnique()
+                .HasFilter("\"IsActive\" = TRUE");
 
             contact.Property(cn => cn.PhoneNumber)
                 .HasMaxLength(20);

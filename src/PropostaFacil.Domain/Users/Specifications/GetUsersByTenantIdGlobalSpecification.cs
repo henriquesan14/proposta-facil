@@ -8,6 +8,6 @@ public class GetUsersByTenantIdGlobalSpecification : GlobalSpecification<User, U
 {
     public GetUsersByTenantIdGlobalSpecification(TenantId tenantId)
     {
-        Query.Where(u => u.TenantId == tenantId);
+        Query.Where(u => u.TenantId == tenantId && u.IsActive);
     }
 }

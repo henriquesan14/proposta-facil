@@ -4,7 +4,7 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Infra.Data.Repositories;
 
-public class ProposalRepository : NoSaveEfRepository<Proposal, ProposalId>, IProposalRepository
+public class ProposalRepository : NoSaveSoftDeleteEfRepository<Proposal, ProposalId>, IProposalRepository
 {
     public ProposalRepository(PropostaFacilDbContext dbContext) : base(dbContext)
     {

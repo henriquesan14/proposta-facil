@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PropostaFacil.Infra.Data;
@@ -11,9 +12,11 @@ using PropostaFacil.Infra.Data;
 namespace PropostaFacil.Infra.Migrations
 {
     [DbContext(typeof(PropostaFacilDbContext))]
-    partial class PropostaFacilDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251006214443_UniqueEmailTenant")]
+    partial class UniqueEmailTenant
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,17 +30,11 @@ namespace PropostaFacil.Infra.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Contact_Email")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Document_Number")
-                        .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -58,13 +55,7 @@ namespace PropostaFacil.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId", "Contact_Email")
-                        .IsUnique()
-                        .HasFilter("\"IsActive\" = TRUE");
-
-                    b.HasIndex("TenantId", "Document_Number")
-                        .IsUnique()
-                        .HasFilter("\"IsActive\" = TRUE");
+                    b.HasIndex("TenantId");
 
                     b.ToTable("Clients", (string)null);
                 });
@@ -555,11 +546,10 @@ namespace PropostaFacil.Infra.Migrations
 
                             b1.HasKey("ClientId");
 
-                            b1.ToTable("Clients", t =>
-                                {
-                                    t.Property("Email")
-                                        .HasColumnName("Contact_Email1");
-                                });
+                            b1.HasIndex("Email")
+                                .IsUnique();
+
+                            b1.ToTable("Clients");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClientId");
@@ -577,11 +567,7 @@ namespace PropostaFacil.Infra.Migrations
 
                             b1.HasKey("ClientId");
 
-                            b1.ToTable("Clients", t =>
-                                {
-                                    t.Property("Number")
-                                        .HasColumnName("Document_Number1");
-                                });
+                            b1.ToTable("Clients");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClientId");
@@ -833,8 +819,7 @@ namespace PropostaFacil.Infra.Migrations
                             b1.HasKey("UserId");
 
                             b1.HasIndex("Email")
-                                .IsUnique()
-                                .HasFilter("\"IsActive\" = TRUE");
+                                .IsUnique();
 
                             b1.ToTable("Users");
 

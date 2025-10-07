@@ -27,9 +27,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             contact.Property(cn => cn.Email)
                 .HasMaxLength(255);
 
-            contact.HasIndex(c => c.Email)
-                .IsUnique();
-
             contact.Property(cn => cn.PhoneNumber)
                 .HasMaxLength(20);
         });
@@ -45,7 +42,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.TenantId)
             .HasConversion(
-                id => id.Value,
+                id => id!.Value,
                 value => TenantId.Of(value));
 
         builder.HasOne(u => u.Tenant)

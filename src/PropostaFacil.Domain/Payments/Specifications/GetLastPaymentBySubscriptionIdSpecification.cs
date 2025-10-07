@@ -7,7 +7,7 @@ public class GetLastPaymentBySubscriptionIdSpecification : SingleResultSpecifica
 {
     public GetLastPaymentBySubscriptionIdSpecification(SubscriptionId subscriptionId)
     {
-        Query.Where(p => p.SubscriptionId == subscriptionId)
+        Query.Where(p => p.SubscriptionId == subscriptionId && p.IsActive)
              .OrderByDescending(p => p.DueDate)
              .Take(1);
     }

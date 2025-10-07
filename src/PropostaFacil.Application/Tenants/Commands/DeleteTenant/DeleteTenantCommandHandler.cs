@@ -15,7 +15,7 @@ public class DeleteTenantCommandHandler(IUnitOfWork unitOfWork, IAsaasService as
 
         await unitOfWork.BeginTransaction();
 
-        unitOfWork.Tenants.Remove(tenant);
+        unitOfWork.Tenants.SoftDelete(tenant);
 
         await asaasService.DeleteCustomer(tenant.AsaasId);
 

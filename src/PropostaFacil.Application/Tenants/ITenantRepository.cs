@@ -5,4 +5,4 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Application.Tenants;
 
-public interface ITenantRepository : IReadRepositoryBase<Tenant>, INoSaveEfRepository<Tenant, TenantId>;
+public interface ITenantRepository : IReadRepositoryBase<Tenant>, INoSaveSoftDeleteEfRepository<Tenant, TenantId>;

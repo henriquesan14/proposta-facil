@@ -27,16 +27,12 @@ public class ClientConfiguration : IEntityTypeConfiguration<Client>
             doc.Property(d => d.Number)
                .IsRequired()
                .HasMaxLength(20);
-
         });
 
         builder.OwnsOne(c => c.Contact, contact =>
         {
             contact.Property(cn => cn.Email)
                 .HasMaxLength(255);
-
-            contact.HasIndex(c => c.Email)
-                .IsUnique();
 
             contact.Property(cn => cn.PhoneNumber)
                 .HasMaxLength(20);

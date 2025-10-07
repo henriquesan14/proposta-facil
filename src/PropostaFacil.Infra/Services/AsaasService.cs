@@ -3,6 +3,7 @@ using PropostaFacil.Application.Shared.Exceptions;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Shared.Request;
 using PropostaFacil.Application.Shared.Response;
+using PropostaFacil.Domain.ValueObjects.Ids;
 using RestSharp;
 using System.Net;
 using System.Text.Json;
@@ -82,6 +83,12 @@ public class AsaasService : IAsaasService
     public async Task<DeleteResponse> DeleteCustomer(string clientId)
     {
         var response = await SendRequestAsync<DeleteResponse>($"customers/{clientId}", Method.Delete);
+        return response;
+    }
+
+    public async Task<DeleteResponse> DeleteSubscription(string subscriptionId)
+    {
+        var response = await SendRequestAsync<DeleteResponse>($"subscriptions/{subscriptionId}", Method.Delete);
         return response;
     }
 

@@ -10,7 +10,7 @@ public class GetTenantsQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<GetT
 {
     public async Task<ResultT<PaginatedResult<TenantResponse>>> Handle(GetTenantsQuery request, CancellationToken cancellationToken)
     {
-        var spec = new ListTenantsGlobalSpecification(request.Name, request.Document);
+        var spec = new ListTenantsGlobalSpecification(request.Name, request.Document, request.OnlyActive);
         var paginated = await unitOfWork.Tenants.ToPaginatedListAsync(spec, request.PageIndex, request.PageSize, t => t.ToDto());
 
         return paginated;

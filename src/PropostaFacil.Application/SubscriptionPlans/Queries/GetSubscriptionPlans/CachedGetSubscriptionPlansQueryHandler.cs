@@ -10,7 +10,8 @@ public class CachedGetSubscriptionPlansQueryHandler(IQueryHandler<GetSubscriptio
     public async Task<ResultT<IEnumerable<SubscriptionPlanResponse>>> Handle(GetSubscriptionPlansQuery request, CancellationToken cancellationToken)
     {
         var nameKey = request.Name?.ToLower() ?? "all";
-        var cacheKey = $"SubscriptionPlans:{nameKey}";
+        var activeKey = request.OnlyActive ? "active" : "all";
+        var cacheKey = $"SubscriptionPlans:{nameKey}:{activeKey}";
 
         var cached = await memoryCacheService.Get<IEnumerable<SubscriptionPlanResponse>>(cacheKey);
         if (cached != null)

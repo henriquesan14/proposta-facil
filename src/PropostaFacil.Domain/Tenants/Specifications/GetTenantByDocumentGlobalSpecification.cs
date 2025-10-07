@@ -9,6 +9,6 @@ public class GetTenantByDocumentGlobalSpecification : GlobalSingleResultSpecific
     public GetTenantByDocumentGlobalSpecification(string document)
     {
         Query
-            .Where(t => t.Document.Number == document);
+            .Where(t => t.Document.Number == document && t.IsActive);
     }
 }

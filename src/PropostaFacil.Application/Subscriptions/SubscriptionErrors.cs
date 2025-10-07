@@ -5,7 +5,7 @@ namespace PropostaFacil.Application.Subscriptions;
 public class SubscriptionErrors
 {
     public static Error NotFound(Guid id) =>
-        Error.NotFound("Subscriptions.NotFound", $"SubscriptionPlan with Id: {id} not found");
+        Error.NotFound("Subscriptions.NotFound", $"Subscription with Id: {id} not found");
 
     public static Error NoSubscriptionTenant() =>
         Error.NotFound("Subscriptions.NoSubscriptionTenant", $"No subscriptions on this tenant");

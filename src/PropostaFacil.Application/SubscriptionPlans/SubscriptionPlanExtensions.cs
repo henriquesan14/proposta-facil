@@ -11,7 +11,9 @@ public static class SubscriptionPlanExtensions
             subscriptionPlan.Name,
             subscriptionPlan.MaxProposalsPerMonth,
             subscriptionPlan.Price,
-            subscriptionPlan.Description
+            subscriptionPlan.Description,
+            subscriptionPlan.IsActive,
+            subscriptionPlan.CreatedAt
         );
     }
 

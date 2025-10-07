@@ -10,7 +10,7 @@ public class GetSubscriptionsQueryHandler(IUnitOfWork unitOfWork) : IQueryHandle
 {
     public async Task<ResultT<PaginatedResult<SubscriptionResponse>>> Handle(GetSubscriptionsQuery request, CancellationToken cancellationToken)
     {
-      var spec = new ListSubscriptionsSpecification(request.TenantName, request.SubscriptionPlanId, request.Status, request.StartDate, request.EndDate);
+      var spec = new ListSubscriptionsSpecification(request.TenantName, request.SubscriptionPlanId, request.Status, request.StartDate, request.EndDate, request.OnlyActive);
         var paginated = await unitOfWork.Subscriptions.ToPaginatedListAsync(spec, request.PageIndex, request.PageSize, s => s.ToDto());
 
         return paginated;

@@ -13,7 +13,7 @@ public class DeleteSubscriptionPlanCommandHandler(IUnitOfWork unitOfWork, ICache
         var subscriptionPlan = await unitOfWork.SubscriptionPlans.SingleOrDefaultAsync(new GetSubscriptionPlanByIdGlobalSpecification(SubscriptionPlanId.Of(request.Id)));
         if (subscriptionPlan is null) return SubscriptionPlanErrors.NotFound(request.Id);
 
-        unitOfWork.SubscriptionPlans.Remove(subscriptionPlan);
+        unitOfWork.SubscriptionPlans.SoftDelete(subscriptionPlan);
 
         await unitOfWork.CompleteAsync();
 

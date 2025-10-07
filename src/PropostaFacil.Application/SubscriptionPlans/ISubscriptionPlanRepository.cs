@@ -5,4 +5,4 @@ using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Application.SubscriptionPlans;
 
-public interface ISubscriptionPlanRepository : IReadRepositoryBase<SubscriptionPlan>, INoSaveEfRepository<SubscriptionPlan, SubscriptionPlanId>;
+public interface ISubscriptionPlanRepository : IReadRepositoryBase<SubscriptionPlan>, INoSaveSoftDeleteEfRepository<SubscriptionPlan, SubscriptionPlanId>;

@@ -5,11 +5,11 @@ using PropostaFacil.Domain.Abstractions;
 
 namespace PropostaFacil.Infra.Data.Repositories;
 
-public class NoSaveEfRepository<TEntity, TId> : RepositoryBase<TEntity>, INoSaveEfRepository<TEntity, TId> where TEntity : Entity<TId>, IAggregate<TId>
+public class NoSaveSoftDeleteEfRepository<TEntity, TId> : RepositoryBase<TEntity>, INoSaveSoftDeleteEfRepository<TEntity, TId> where TEntity : Entity<TId>, IAggregate<TId>
 {
     protected new readonly PropostaFacilDbContext DbContext;
 
-    public NoSaveEfRepository(PropostaFacilDbContext dbContext) : base(dbContext)
+    public NoSaveSoftDeleteEfRepository(PropostaFacilDbContext dbContext) : base(dbContext)
     {
         DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
     }
@@ -25,7 +25,7 @@ public class NoSaveEfRepository<TEntity, TId> : RepositoryBase<TEntity>, INoSave
         DbContext.Entry(entity).State = EntityState.Modified;
     }
 
-    public void Remove(TEntity entity)
+    public void SoftDelete(TEntity entity)
     {
         entity.IsActive = false;
 
