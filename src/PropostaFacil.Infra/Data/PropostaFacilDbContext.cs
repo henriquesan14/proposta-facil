@@ -68,11 +68,7 @@ public class PropostaFacilDbContext : DbContext
         modelBuilder.Entity<Tenant>().HasQueryFilter(x => x.Id == _tenantId);
         modelBuilder.Entity<Client>().HasQueryFilter(x => x.TenantId == _tenantId);
         modelBuilder.Entity<User>().HasQueryFilter(x => x.TenantId == _tenantId);
-        modelBuilder.Entity<Proposal>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
-        modelBuilder.Entity<Subscription>().HasQueryFilter(x => x.TenantId == _tenantId && x.IsActive);
-
-        modelBuilder.Entity<SubscriptionPlan>().HasQueryFilter(x => x.IsActive);
-        modelBuilder.Entity<Payment>().HasQueryFilter(x => x.IsActive);
-        modelBuilder.Entity<ProposalItem>().HasQueryFilter(x => x.IsActive);
+        modelBuilder.Entity<Proposal>().HasQueryFilter(x => x.TenantId == _tenantId);
+        modelBuilder.Entity<Subscription>().HasQueryFilter(x => x.TenantId == _tenantId);
     }
 }

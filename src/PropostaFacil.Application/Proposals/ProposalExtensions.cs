@@ -17,7 +17,9 @@ public static class ProposalExtensions
             proposal.TotalAmount.Currency,
             proposal.TotalAmount.Amount,
             proposal.ValidUntil,
-            proposal.Items.ToDto()
+            proposal.Items.ToDto(),
+            proposal.IsActive,
+            proposal.CreatedAt
         );
     }
 

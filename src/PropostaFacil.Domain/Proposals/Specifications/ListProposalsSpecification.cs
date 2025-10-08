@@ -5,10 +5,12 @@ namespace PropostaFacil.Domain.Proposals.Specifications;
 
 public class ListProposalsSpecification : Specification<Proposal>
 {
-    public ListProposalsSpecification(string? documentClient, string? number, string? title, ProposalStatusEnum? proposalStatus)
+    public ListProposalsSpecification(string? documentClient, string? number, string? title, ProposalStatusEnum? proposalStatus, bool onlyActive)
     {
         Query
-            .Where(p => (string.IsNullOrEmpty(documentClient) || p.Client.Document.Number == documentClient) &&
+            .Where(p =>
+            (!onlyActive || p.IsActive) &&
+            (string.IsNullOrEmpty(documentClient) || p.Client.Document.Number == documentClient) &&
                  (string.IsNullOrEmpty(number) ||
                     p.Number == number) &&
                 (string.IsNullOrEmpty(title) ||

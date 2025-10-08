@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Proposals.Commands.CreateProposal;
+using PropostaFacil.Application.Proposals.Commands.DeleteProposal;
 using PropostaFacil.Application.Proposals.Commands.SendProposal;
 using PropostaFacil.Application.Proposals.Commands.UpdateProposal;
 using PropostaFacil.Application.Proposals.Queries.GetProposalById;
@@ -81,6 +82,18 @@ public class ProposalController(IMediator mediator) : BaseController
 
         return result.Match(
             onSuccess: () => NoContent(),
+            onFailure: Problem
+        );
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var command = new DeleteProposalCommand(id);
+        var result = await mediator.Send(command, ct);
+
+        return result.Match(
+            onSuccess: NoContent,
             onFailure: Problem
         );
     }

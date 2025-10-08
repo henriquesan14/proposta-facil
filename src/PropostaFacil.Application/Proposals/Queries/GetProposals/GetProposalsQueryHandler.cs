@@ -10,7 +10,7 @@ public class GetProposalsQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<Ge
 {
     public async Task<ResultT<PaginatedResult<ProposalResponse>>> Handle(GetProposalsQuery request, CancellationToken cancellationToken)
     {
-        var spec = new ListProposalsSpecification(request.DocumentClient, request.Number, request.Title, request.ProposalStatus);
+        var spec = new ListProposalsSpecification(request.DocumentClient, request.Number, request.Title, request.ProposalStatus, request.OnlyActive);
         var paginated = await unitOfWork.Proposals.ToPaginatedListAsync(
             spec,
             request.PageIndex,
