@@ -19,7 +19,9 @@ public static class ClientExtensions
             client.Address.District,
             client.Address.City,
             client.Address.State,
-            client.Address.ZipCode
+            client.Address.ZipCode,
+            client.IsActive,
+            client.CreatedAt
         );
     }
 

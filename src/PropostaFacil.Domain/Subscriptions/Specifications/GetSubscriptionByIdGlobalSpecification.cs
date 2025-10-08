@@ -9,7 +9,7 @@ public class GetSubscriptionByIdGlobalSpecification : GlobalSingleResultSpecific
     public GetSubscriptionByIdGlobalSpecification(SubscriptionId id)
     {
         Query
-            .Where(s => s.Id == id)
+            .Where(s => s.Id == id && s.IsActive)
             .Include(s => s.SubscriptionPlan)
             .Include(s => s.Tenant);
     }

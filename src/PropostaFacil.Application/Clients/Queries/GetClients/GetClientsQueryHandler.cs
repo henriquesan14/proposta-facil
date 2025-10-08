@@ -10,7 +10,7 @@ public class GetClientsQueryHandler(IUnitOfWork unitOfWork) : IQueryHandler<GetC
 {
     public async Task<ResultT<PaginatedResult<ClientResponse>>> Handle(GetClientsQuery request, CancellationToken cancellationToken)
     {
-        var spec = new ListClientsSpecification(request.Name, request.Document!);
+        var spec = new ListClientsSpecification(request.Name, request.Document!, request.OnlyActive);
         var paginated = await unitOfWork.Clients
             .ToPaginatedListAsync(spec, request.PageIndex, request.PageSize, u => u.ToDto());
 

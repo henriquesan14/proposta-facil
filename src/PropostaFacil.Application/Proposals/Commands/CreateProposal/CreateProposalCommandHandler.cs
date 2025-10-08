@@ -1,6 +1,7 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Domain.Clients.Specifications;
 using PropostaFacil.Domain.Proposals;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
@@ -13,7 +14,7 @@ public class CreateProposalCommandHandler(IUnitOfWork unitOfWork, ICurrentUserSe
     {
         var loggedTenantId = TenantId.Of(currentUserService.TenantId!.Value);
 
-        var clientExist = await unitOfWork.Clients.GetByIdAsync(ClientId.Of(request.ClientId));
+        var clientExist = await unitOfWork.Clients.SingleOrDefaultAsync(new GetClientByIdSpecification(ClientId.Of(request.ClientId)));
 
         if (clientExist is null) return ClientErrors.NotFound(request.ClientId);
 

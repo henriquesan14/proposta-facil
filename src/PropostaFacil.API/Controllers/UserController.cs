@@ -62,7 +62,7 @@ public class UserController(IMediator mediator) : BaseController
         var result = await mediator.Send(command, ct);
 
         return result.Match(
-            onSuccess: Ok,
+            onSuccess: NoContent,
             onFailure: Problem
         );
     }
