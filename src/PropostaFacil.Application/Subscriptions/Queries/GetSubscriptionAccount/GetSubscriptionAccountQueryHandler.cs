@@ -1,8 +1,10 @@
 ﻿using Common.ResultPattern;
+using PropostaFacil.Application.Payments;
 using PropostaFacil.Application.Shared.Interfaces;
-using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Payments.Specifications;
 using PropostaFacil.Domain.Subscriptions.Specifications;
 using PropostaFacil.Shared.Common.CQRS;
+using PropostaFacil.Shared.Common.Pagination;
 
 namespace PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionAccount;
 
@@ -10,18 +12,20 @@ public class GetSubscriptionAccountQueryHandler(IUnitOfWork unitOfWork) : IQuery
 {
     public async Task<ResultT<SubscriptionAccountResponse>> Handle(GetSubscriptionAccountQuery request, CancellationToken cancellationToken)
     {
-        var subscriptions = await unitOfWork.Subscriptions.ListAsync(new GetSubscriptionsByTenantSpecification());
+        var subscription = await unitOfWork.Subscriptions
+            .SingleOrDefaultAsync(new GetSubscriptionAccountSpecification());
 
-        if (subscriptions is null || !subscriptions.Any()) return SubscriptionErrors.NoSubscriptionTenant();
+        if (subscription is null)
+            return SubscriptionErrors.NoSubscriptionTenant();
 
-        var active = subscriptions.FirstOrDefault(s => s.Status == SubscriptionStatusEnum.Active);
+        var spec = new ListPaymentsBySubscriptionIdSpecification(subscription.Id);
+        var payments = await unitOfWork.Payments
+            .ToPaginatedListAsync(spec, request.PageIndex, request.PageSize, u => u.ToDto());
 
         var response = new SubscriptionAccountResponse
         (
-            active is null ? null : active.ToDto(),
-            subscriptions
-                .Where(s => s.Status != SubscriptionStatusEnum.Active)
-                .ToDto()
+            subscription.ToDto(),
+            payments
         );
 
         return response;

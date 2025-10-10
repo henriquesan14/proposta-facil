@@ -1,3 +1,6 @@
-﻿namespace PropostaFacil.Application.Subscriptions;
+﻿using PropostaFacil.Application.Payments;
+using PropostaFacil.Shared.Common.Pagination;
 
-public record SubscriptionAccountResponse(SubscriptionResponse? ActiveSubscription, IEnumerable<SubscriptionResponse> PreviousSubscriptions);
+namespace PropostaFacil.Application.Subscriptions;
+
+public record SubscriptionAccountResponse(SubscriptionResponse? ActiveSubscription, PaginatedResult<PaymentResponse> Payments);

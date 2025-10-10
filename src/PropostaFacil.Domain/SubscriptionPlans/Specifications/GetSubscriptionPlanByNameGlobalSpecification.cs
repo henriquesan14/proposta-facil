@@ -9,6 +9,6 @@ public class GetSubscriptionPlanByNameGlobalSpecification : GlobalSingleResultSp
     public GetSubscriptionPlanByNameGlobalSpecification(string? name)
     {
         Query
-            .Where(sp => (string.IsNullOrEmpty(name) || sp.Name.ToLower() == name.ToLower()));
+            .Where(sp => (string.IsNullOrEmpty(name) || sp.Name.ToLower() == name.ToLower()) && sp.IsActive);
     }
 }

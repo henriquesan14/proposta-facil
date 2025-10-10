@@ -44,10 +44,9 @@ public class Tenant : Aggregate<TenantId>
 
     public Address Address { get; private set; } = default!;
 
+    public Subscription? Subscription { get; private set; } = default!;
+
     public ICollection<Client> Clients { get; private set; } = default!;
 
     public ICollection<User> Users { get; private set; } = default!;
-
-    public ICollection<Subscription> Subscriptions { get; private set; } = default!;
-
 }

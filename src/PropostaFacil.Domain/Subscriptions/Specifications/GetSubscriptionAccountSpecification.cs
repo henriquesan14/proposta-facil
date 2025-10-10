@@ -2,14 +2,13 @@
 
 namespace PropostaFacil.Domain.Subscriptions.Specifications;
 
-public class GetSubscriptionsByTenantSpecification : Specification<Subscription>
+public class GetSubscriptionAccountSpecification : SingleResultSpecification<Subscription>
 {
-    public GetSubscriptionsByTenantSpecification()
+    public GetSubscriptionAccountSpecification()
     {
         Query
             .Where(s => s.IsActive)
             .Include(s => s.SubscriptionPlan)
-            .Include(s => s.Tenant)
-            .Include(s => s.Payments);
+            .Include(s => s.Tenant);
     }
 }

@@ -27,17 +27,11 @@ namespace PropostaFacil.Infra.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Contact_Email")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("Document_Number")
-                        .HasColumnType("text");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -58,13 +52,7 @@ namespace PropostaFacil.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TenantId", "Contact_Email")
-                        .IsUnique()
-                        .HasFilter("\"IsActive\" = TRUE");
-
-                    b.HasIndex("TenantId", "Document_Number")
-                        .IsUnique()
-                        .HasFilter("\"IsActive\" = TRUE");
+                    b.HasIndex("TenantId");
 
                     b.ToTable("Clients", (string)null);
                 });
@@ -327,7 +315,8 @@ namespace PropostaFacil.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"IsActive\" = TRUE");
 
                     b.ToTable("SubscriptionPlans", (string)null);
                 });
@@ -380,7 +369,8 @@ namespace PropostaFacil.Infra.Migrations
 
                     b.HasIndex("SubscriptionPlanId");
 
-                    b.HasIndex("TenantId");
+                    b.HasIndex("TenantId")
+                        .IsUnique();
 
                     b.ToTable("Subscriptions", (string)null);
                 });
@@ -555,11 +545,7 @@ namespace PropostaFacil.Infra.Migrations
 
                             b1.HasKey("ClientId");
 
-                            b1.ToTable("Clients", t =>
-                                {
-                                    t.Property("Email")
-                                        .HasColumnName("Contact_Email1");
-                                });
+                            b1.ToTable("Clients");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClientId");
@@ -577,11 +563,7 @@ namespace PropostaFacil.Infra.Migrations
 
                             b1.HasKey("ClientId");
 
-                            b1.ToTable("Clients", t =>
-                                {
-                                    t.Property("Number")
-                                        .HasColumnName("Document_Number1");
-                                });
+                            b1.ToTable("Clients");
 
                             b1.WithOwner()
                                 .HasForeignKey("ClientId");
@@ -690,8 +672,8 @@ namespace PropostaFacil.Infra.Migrations
                         .IsRequired();
 
                     b.HasOne("PropostaFacil.Domain.Tenants.Tenant", "Tenant")
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("TenantId")
+                        .WithOne("Subscription")
+                        .HasForeignKey("PropostaFacil.Domain.Subscriptions.Subscription", "TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -832,10 +814,6 @@ namespace PropostaFacil.Infra.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.HasIndex("Email")
-                                .IsUnique()
-                                .HasFilter("\"IsActive\" = TRUE");
-
                             b1.ToTable("Users");
 
                             b1.WithOwner()
@@ -874,7 +852,7 @@ namespace PropostaFacil.Infra.Migrations
                 {
                     b.Navigation("Clients");
 
-                    b.Navigation("Subscriptions");
+                    b.Navigation("Subscription");
 
                     b.Navigation("Users");
                 });

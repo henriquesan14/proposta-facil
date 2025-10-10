@@ -5,6 +5,7 @@ using PropostaFacil.Domain.Payments;
 using PropostaFacil.Domain.SubscriptionPlans;
 using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects.Ids;
+using System.Numerics;
 
 namespace PropostaFacil.Domain.Subscriptions;
 
@@ -70,6 +71,11 @@ public class Subscription : Aggregate<SubscriptionId>
         if (Status == SubscriptionStatusEnum.Active) return;
                                                                  
         Status = SubscriptionStatusEnum.Active;
+    }
+
+    public void ChangePlan(SubscriptionPlanId newPlanId)
+    {
+        SubscriptionPlanId = newPlanId;
     }
 
     public void Cancel() => Status = SubscriptionStatusEnum.Canceled;

@@ -8,7 +8,7 @@ public class ListPaymentsBySubscriptionIdSpecification : Specification<Payment>
     public ListPaymentsBySubscriptionIdSpecification(SubscriptionId subscriptionId)
     {
         Query
-            .Where(p => p.SubscriptionId == subscriptionId)
+            .Where(p => p.SubscriptionId == subscriptionId && p.IsActive)
             .OrderByDescending(p => p.DueDate);
     }
 }

@@ -12,8 +12,8 @@ using PropostaFacil.Infra.Data;
 namespace PropostaFacil.Infra.Migrations
 {
     [DbContext(typeof(PropostaFacilDbContext))]
-    [Migration("20251003000708_DueDateMigrate")]
-    partial class DueDateMigrate
+    [Migration("20251010004252_Subscription")]
+    partial class Subscription
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,6 +109,9 @@ namespace PropostaFacil.Infra.Migrations
 
                     b.Property<Guid?>("ProposalId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<Guid?>("SubscriptionId")
                         .HasColumnType("uuid");
@@ -315,7 +318,8 @@ namespace PropostaFacil.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("\"IsActive\" = TRUE");
 
                     b.ToTable("SubscriptionPlans", (string)null);
                 });
@@ -368,7 +372,8 @@ namespace PropostaFacil.Infra.Migrations
 
                     b.HasIndex("SubscriptionPlanId");
 
-                    b.HasIndex("TenantId");
+                    b.HasIndex("TenantId")
+                        .IsUnique();
 
                     b.ToTable("Subscriptions", (string)null);
                 });
@@ -429,8 +434,8 @@ namespace PropostaFacil.Infra.Migrations
                     b.Property<string>("ForgottenToken")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("ForgottenTokenExpiry")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("ForgottenTokenExpiry")
+                        .HasColumnType("timestamp");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
@@ -542,9 +547,6 @@ namespace PropostaFacil.Infra.Migrations
                                 .HasColumnType("character varying(20)");
 
                             b1.HasKey("ClientId");
-
-                            b1.HasIndex("Email")
-                                .IsUnique();
 
                             b1.ToTable("Clients");
 
@@ -673,9 +675,9 @@ namespace PropostaFacil.Infra.Migrations
                         .IsRequired();
 
                     b.HasOne("PropostaFacil.Domain.Tenants.Tenant", "Tenant")
-                        .WithMany("Subscriptions")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne("Subscription")
+                        .HasForeignKey("PropostaFacil.Domain.Subscriptions.Subscription", "TenantId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("SubscriptionPlan");
@@ -750,7 +752,8 @@ namespace PropostaFacil.Infra.Migrations
                             b1.HasKey("TenantId");
 
                             b1.HasIndex("Email")
-                                .IsUnique();
+                                .IsUnique()
+                                .HasFilter("\"IsActive\" = TRUE");
 
                             b1.ToTable("Tenants");
 
@@ -771,7 +774,8 @@ namespace PropostaFacil.Infra.Migrations
                             b1.HasKey("TenantId");
 
                             b1.HasIndex("Number")
-                                .IsUnique();
+                                .IsUnique()
+                                .HasFilter("\"IsActive\" = TRUE");
 
                             b1.ToTable("Tenants");
 
@@ -813,9 +817,6 @@ namespace PropostaFacil.Infra.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.HasIndex("Email")
-                                .IsUnique();
-
                             b1.ToTable("Users");
 
                             b1.WithOwner()
@@ -854,7 +855,8 @@ namespace PropostaFacil.Infra.Migrations
                 {
                     b.Navigation("Clients");
 
-                    b.Navigation("Subscriptions");
+                    b.Navigation("Subscription")
+                        .IsRequired();
 
                     b.Navigation("Users");
                 });

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PropostaFacil.Domain.Subscriptions;
 using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.ValueObjects.Ids;
 
@@ -70,9 +71,9 @@ public class EnqueteConfiguration : IEntityTypeConfiguration<Tenant>
             .WithOne(c => c.Tenant)
             .HasForeignKey(c => c.TenantId);
 
-        builder.HasMany(t => t.Subscriptions)
-            .WithOne(c => c.Tenant)
-            .HasForeignKey(c => c.TenantId);
-
+        builder.HasOne(d => d.Subscription)
+                .WithOne(e => e.Tenant)
+                .HasForeignKey<Subscription>(e => e.TenantId)
+                .OnDelete(DeleteBehavior.Cascade);
     }
 }

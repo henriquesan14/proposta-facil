@@ -12,8 +12,8 @@ using PropostaFacil.Infra.Data;
 namespace PropostaFacil.Infra.Migrations
 {
     [DbContext(typeof(PropostaFacilDbContext))]
-    [Migration("20250813031605_FullMigrate")]
-    partial class FullMigrate
+    [Migration("20251010010414_Subscription2")]
+    partial class Subscription2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace PropostaFacil.Infra.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.Client", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Clients.Client", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -60,7 +60,73 @@ namespace PropostaFacil.Infra.Migrations
                     b.ToTable("Clients", (string)null);
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.Proposal", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Payments.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("BillingType")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("character varying(3)");
+
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PaymentAsaasId")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<DateOnly?>("PaymentDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("PaymentLink")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("character varying(300)");
+
+                    b.Property<Guid?>("ProposalId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("SubscriptionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProposalId")
+                        .IsUnique();
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("Payments", (string)null);
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Proposals.Proposal", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -106,12 +172,15 @@ namespace PropostaFacil.Infra.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("Number")
+                        .IsUnique();
+
                     b.HasIndex("TenantId");
 
                     b.ToTable("Proposals", (string)null);
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.ProposalItem", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Proposals.ProposalItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
@@ -157,10 +226,166 @@ namespace PropostaFacil.Infra.Migrations
                     b.ToTable("ProposalItems", (string)null);
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.Tenant", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.RefreshTokens.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RevokedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Token")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.SubscriptionPlans.SubscriptionPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("MaxProposalsPerMonth")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasFilter("\"IsActive\" = TRUE");
+
+                    b.ToTable("SubscriptionPlans", (string)null);
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Subscriptions.Subscription", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PaymentLink")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("ProposalsUsed")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("timestamp");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SubscriptionAsaasId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("SubscriptionPlanId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubscriptionPlanId");
+
+                    b.HasIndex("TenantId")
+                        .IsUnique();
+
+                    b.ToTable("Subscriptions", (string)null);
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Tenants.Tenant", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AsaasId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("timestamp");
@@ -192,9 +417,68 @@ namespace PropostaFacil.Infra.Migrations
                     b.ToTable("Tenants", (string)null);
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.Client", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Users.User", b =>
                 {
-                    b.HasOne("PropostaFacil.Domain.Entities.Tenant", "Tenant")
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool?>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ForgottenToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ForgottenTokenExpiry")
+                        .HasColumnType("timestamp");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("timestamp");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Verified")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("VerifiedToken")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Clients.Client", b =>
+                {
+                    b.HasOne("PropostaFacil.Domain.Tenants.Tenant", "Tenant")
                         .WithMany("Clients")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -211,7 +495,6 @@ namespace PropostaFacil.Infra.Migrations
                                 .HasColumnType("character varying(100)");
 
                             b1.Property<string>("Complement")
-                                .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
 
@@ -301,15 +584,32 @@ namespace PropostaFacil.Infra.Migrations
                     b.Navigation("Tenant");
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.Proposal", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Payments.Payment", b =>
                 {
-                    b.HasOne("PropostaFacil.Domain.Entities.Client", "Client")
+                    b.HasOne("PropostaFacil.Domain.Proposals.Proposal", "Proposal")
+                        .WithOne("Payment")
+                        .HasForeignKey("PropostaFacil.Domain.Payments.Payment", "ProposalId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PropostaFacil.Domain.Subscriptions.Subscription", "Subscription")
+                        .WithMany("Payments")
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Proposal");
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Proposals.Proposal", b =>
+                {
+                    b.HasOne("PropostaFacil.Domain.Clients.Client", "Client")
                         .WithMany("Proposals")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PropostaFacil.Domain.Entities.Tenant", "Tenant")
+                    b.HasOne("PropostaFacil.Domain.Tenants.Tenant", "Tenant")
                         .WithMany()
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -344,9 +644,9 @@ namespace PropostaFacil.Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.ProposalItem", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Proposals.ProposalItem", b =>
                 {
-                    b.HasOne("PropostaFacil.Domain.Entities.Proposal", "Proposal")
+                    b.HasOne("PropostaFacil.Domain.Proposals.Proposal", "Proposal")
                         .WithMany("Items")
                         .HasForeignKey("ProposalId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -355,7 +655,37 @@ namespace PropostaFacil.Infra.Migrations
                     b.Navigation("Proposal");
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.Tenant", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.RefreshTokens.RefreshToken", b =>
+                {
+                    b.HasOne("PropostaFacil.Domain.Users.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Subscriptions.Subscription", b =>
+                {
+                    b.HasOne("PropostaFacil.Domain.SubscriptionPlans.SubscriptionPlan", "SubscriptionPlan")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("SubscriptionPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PropostaFacil.Domain.Tenants.Tenant", "Tenant")
+                        .WithOne("Subscription")
+                        .HasForeignKey("PropostaFacil.Domain.Subscriptions.Subscription", "TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SubscriptionPlan");
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Tenants.Tenant", b =>
                 {
                     b.OwnsOne("PropostaFacil.Domain.ValueObjects.Address", "Address", b1 =>
                         {
@@ -368,7 +698,6 @@ namespace PropostaFacil.Infra.Migrations
                                 .HasColumnType("character varying(100)");
 
                             b1.Property<string>("Complement")
-                                .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
 
@@ -422,6 +751,10 @@ namespace PropostaFacil.Infra.Migrations
 
                             b1.HasKey("TenantId");
 
+                            b1.HasIndex("Email")
+                                .IsUnique()
+                                .HasFilter("\"IsActive\" = TRUE");
+
                             b1.ToTable("Tenants");
 
                             b1.WithOwner()
@@ -440,6 +773,10 @@ namespace PropostaFacil.Infra.Migrations
 
                             b1.HasKey("TenantId");
 
+                            b1.HasIndex("Number")
+                                .IsUnique()
+                                .HasFilter("\"IsActive\" = TRUE");
+
                             b1.ToTable("Tenants");
 
                             b1.WithOwner()
@@ -456,19 +793,76 @@ namespace PropostaFacil.Infra.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.Client", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Users.User", b =>
+                {
+                    b.HasOne("PropostaFacil.Domain.Tenants.Tenant", "Tenant")
+                        .WithMany("Users")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.OwnsOne("PropostaFacil.Domain.ValueObjects.Contact", "Contact", b1 =>
+                        {
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<string>("Email")
+                                .IsRequired()
+                                .HasMaxLength(255)
+                                .HasColumnType("character varying(255)");
+
+                            b1.Property<string>("PhoneNumber")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("character varying(20)");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("Contact")
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Clients.Client", b =>
                 {
                     b.Navigation("Proposals");
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.Proposal", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.Proposals.Proposal", b =>
                 {
                     b.Navigation("Items");
+
+                    b.Navigation("Payment");
                 });
 
-            modelBuilder.Entity("PropostaFacil.Domain.Entities.Tenant", b =>
+            modelBuilder.Entity("PropostaFacil.Domain.SubscriptionPlans.SubscriptionPlan", b =>
+                {
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Subscriptions.Subscription", b =>
+                {
+                    b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Tenants.Tenant", b =>
                 {
                     b.Navigation("Clients");
+
+                    b.Navigation("Subscription");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("PropostaFacil.Domain.Users.User", b =>
+                {
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

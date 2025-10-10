@@ -40,8 +40,14 @@ public class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription>
             .IsRequired();
 
         builder.HasOne(s => s.Tenant)
-            .WithMany(t => t.Subscriptions)
-            .HasForeignKey(s => s.TenantId);
+            .WithOne(t => t.Subscription)
+            .HasForeignKey<Subscription>(s => s.TenantId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Property(a => a.TenantId).HasConversion(
+            id => id.Value,
+            value => TenantId.Of(value)
+        );
 
         builder.HasOne(s => s.SubscriptionPlan)
             .WithMany(sp => sp.Subscriptions)

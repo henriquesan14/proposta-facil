@@ -23,7 +23,8 @@ public class SubscriptionPlanConfiguration : IEntityTypeConfiguration<Subscripti
             .HasMaxLength(200);
 
         builder.HasIndex(sp => sp.Name)
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("\"IsActive\" = TRUE");
 
         builder.Property(sp => sp.MaxProposalsPerMonth)
             .IsRequired();
