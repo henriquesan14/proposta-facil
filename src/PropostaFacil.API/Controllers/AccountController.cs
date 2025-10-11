@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PropostaFacil.Application.Subscriptions;
+using PropostaFacil.Application.Subscriptions.Commands.ChangeSubscriptionPlan;
 using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionAccount;
 
 namespace PropostaFacil.API.Controllers;
@@ -19,6 +20,18 @@ public class AccountController(IMediator mediator) : BaseController
 
         return result.Match(
             onSuccess: Ok,
+            onFailure: Problem
+        );
+    }
+
+    [HttpPost("change-plan")]
+    [ProducesResponseType(typeof(SubscriptionAccountResponse), StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> ChangePlan(ChangeSubscriptionPlanCommand command, CancellationToken ct)
+    {
+        var result = await mediator.Send(command, ct);
+
+        return result.Match(
+            onSuccess: NoContent,
             onFailure: Problem
         );
     }

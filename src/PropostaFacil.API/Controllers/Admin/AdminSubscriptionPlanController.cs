@@ -9,10 +9,10 @@ using PropostaFacil.Application.SubscriptionPlans.Queries.GetSubscriptionPlans;
 namespace PropostaFacil.API.Controllers.Admin;
 
 [Route("api/admin/subscriptionPlans")]
-[Authorize(Roles = "AdminSystem")]
 public class AdminSubscriptionPlanController(IMediator mediator) : BaseController
 {
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Get([FromQuery] GetSubscriptionPlansQuery query, CancellationToken ct)
     {
         var result = await mediator.Send(query, ct);
@@ -24,6 +24,7 @@ public class AdminSubscriptionPlanController(IMediator mediator) : BaseControlle
     }
 
     [HttpPost]
+    [Authorize(Roles = "AdminSystem")]
     public async Task<IActionResult> Create(CreateSubscriptionPlanCommand command, CancellationToken ct)
     {
         //var badRequest = ValidateOrBadRequest(command, validator);
@@ -38,6 +39,7 @@ public class AdminSubscriptionPlanController(IMediator mediator) : BaseControlle
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "AdminSystem")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
     {
         //var badRequest = ValidateOrBadRequest(command, validator);

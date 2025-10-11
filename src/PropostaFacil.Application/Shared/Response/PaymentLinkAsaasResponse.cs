@@ -2,8 +2,7 @@
 
 namespace PropostaFacil.Application.Shared.Response
 {
-    public record PaymentLinkAsaasResponse(
+    public record PaymentAsaasResponse(
         [property: JsonPropertyName("id")] string Id,
-        [property: JsonPropertyName("name")] string Name,
-        [property: JsonPropertyName("url")] string Url);
+        [property: JsonPropertyName("invoiceUrl")] string InvoiceUrl);
 }

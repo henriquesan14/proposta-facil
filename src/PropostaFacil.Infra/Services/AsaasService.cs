@@ -3,7 +3,6 @@ using PropostaFacil.Application.Shared.Exceptions;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Shared.Request;
 using PropostaFacil.Application.Shared.Response;
-using PropostaFacil.Domain.ValueObjects.Ids;
 using RestSharp;
 using System.Net;
 using System.Text.Json;
@@ -26,12 +25,6 @@ public class AsaasService : IAsaasService
     public async Task<AsaasResponse<PaymentResponse>> GetPaymentsBySubscription(string subscriptionId)
     {
         return await SendRequestAsync<AsaasResponse<PaymentResponse>>($"subscriptions/{subscriptionId}/payments", Method.Get);
-    }
-
-    public async Task<GenerateChargeResponse> GenerateCharge(ChargeAsaasRequest request)
-    {
-        var response = await SendRequestAsync<GenerateChargeResponse>("payments", Method.Post, request);
-        return response;
     }
 
     public async Task<SubscriptionAsaasResponse> CreateSubscriptionAsync(CreateSubscriptionRequest request)
@@ -74,9 +67,9 @@ public class AsaasService : IAsaasService
         return result.Id;
     }
 
-    public async Task<PaymentLinkAsaasResponse> CreatePaymentLink(PaymentLinkAsaasRequest request)
+    public async Task<PaymentAsaasResponse> CreatePayment(PaymentAsaasRequest request)
     {
-        var result = await SendRequestAsync<PaymentLinkAsaasResponse>("paymentLinks", Method.Post, request);
+        var result = await SendRequestAsync<PaymentAsaasResponse>("payments", Method.Post, request);
         return result;
     }
 
@@ -143,5 +136,10 @@ public class AsaasService : IAsaasService
         }
 
         return null;
+    }
+
+    public async Task<SubscriptionAsaasResponse> UpdateSubscription(string subscriptionId, UpdateSubscriptionRequest request)
+    {
+        return await SendRequestAsync<SubscriptionAsaasResponse>($"subscriptions/{subscriptionId}", Method.Put, request);
     }
 }

@@ -6,7 +6,6 @@ namespace PropostaFacil.Application.Shared.Interfaces;
 public interface IAsaasService
 {
     Task<AsaasResponse<PaymentResponse>> GetPaymentsBySubscription(string subscriptionId);
-    Task<GenerateChargeResponse> GenerateCharge(ChargeAsaasRequest request);
     Task<SubscriptionAsaasResponse> CreateSubscriptionAsync(CreateSubscriptionRequest request);
     Task<AsaasResponse<PaymentResponse>> GetChargesByCustomerId(string customerId, int offset, int limit);
     Task<DeleteResponse> DeleteCharge(string chargeId);
@@ -15,5 +14,7 @@ public interface IAsaasService
     Task<DeleteResponse> DeleteCustomer(string clientId);
 
     Task<DeleteResponse> DeleteSubscription(string subscriptionId);
-    Task<PaymentLinkAsaasResponse> CreatePaymentLink(PaymentLinkAsaasRequest request);
+    Task<PaymentAsaasResponse> CreatePayment(PaymentAsaasRequest request);
+
+    Task<SubscriptionAsaasResponse> UpdateSubscription(string subscriptionId, UpdateSubscriptionRequest request);
 }
