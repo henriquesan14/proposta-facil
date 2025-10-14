@@ -10,7 +10,7 @@ public record PaymentReceivedCommandHandler(IPublishEndpoint publishEndpoint) : 
     public async Task<Result> Handle(PaymentReceivedCommand request, CancellationToken cancellationToken)
     {
         var payload = request.Payment;
-        if (request.Event != "PAYMENT_RECEIVED")
+        if (request.Event != "PAYMENT_CONFIRMED")
             return PaymentErrors.InvalidEvent();
 
         await publishEndpoint.Publish(new PaymentReceivedIntegrationEvent(
@@ -18,7 +18,9 @@ public record PaymentReceivedCommandHandler(IPublishEndpoint publishEndpoint) : 
                 payload.Subscription,
                 payload.Value,
                 payload.PaymentDate,
-                payload.DueDate
+                payload.ConfirmedDate,
+                payload.DueDate,
+                payload.ExternalReference
             ), cancellationToken);
 
         return Result.Success();

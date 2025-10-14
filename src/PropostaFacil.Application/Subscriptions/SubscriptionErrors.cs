@@ -11,7 +11,7 @@ public class SubscriptionErrors
         Error.NotFound("Subscriptions.NoSubscriptionTenant", $"No subscriptions on this tenant");
 
     public static Error Conflict() =>
-        Error.Conflict("Subscriptions.Conflict", $"Already exist subscription active this tenant");
+        Error.Conflict("Subscriptions.Conflict", $"Already exist a subscription this tenant");
 
     public static Error Forbidden() =>
         Error.AccessForbidden("Subscriptions.Forbidden", $"This user does not have permission to do this.");

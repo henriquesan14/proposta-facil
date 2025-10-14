@@ -29,6 +29,12 @@ public class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription>
                 value => SubscriptionPlanId.Of(value))
             .IsRequired();
 
+        builder.Property(s => s.PendingUpgradePlanId)
+            .HasConversion(
+                id => id!.Value,
+                value => SubscriptionPlanId.Of(value))
+            .IsRequired(false);
+
         builder.Property(s => s.StartDate)
             .IsRequired(false);
 

@@ -9,6 +9,9 @@ public record PaymentAsaas(
     decimal Value,
     BillingTypeEnum BillingType,
     DateOnly? PaymentDate,
+    DateOnly? ConfirmedDate,
     DateOnly DueDate,
-    string InvoiceUrl
+    string InvoiceUrl,
+    string? ExternalReference,
+    string? Description
 );

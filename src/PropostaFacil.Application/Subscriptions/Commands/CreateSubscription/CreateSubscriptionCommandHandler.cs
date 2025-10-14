@@ -16,8 +16,8 @@ public class CreateSubscriptionCommandHandler(IUnitOfWork unitOfWork, IAsaasServ
 {
     public async Task<ResultT<SubscriptionResponse>> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
     {
-        var hasSubscriptionActive = await unitOfWork.Subscriptions.SingleOrDefaultAsync(new GetSubscriptionByStatusSpecification(SubscriptionStatusEnum.Active));
-        if (hasSubscriptionActive != null) return SubscriptionErrors.Conflict();
+        var hasSubscription = await unitOfWork.Subscriptions.SingleOrDefaultAsync(new GetSubscriptionByTenantSpecification(TenantId.Of(request.TenantId)));
+        if (hasSubscription != null) return SubscriptionErrors.Conflict();
 
         var tenant = await unitOfWork.Tenants.SingleOrDefaultAsync(new GetTenantByIdGlobalSpecification(TenantId.Of(request.TenantId)));
         if (tenant == null)
@@ -39,7 +39,7 @@ public class CreateSubscriptionCommandHandler(IUnitOfWork unitOfWork, IAsaasServ
 
         await unitOfWork.Subscriptions.AddAsync(subscription);
         await unitOfWork.CompleteAsync();
-
+        
         return subscription.ToDto();
     }
 }

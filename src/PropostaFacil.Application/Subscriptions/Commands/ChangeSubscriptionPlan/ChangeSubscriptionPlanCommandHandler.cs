@@ -1,6 +1,7 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Shared.Request;
+using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Payments.Specifications;
 using PropostaFacil.Domain.Subscriptions.Specifications;
 using PropostaFacil.Domain.ValueObjects.Ids;
@@ -29,10 +30,34 @@ public class ChangeSubscriptionPlanCommandHandler(IUnitOfWork unitOfWork, IAsaas
                 ? lastPayment.DueDate.ToDateTime(TimeOnly.MinValue)
                 : subscription.CreatedAt!.Value.Date;
 
+        var hasPendingPayment = lastPayment != null && lastPayment.Status == PaymentStatus.PENDING;
+
         var nextDueDate = lastPaymentDate.AddMonths(1);
+
+        await unitOfWork.BeginTransaction();
 
         if (isUpgrade)
         {
+            if (hasPendingPayment)
+            {
+                var updateRequest = new UpdateSubscriptionRequest(
+                    request.BillingType,
+                    newPlan.Price,
+                    newPlan.Description
+                );
+
+                subscription.ChangePlan(newPlan.Id);
+                subscription.ConfirmUpgrade();
+                lastPayment!.SetAmount(newPlan.Price);
+                lastPayment.SetBillingType(request.BillingType);
+
+                await asaasService.UpdateSubscription(subscription.SubscriptionAsaasId, updateRequest);
+
+                await unitOfWork.CompleteAsync();
+                await unitOfWork.CommitAsync();
+                return Result.Success();
+            }
+
             var difference = CalculateProRataDifference(
                 subscription.SubscriptionPlan.Price,
                 newPlan.Price,
@@ -48,54 +73,37 @@ public class ChangeSubscriptionPlanCommandHandler(IUnitOfWork unitOfWork, IAsaas
                     subscription.Tenant.AsaasId,
                     difference,
                     request.BillingType.ToString(),
-                    nextDueDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                    DateTime.Now.AddDays(3).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
                     $"Upgrade para {newPlan.Name} (diferença proporcional)",
-                    subscription.Id.Value.ToString()
+                    $"upgrade:{subscription.SubscriptionAsaasId}"
                 );
                 var response = await asaasService.CreatePayment(paymentRequest);
 
-                subscription.AddPayment(difference, DateOnly.FromDateTime(nextDueDate), request.BillingType, response.Id, response.InvoiceUrl);
+                subscription.RequestUpgrade(newPlan.Id);
+                await unitOfWork.CompleteAsync();
+                await unitOfWork.CommitAsync();
             }
-
-            // atualiza assinatura com novo valor
-            if (!string.IsNullOrEmpty(subscription.SubscriptionAsaasId))
-            {
-                var updateRequest = new UpdateSubscriptionRequest(
-                    request.BillingType,
-                    newPlan.Price,
-                    nextDueDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-                    newPlan.Description
-                );
-
-                await asaasService.UpdateSubscription(subscription.SubscriptionAsaasId, updateRequest);
-            }
-
-            // atualiza no sistema
-            subscription.ChangePlan(newPlan.Id);
-            await unitOfWork.CompleteAsync();
 
             return Result.Success();
         }
-
-        if (!isUpgrade)
+        
+        if (!string.IsNullOrEmpty(subscription.SubscriptionAsaasId))
         {
-            if (!string.IsNullOrEmpty(subscription.SubscriptionAsaasId))
-            {
-                var updateRequest = new UpdateSubscriptionRequest(
-                    request.BillingType,
-                    newPlan.Price,
-                    nextDueDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-                    newPlan.Description,
-                    updatePendingPayments: false
-                );
+            var updateRequest = new UpdateSubscriptionRequest(
+                request.BillingType,
+                newPlan.Price,
+                newPlan.Description
+            );
 
-                await asaasService.UpdateSubscription(subscription.SubscriptionAsaasId, updateRequest);
-            }
-
+            subscription.ConfirmUpgrade();
             subscription.ChangePlan(newPlan.Id);
-            await unitOfWork.CompleteAsync();
+            lastPayment!.SetAmount(newPlan.Price);
+            lastPayment.SetBillingType(request.BillingType);
 
-            return Result.Success();
+            await asaasService.UpdateSubscription(subscription.SubscriptionAsaasId, updateRequest);
+
+            await unitOfWork.CompleteAsync();
+            await unitOfWork.CommitAsync();
         }
 
         return Result.Success();

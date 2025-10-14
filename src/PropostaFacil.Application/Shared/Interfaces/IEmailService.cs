@@ -12,4 +12,5 @@ public interface IEmailService
     Task SendPaymentLink(string email, string name, string paymentLink, decimal value, DateOnly dueDate);
     Task SendPaymentOverdue(string email, string name, string paymentLink, decimal value, DateOnly dueDate);
     Task SendSubscriptionExpired(string email, string name, string paymentLink, decimal value, DateOnly dueDate);
+    Task SendConfirmUpgradePlan(string email, string clientName, string planName, decimal newPrice);
 }

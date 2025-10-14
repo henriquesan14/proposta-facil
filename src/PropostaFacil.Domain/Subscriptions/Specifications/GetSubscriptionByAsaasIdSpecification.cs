@@ -10,6 +10,7 @@ public class GetSubscriptionByAsaasIdSpecification : GlobalSingleResultSpecifica
     {
         Query.Where(s => s.SubscriptionAsaasId == subscriptionId)
             .Include(s => s.SubscriptionPlan)
+            .Include(s => s.PendingUpgradePlan)
             .Include(s => s.Tenant);
     }
 }

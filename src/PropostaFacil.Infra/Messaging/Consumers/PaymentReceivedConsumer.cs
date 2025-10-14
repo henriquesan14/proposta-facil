@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PropostaFacil.Application.Shared.Exceptions;
 using PropostaFacil.Application.Shared.Interfaces;
+using PropostaFacil.Application.Shared.Request;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Payments.Specifications;
 using PropostaFacil.Domain.Subscriptions.Specifications;
@@ -13,7 +14,7 @@ using PropostaFacil.Shared.Messaging.Events;
 
 namespace PropostaFacil.Infra.Messaging.Consumers;
 
-public class PaymentReceivedConsumer(IUnitOfWork unitOfWork, ILogger<PaymentReceivedConsumer> logger, IEmailService emailService,
+public class PaymentReceivedConsumer(IUnitOfWork unitOfWork, ILogger<PaymentReceivedConsumer> logger, IEmailService emailService, IAsaasService asaasService,
     IPasswordHash passwordHash, IUserRuleCheck userRuleCheck) : IConsumer<PaymentReceivedIntegrationEvent>
 {
     public async Task Consume(ConsumeContext<PaymentReceivedIntegrationEvent> context)
@@ -34,25 +35,61 @@ public class PaymentReceivedConsumer(IUnitOfWork unitOfWork, ILogger<PaymentRece
             return;
         }
 
-        var subscription = await unitOfWork.Subscriptions.SingleOrDefaultAsync(new GetSubscriptionByAsaasIdSpecification(msg.SubscriptionAsaasId));
+        var isUpgrade = msg.ExternalReference?.StartsWith("upgrade:") == true;
+        var subscriptionId = msg.ExternalReference != null ? msg.ExternalReference!.Replace("upgrade:", "") : msg.SubscriptionAsaasId;
+
+        var subscription = await unitOfWork.Subscriptions.SingleOrDefaultAsync(new GetSubscriptionByAsaasIdSpecification(subscriptionId!));
 
         if (subscription is null) throw new IntegrationException($"subscription asaas with id:{msg.SubscriptionAsaasId} not found.");
 
-        if (subscription.Status == Domain.Enums.SubscriptionStatusEnum.Active)
-        {
-            logger.LogWarning("subscription already active. SubscriptionAsaasId={SubscriptionAsaasId}", msg.SubscriptionAsaasId);
-            return;
-        }
-
         await unitOfWork.BeginTransaction();
 
-        payment.ConfirmSubscriptionPayment(msg.PaymentDate!.Value);
+        payment.ConfirmSubscriptionPayment(msg.ConfirmedDate!.Value);
+
         logger.LogInformation("Payment confirmed. PaymentAsaasId={PaymentAsaasId}", msg.PaymentAsaasId);
+
+        if (isUpgrade)
+        {
+            if (subscription.PendingUpgradePlanId == null)
+            {
+                logger.LogWarning("No pending upgrade to apply for SubscriptionId={SubscriptionId}", subscription.Id);
+                return;
+            }
+
+            var oldPlanName = subscription.SubscriptionPlan.Name;
+            var newPlan = subscription.PendingUpgradePlan;
+            var updateRequest = new UpdateSubscriptionRequest(
+                payment.BillingType,
+                subscription.PendingUpgradePlan!.Price,
+                subscription.PendingUpgradePlan.Description
+            );
+            await asaasService.UpdateSubscription(subscriptionId, updateRequest);
+
+            subscription.ChangePlan(subscription.PendingUpgradePlanId!);
+            subscription.ConfirmUpgrade();
+            subscription.Reactivate();
+
+            await unitOfWork.CompleteAsync();
+            await unitOfWork.CommitAsync();
+
+            logger.LogInformation(
+                "Upgrade confirmed. Tenant={TenantName}, OldPlan={OldPlan}, NewPlan={NewPlan}, SubscriptionId={SubscriptionId}",
+                subscription.Tenant.Name,
+                oldPlanName,
+                subscription.SubscriptionPlan.Name,
+                subscription.Id
+            );
+
+            await emailService.SendConfirmUpgradePlan(
+                subscription.Tenant.Contact.Email, subscription.Tenant.Name, newPlan!.Name, newPlan.Price
+            );
+
+            return;
+        }
 
         if (subscription.Status == SubscriptionStatusEnum.Pending)
         {
             subscription.Activate();
-            subscription.ResetProposalsUsed();
             logger.LogInformation("Subscription activated. SubscriptionId={SubscriptionId}", subscription.Id);
 
             var tenant = await unitOfWork.Tenants.SingleOrDefaultAsync(new GetTenantByIdGlobalSpecification(subscription.TenantId));
@@ -78,9 +115,14 @@ public class PaymentReceivedConsumer(IUnitOfWork unitOfWork, ILogger<PaymentRece
         or SubscriptionStatusEnum.Suspended or SubscriptionStatusEnum.Overdue)
         {
             subscription.Reactivate();
-            subscription.ResetProposalsUsed();
             logger.LogInformation("Subscription reactivated. SubscriptionId={SubscriptionId}", subscription.Id);
         }
+        else
+        {
+            logger.LogInformation("Payment received for active subscription. SubscriptionId={SubscriptionId}", subscription.Id);
+        }
+
+        subscription.ResetProposalsUsed();
 
         await unitOfWork.CompleteAsync();
         await unitOfWork.CommitAsync();

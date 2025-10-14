@@ -17,7 +17,8 @@ public static class PaymentExtensions
             payment.PaymentDate,
             payment.DueDate,
             payment.PaymentAsaasId,
-            payment.PaymentLink
+            payment.PaymentLink,
+            payment.Description
         );
     }
 

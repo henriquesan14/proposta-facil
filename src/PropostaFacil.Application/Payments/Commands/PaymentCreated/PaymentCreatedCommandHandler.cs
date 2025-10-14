@@ -19,7 +19,9 @@ public class PaymentCreatedCommandHandler(IPublishEndpoint publishEndpoint) : IC
                 payload.Value,
                 payload.DueDate,
                 (int) payload.BillingType,
-                payload.InvoiceUrl
+                payload.InvoiceUrl,
+                payload.ExternalReference,
+                payload.Description
             ), cancellationToken);
 
         return Result.Success();

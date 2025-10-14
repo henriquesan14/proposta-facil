@@ -18,10 +18,12 @@ public class Payment : Aggregate<PaymentId>
     public DateOnly DueDate { get; private set; } = default!;
     public string PaymentAsaasId { get; private set; } = default!;
     public string PaymentLink { get; private set; } = default!;
+
+    public string? Description { get; set; } = default!;
     public Subscription? Subscription { get; private set; } = default!;
     public Proposal? Proposal { get; private set; } = default!;
 
-    public static Payment Create(decimal amount, DateOnly dueDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink, string currency = "BRL")
+    public static Payment Create(decimal amount, DateOnly dueDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink, string? description, string currency = "BRL")
     {
         return new Payment {
             Id = PaymentId.Of(Guid.NewGuid()),
@@ -31,7 +33,8 @@ public class Payment : Aggregate<PaymentId>
             BillingType = billingType,
             PaymentAsaasId = paymentAsaasId,
             PaymentLink = paymentLink,
-            Status = PaymentStatus.PENDING
+            Status = PaymentStatus.PENDING,
+            Description = description
         };
     }
 
@@ -49,6 +52,16 @@ public class Payment : Aggregate<PaymentId>
     public void SetProposal(ProposalId proposalId)
     {
         ProposalId = proposalId;
+    }
+
+    public void SetAmount(decimal amount)
+    {
+        Amount = amount;
+    }
+
+    public void SetBillingType(BillingTypeEnum billingType)
+    {
+        BillingType = billingType;
     }
 
     public void Overdue() => Status = PaymentStatus.OVERDUE;

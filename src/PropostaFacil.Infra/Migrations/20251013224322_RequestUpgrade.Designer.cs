@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PropostaFacil.Infra.Data;
@@ -11,9 +12,11 @@ using PropostaFacil.Infra.Data;
 namespace PropostaFacil.Infra.Migrations
 {
     [DbContext(typeof(PropostaFacilDbContext))]
-    partial class PropostaFacilDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251013224322_RequestUpgrade")]
+    partial class RequestUpgrade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,9 +81,6 @@ namespace PropostaFacil.Infra.Migrations
                         .IsRequired()
                         .HasMaxLength(3)
                         .HasColumnType("character varying(3)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
 
                     b.Property<DateOnly>("DueDate")
                         .HasColumnType("date");

@@ -36,8 +36,12 @@ public class Subscription : Aggregate<SubscriptionId>
     public string SubscriptionAsaasId { get; private set; } = default!;
     public string PaymentLink { get; private set; } = default!;
 
+    public SubscriptionPlanId? PendingUpgradePlanId { get; private set; } = default!;
+
     public Tenant Tenant { get; private set; } = default!;
     public SubscriptionPlan SubscriptionPlan { get; private set; } = default!;
+
+    public SubscriptionPlan? PendingUpgradePlan { get; private set; } = default!;
 
     public IReadOnlyCollection<Payment> Payments => _payments.AsReadOnly();
 
@@ -51,9 +55,9 @@ public class Subscription : Aggregate<SubscriptionId>
         ProposalsUsed = 0;
     }
 
-    public void AddPayment(decimal amount, DateOnly dueDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink)
+    public void AddPayment(decimal amount, DateOnly dueDate, BillingTypeEnum billingType, string paymentAsaasId, string paymentLink, string? description)
     {
-        var payment = Payment.Create(amount, dueDate, billingType, paymentAsaasId, paymentLink);
+        var payment = Payment.Create(amount, dueDate, billingType, paymentAsaasId, paymentLink, description);
         payment.SetSubscription(Id);
 
         _payments.Add(payment);
@@ -76,6 +80,19 @@ public class Subscription : Aggregate<SubscriptionId>
     public void ChangePlan(SubscriptionPlanId newPlanId)
     {
         SubscriptionPlanId = newPlanId;
+    }
+
+    public void RequestUpgrade(SubscriptionPlanId planId)
+    {
+        PendingUpgradePlanId = planId;
+    }
+
+    public void ConfirmUpgrade()
+    {
+        if (PendingUpgradePlanId == null)
+            return;
+
+        PendingUpgradePlanId = null;
     }
 
     public void Cancel() => Status = SubscriptionStatusEnum.Canceled;

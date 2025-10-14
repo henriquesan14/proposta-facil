@@ -53,4 +53,10 @@ public class EmailService(IEmailSender sender) : IEmailService
         var html = SubscriptionEmailBuilder.BuildSubscriptionExpired(name, paymentLink, value, dueDate);
         await sender.SendEmailAsync(email, "Sua assinatura expirou por falta de pagamento", html);
     }
+
+    public async Task SendConfirmUpgradePlan(string email, string clientName, string planName, decimal newPrice)
+    {
+        var html = SubscriptionEmailBuilder.BuildConfirmUpgradeSubscription(clientName, planName, newPrice);
+        await sender.SendEmailAsync(email, "Seu upgrade de plano foi confirmado", html);
+    }
 }

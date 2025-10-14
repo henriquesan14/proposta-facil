@@ -66,4 +66,32 @@ public static class SubscriptionEmailBuilder
             </body>
         </html>";
     }
+
+    public static string BuildConfirmUpgradeSubscription(string customerName, string newPlanName, decimal newPrice)
+    {
+        return $@"
+        <html>
+            <body style='font-family: Arial, sans-serif; color: #333;'>
+                <h2>Olá, {customerName}!</h2>
+                <p>🎉 Seu upgrade de plano foi confirmado com sucesso!</p>
+
+                <h3>Detalhes do novo plano</h3>
+                <ul>
+                    <li><strong>Plano:</strong> {newPlanName}</li>
+                    <li><strong>Valor:</strong> R$ {newPrice:N2}</li>
+                    <li><strong>Status:</strong> Ativo</li>
+                </ul>
+
+                <p>Agora você tem acesso a todos os recursos e benefícios do seu novo plano.</p>
+
+                <br />
+                <p>Obrigado por continuar evoluindo conosco 🚀</p>
+                <p>Se tiver dúvidas, entre em contato com nosso suporte.</p>
+
+                <br />
+                <p style='font-size: 12px; color: #777;'>Este é um email automático, por favor não responda.</p>
+            </body>
+        </html>";
+    }
+
 }

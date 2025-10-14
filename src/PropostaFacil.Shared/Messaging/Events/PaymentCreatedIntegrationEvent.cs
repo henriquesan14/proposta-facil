@@ -6,5 +6,7 @@ public record PaymentCreatedIntegrationEvent(
     decimal PaymentValue,
     DateOnly PaymentDueDate,
     int PaymentBillingType,
-    string PaymentInvoiceUrl
+    string PaymentInvoiceUrl,
+    string? ExternalReference,
+    string? Description
 ) : IntegrationEvent;

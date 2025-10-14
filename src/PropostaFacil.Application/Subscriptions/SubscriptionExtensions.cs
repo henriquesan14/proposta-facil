@@ -14,6 +14,7 @@ public static class SubscriptionExtensions
             subscription.TenantId.Value,
             subscription.SubscriptionPlanId.Value,
             subscription.SubscriptionPlan?.ToDto()!,
+            subscription.PendingUpgradePlan?.ToDto()!,
             subscription.StartDate,
             subscription.Status,
             subscription.ProposalsUsed,

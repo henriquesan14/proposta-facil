@@ -22,9 +22,18 @@ public class PaymentCreatedConsumer(
         logger.LogInformation("Received PaymentCreatedIntegrationEvent for SubscriptionAsaasId={SubscriptionAsaasId}, PaymentAsaasId={PaymentAsaasId}, Value={PaymentValue}",
             msg.SubscriptionAsaasId, msg.PaymentAsaasId, msg.PaymentValue);
 
+        var isUpgrade = msg.ExternalReference?.StartsWith("upgrade:") == true;
+        var subscriptionId = msg.ExternalReference != null ? msg.ExternalReference!.Replace("upgrade:","") : msg.SubscriptionAsaasId;
+
+        logger.LogInformation(
+            "Processing PaymentCreatedIntegrationEvent ({Type}) for PaymentAsaasId={PaymentAsaasId}, SubscriptionAsaasId={SubscriptionAsaasId}, Value={PaymentValue}",
+            isUpgrade ? "UPGRADE" : "NORMAL", msg.PaymentAsaasId, subscriptionId, msg.PaymentValue
+        );
+
         var subscription = await unitOfWork.Subscriptions
-            .SingleOrDefaultAsync(new GetSubscriptionByAsaasIdSpecification(msg.SubscriptionAsaasId));
-        if (subscription is null)
+            .SingleOrDefaultAsync(new GetSubscriptionByAsaasIdSpecification(subscriptionId!));
+
+        if (subscription == null)
         {
             logger.LogWarning("Subscription not found for AsaasId={SubscriptionAsaasId}", msg.SubscriptionAsaasId);
             return;
@@ -44,7 +53,8 @@ public class PaymentCreatedConsumer(
             msg.PaymentDueDate,
             (BillingTypeEnum) msg.PaymentBillingType,
             msg.PaymentAsaasId,
-            msg.PaymentInvoiceUrl
+            msg.PaymentInvoiceUrl,
+            $"Parcela {msg.PaymentDueDate.ToString("MM-yyyy")} - {msg.Description}"
         );
 
         await unitOfWork.CompleteAsync();

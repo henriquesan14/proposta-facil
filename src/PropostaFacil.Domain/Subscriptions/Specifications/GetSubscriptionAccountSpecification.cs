@@ -9,6 +9,7 @@ public class GetSubscriptionAccountSpecification : SingleResultSpecification<Sub
         Query
             .Where(s => s.IsActive)
             .Include(s => s.SubscriptionPlan)
+            .Include(s => s.PendingUpgradePlan)
             .Include(s => s.Tenant);
     }
 }
