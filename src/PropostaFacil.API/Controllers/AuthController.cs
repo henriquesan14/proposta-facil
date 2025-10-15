@@ -1,12 +1,15 @@
-﻿using MediatR;
+﻿using Common.ResultPattern;
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using PropostaFacil.Application.Auth.Commands.GenerateAccessToken;
-using Common.ResultPattern;
-using PropostaFacil.Application.Auth.Commands.RenewRefreshToken;
-using PropostaFacil.Application.Auth.Commands.RevokeRefreshToken;
 using PropostaFacil.Application.Auth.Commands.ActivateAccount;
 using PropostaFacil.Application.Auth.Commands.ForgotPassword;
+using PropostaFacil.Application.Auth.Commands.GenerateAccessToken;
+using PropostaFacil.Application.Auth.Commands.RenewRefreshToken;
 using PropostaFacil.Application.Auth.Commands.ResetPassword;
+using PropostaFacil.Application.Auth.Commands.RevokeRefreshToken;
+using PropostaFacil.Application.Auth.Commands.UpdatePassword;
+using PropostaFacil.Application.Users.Commands.CreateUser;
 
 namespace PropostaFacil.API.Controllers;
 
@@ -57,10 +60,10 @@ public class AuthController(IMediator mediator) : BaseController
     }
 
     [HttpPost("activate-account")]
-    public async Task<IActionResult> Activate(ActivateAccountCommand command, CancellationToken ct)
+    public async Task<IActionResult> Activate(ActivateAccountCommand command, IValidator<ActivateAccountCommand> validator, CancellationToken ct)
     {
-        //var badRequest = ValidateOrBadRequest(command, validator);
-        //if (badRequest != null) return badRequest;
+        var badRequest = ValidateOrBadRequest(command, validator);
+        if (badRequest != null) return badRequest;
 
         var result = await mediator.Send(command, ct);
 
@@ -85,10 +88,24 @@ public class AuthController(IMediator mediator) : BaseController
     }
 
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword(ResetPasswordCommand command, CancellationToken ct)
+    public async Task<IActionResult> ResetPassword(ResetPasswordCommand command, IValidator<ResetPasswordCommand> validator, CancellationToken ct)
     {
-        //var badRequest = ValidateOrBadRequest(command, validator);
-        //if (badRequest != null) return badRequest;
+        var badRequest = ValidateOrBadRequest(command, validator);
+        if (badRequest != null) return badRequest;
+
+        var result = await mediator.Send(command, ct);
+
+        return result.Match(
+            onSuccess: () => NoContent(),
+            onFailure: Problem
+        );
+    }
+
+    [HttpPost("update-password")]
+    public async Task<IActionResult> UpdatePassword(UpdatePasswordCommand command, IValidator<UpdatePasswordCommand> validator, CancellationToken ct)
+    {
+        var badRequest = ValidateOrBadRequest(command, validator);
+        if (badRequest != null) return badRequest;
 
         var result = await mediator.Send(command, ct);
 

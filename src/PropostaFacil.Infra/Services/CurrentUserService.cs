@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Enums;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace PropostaFacil.Infra.Services;
@@ -17,7 +16,7 @@ public class CurrentUserService : ICurrentUserService
 
     private ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
 
-    public Guid? UserId => User?.FindFirst(JwtRegisteredClaimNames.Sub)?.Value is string id
+    public Guid? UserId => User?.FindFirst(ClaimTypes.NameIdentifier)?.Value is string id
         ? Guid.Parse(id)
         : null;
 
