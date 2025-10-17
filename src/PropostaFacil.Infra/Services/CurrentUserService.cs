@@ -20,6 +20,8 @@ public class CurrentUserService : ICurrentUserService
         ? Guid.Parse(id)
         : null;
 
+    public string? UserName => User?.FindFirst("name")?.Value;
+
     public Guid? TenantId
     {
         get

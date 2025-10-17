@@ -13,7 +13,8 @@ public static class SubscriptionPlanExtensions
             subscriptionPlan.Price,
             subscriptionPlan.Description,
             subscriptionPlan.IsActive,
-            subscriptionPlan.CreatedAt
+            subscriptionPlan.CreatedAt,
+            subscriptionPlan.CreatedByName
         );
     }
 

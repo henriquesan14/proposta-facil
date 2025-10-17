@@ -10,6 +10,7 @@ public interface IEntity
     public bool IsActive { get; set; }
     public DateTime? CreatedAt { get; set; }
     public Guid? CreatedBy { get; set; }
+    public string? CreatedByName { get; set; }
     public DateTime? LastModified { get; set; }
     public Guid? LastModifiedBy { get; set; }
 }

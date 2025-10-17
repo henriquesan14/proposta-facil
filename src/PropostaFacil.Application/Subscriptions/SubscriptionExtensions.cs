@@ -23,7 +23,8 @@ public static class SubscriptionExtensions
             subscription.Tenant?.ToDto()!,
             subscription.Payments.ToDto(),
             subscription.IsActive,
-            subscription.CreatedAt
+            subscription.CreatedAt,
+            subscription.CreatedByName
         );
     }
 

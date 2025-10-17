@@ -14,7 +14,8 @@ public static class UserExtensions
             user.Role,
             user.TenantId?.Value,
             user.IsActive,
-            user.CreatedAt
+            user.CreatedAt,
+            user.CreatedByName
         );
     }
 

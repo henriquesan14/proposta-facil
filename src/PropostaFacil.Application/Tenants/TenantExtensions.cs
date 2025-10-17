@@ -22,7 +22,8 @@ public static class TenantExtensions
             tenant.Address.ZipCode,
             tenant.AsaasId,
             tenant.IsActive,
-            tenant.CreatedAt
+            tenant.CreatedAt,
+            tenant.CreatedByName
         );
     }
 

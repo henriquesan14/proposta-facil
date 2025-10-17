@@ -21,7 +21,8 @@ public static class ClientExtensions
             client.Address.State,
             client.Address.ZipCode,
             client.IsActive,
-            client.CreatedAt
+            client.CreatedAt,
+            client.CreatedByName
         );
     }
 

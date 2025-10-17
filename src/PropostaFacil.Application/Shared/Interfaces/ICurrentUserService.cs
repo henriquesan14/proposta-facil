@@ -5,6 +5,8 @@ namespace PropostaFacil.Application.Shared.Interfaces;
 public interface ICurrentUserService
 {
     Guid? UserId { get; }
+
+    string? UserName { get; }
     Guid? TenantId { get; }
     UserRoleEnum? Role { get; }
     bool IsAdminSystem { get; }

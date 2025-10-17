@@ -28,7 +28,11 @@ public class AuditableEntityInterceptor(ICurrentUserService currentUserService) 
         {
             if (entry.State == EntityState.Added)
             {
-                if (currentUserService!.UserId != null) entry.Entity.CreatedBy = currentUserService.UserId;
+                if (currentUserService!.UserId != null)
+                {
+                    entry.Entity.CreatedBy = currentUserService.UserId;
+                    entry.Entity.CreatedByName = currentUserService.UserName;
+                }
                 entry.Entity.CreatedAt = DateTime.Now;
             }
 

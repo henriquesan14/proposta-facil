@@ -19,7 +19,8 @@ public static class ProposalExtensions
             proposal.ValidUntil,
             proposal.Items.ToDto(),
             proposal.IsActive,
-            proposal.CreatedAt
+            proposal.CreatedAt,
+            proposal.CreatedByName
         );
     }
 
