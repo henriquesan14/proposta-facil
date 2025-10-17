@@ -8,7 +8,6 @@ using PropostaFacil.Application.Clients.Commands.DeleteClient;
 using PropostaFacil.Application.Clients.Queries.GetClientById;
 using PropostaFacil.Application.Clients.Queries.GetClients;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
-using PropostaFacil.Application.Users.Queries.GetUserById;
 
 namespace PropostaFacil.API.Controllers;
 

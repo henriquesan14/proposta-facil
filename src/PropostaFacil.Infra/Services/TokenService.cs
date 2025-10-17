@@ -10,7 +10,7 @@ namespace PropostaFacil.Infra.Services;
 
 public class TokenService(IConfiguration _configuration) : ITokenService
 {
-    public TokenResponse GenerateAccessToken(User user)
+    public TokenResponse GenerateAccessToken(User user, Guid? impersonateTenantId = null)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_configuration["TokenSettings:Secret"]!);
@@ -25,6 +25,7 @@ public class TokenService(IConfiguration _configuration) : ITokenService
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         if (user.TenantId != null) claims.Add(new Claim("tenant_id", user.TenantId.Value.ToString()));
+        if (impersonateTenantId != null) claims.Add(new Claim("impersonate_tenant_id", impersonateTenantId.ToString()!));
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {

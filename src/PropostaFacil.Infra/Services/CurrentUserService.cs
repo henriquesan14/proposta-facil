@@ -20,9 +20,20 @@ public class CurrentUserService : ICurrentUserService
         ? Guid.Parse(id)
         : null;
 
-    public Guid? TenantId => User?.FindFirst("tenant_id")?.Value is string tenantId
-        ? Guid.Parse(tenantId)
-        : null;
+    public Guid? TenantId
+    {
+        get
+        {
+            // Se estiver impersonando, usa o tenant impersonado
+            var impersonatedTenantId = User?.FindFirst("impersonate_tenant_id")?.Value;
+            if (!string.IsNullOrEmpty(impersonatedTenantId))
+                return Guid.Parse(impersonatedTenantId);
+
+            // Caso contrário, usa o tenant normal do usuário
+            var tenantId = User?.FindFirst("tenant_id")?.Value;
+            return !string.IsNullOrEmpty(tenantId) ? Guid.Parse(tenantId) : null;
+        }
+    }
 
     public UserRoleEnum? Role => User?.FindFirst(ClaimTypes.Role)?.Value is string role
         ? Enum.TryParse<UserRoleEnum>(role, out var parsed) ? parsed : null

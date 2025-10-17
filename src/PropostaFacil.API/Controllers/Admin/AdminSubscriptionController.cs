@@ -7,7 +7,6 @@ using PropostaFacil.Application.Subscriptions.Commands.CreateSubscription;
 using PropostaFacil.Application.Subscriptions.Commands.DeleteSubscription;
 using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionById;
 using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptions;
-using PropostaFacil.Application.Tenants.Queries.GetTenantById;
 
 namespace PropostaFacil.API.Controllers.Admin;
 
