@@ -4,59 +4,58 @@ using PropostaFacil.Domain.Enums;
 using System.Security.Claims;
 using System.Text;
 
-namespace PropostaFacil.API.Extensions
+namespace PropostaFacil.API.Extensions;
+
+public static class AuthExtensions
 {
-    public static class AuthExtensions
+    public static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
     {
-        public static IServiceCollection AddAuthConfig(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
+        var isDevelopment = env.IsDevelopment();
+        var secretKey = Encoding.ASCII.GetBytes(configuration["TokenSettings:Secret"]!);
+
+        services.AddAuthentication(x =>
         {
-            var isDevelopment = env.IsDevelopment();
-            var secretKey = Encoding.ASCII.GetBytes(configuration["TokenSettings:Secret"]!);
-
-            services.AddAuthentication(x =>
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(x =>
+        {
+            x.RequireHttpsMetadata = !isDevelopment;
+            x.SaveToken = true;
+            x.TokenValidationParameters = new TokenValidationParameters
             {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.RequireHttpsMetadata = !isDevelopment;
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(secretKey),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ClockSkew = TimeSpan.Zero,
-                    ValidateLifetime = true
-                };
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ClockSkew = TimeSpan.Zero,
+                ValidateLifetime = true
+            };
 
-                x.Events = new JwtBearerEvents
+            x.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
                 {
-                    OnMessageReceived = context =>
+                    var accessToken = context.Request.Cookies["access_token"];
+                    if (!string.IsNullOrEmpty(accessToken))
                     {
-                        var accessToken = context.Request.Cookies["access_token"];
-                        if (!string.IsNullOrEmpty(accessToken))
-                        {
-                            context.Token = accessToken;
-                        }
-
-                        return Task.CompletedTask;
+                        context.Token = accessToken;
                     }
-                };
-            });
 
-            services.AddAuthorization(options =>
-            {
-                foreach (var role in Enum.GetValues<UserRoleEnum>())
-                {
-                    options.AddPolicy(role.ToString(), policy =>
-                        policy.RequireClaim(ClaimTypes.Role, role.ToString()));
+                    return Task.CompletedTask;
                 }
-            });
+            };
+        });
 
-            return services;
-        }
+        services.AddAuthorization(options =>
+        {
+            foreach (var role in Enum.GetValues<UserRoleEnum>())
+            {
+                options.AddPolicy(role.ToString(), policy =>
+                    policy.RequireClaim(ClaimTypes.Role, role.ToString()));
+            }
+        });
+
+        return services;
     }
 }

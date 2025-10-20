@@ -1,7 +1,10 @@
-﻿using PropostaFacil.Domain.Enums;
+﻿using PropostaFacil.Application.Payments;
+using PropostaFacil.Application.SubscriptionPlans;
+using PropostaFacil.Application.Tenants;
+using PropostaFacil.Domain.Enums;
 
-namespace PropostaFacil.Application.Subscriptions
-{
-    public record SubscriptionResponse(Guid Id, Guid TenantId, Guid SubscriptionPlanId, SubscriptionPlanResponse SubscriptionPlan, DateTime StartDate, DateTime? EndDate,
-        SubscriptionStatusEnum Status, int ProposalsUsed, string SubscriptionAsaasId, string paymentLink);
-}
+namespace PropostaFacil.Application.Subscriptions;
+
+public record SubscriptionResponse(Guid Id, Guid TenantId, Guid SubscriptionPlanId, SubscriptionPlanResponse SubscriptionPlan, SubscriptionPlanResponse PendingUpgradePlan, DateTime? StartDate,
+    SubscriptionStatusEnum Status, int ProposalsUsed, string SubscriptionAsaasId, string paymentLink, TenantResponse Tenant, IEnumerable<PaymentResponse> Payments,
+    bool IsActive, DateTime? CreatedAt, string? CreatedByName);

@@ -5,10 +5,12 @@ namespace PropostaFacil.Domain.Users.Specifications;
 
 public class ListUsersSpecification : Specification<User>
 {
-    public ListUsersSpecification(string? name, UserRoleEnum? role)
+    public ListUsersSpecification(string? name, UserRoleEnum? role, bool onlyActive)
     {
         Query
-            .Where(p => (string.IsNullOrEmpty(name) ||
+            .Where(p =>
+            (!onlyActive || p.IsActive) &&
+            (string.IsNullOrEmpty(name) ||
                     p.Name.ToLower().Contains(name.ToLower())) &&
                     (!role.HasValue || p.Role == role))
             .OrderByDescending(p => p.CreatedAt);

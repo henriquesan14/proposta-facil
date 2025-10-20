@@ -1,12 +1,11 @@
 ﻿using MediatR;
 
-namespace PropostaFacil.Shared.Common.CQRS
-{
-    public interface ICommand : ICommand<Unit>
-    {
-    }
+namespace PropostaFacil.Shared.Common.CQRS;
 
-    public interface ICommand<out TResponse> : IRequest<TResponse>
-    {
-    }
+public interface ICommand : ICommand<Unit>
+{
+}
+
+public interface ICommand<out TResponse> : IRequest<TResponse>
+{
 }

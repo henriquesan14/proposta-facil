@@ -1,7 +1,6 @@
-﻿namespace PropostaFacil.Application.Auth
+﻿namespace PropostaFacil.Application.Auth;
+
+public interface ITokenCleanupService
 {
-    public interface ITokenCleanupService
-    {
-        Task CleanupExpiredAndRevokedTokensAsync();
-    }
+    Task CleanupExpiredAndRevokedTokensAsync();
 }

@@ -1,24 +1,23 @@
-﻿namespace PropostaFacil.Domain.ValueObjects
+﻿namespace PropostaFacil.Domain.ValueObjects;
+
+public record Contact
 {
-    public record Contact
+    public string Email { get; init; }
+    public string PhoneNumber { get; init; }
+
+    private Contact(string email, string phoneNumber)
     {
-        public string Email { get; init; }
-        public string PhoneNumber { get; init; }
+        Email = email;
+        PhoneNumber = phoneNumber;
+    }
 
-        private Contact(string email, string phoneNumber)
-        {
-            Email = email;
-            PhoneNumber = phoneNumber;
-        }
+    public static Contact Of(string email, string phoneNumber)
+    {
+        if (string.IsNullOrWhiteSpace(email) || !System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            throw new ArgumentException("E-mail inválido.");
+        if (string.IsNullOrWhiteSpace(phoneNumber))
+            throw new ArgumentException("Telefone é obrigatório.");
 
-        public static Contact Of(string email, string phoneNumber)
-        {
-            if (string.IsNullOrWhiteSpace(email) || !System.Text.RegularExpressions.Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-                throw new ArgumentException("E-mail inválido.");
-            if (string.IsNullOrWhiteSpace(phoneNumber))
-                throw new ArgumentException("Telefone é obrigatório.");
-
-            return new Contact(email, phoneNumber);
-        }
+        return new Contact(email, phoneNumber);
     }
 }

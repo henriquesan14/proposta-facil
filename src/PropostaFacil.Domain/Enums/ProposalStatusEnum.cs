@@ -1,7 +1,6 @@
-﻿namespace PropostaFacil.Domain.Enums
+﻿namespace PropostaFacil.Domain.Enums;
+
+public enum ProposalStatusEnum
 {
-    public enum ProposalStatusEnum
-    {
-        Draft, Sent, Approved, Rejected, Expired
-    }
+    Draft, Sent, Approved, Rejected, Expired
 }

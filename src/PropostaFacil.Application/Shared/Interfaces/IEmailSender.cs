@@ -1,9 +1,8 @@
 ﻿using PropostaFacil.Application.Proposals;
 
-namespace PropostaFacil.Application.Shared.Interfaces
+namespace PropostaFacil.Application.Shared.Interfaces;
+
+public interface IEmailSender
 {
-    public interface IEmailSender
-    {
-        Task SendEmailAsync(string toEmail, string subject, string htmlBody);
-    }
+    Task SendEmailAsync(string toEmail, string subject, string htmlBody);
 }

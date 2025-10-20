@@ -9,6 +9,6 @@ public class GetUserByIdGlobalSpecification : GlobalSingleResultSpecification<Us
     public GetUserByIdGlobalSpecification(UserId userId)
     {
         Query
-            .Where(u => u.Id == userId);
+            .Where(u => u.Id == userId && u.IsActive);
     }
 }

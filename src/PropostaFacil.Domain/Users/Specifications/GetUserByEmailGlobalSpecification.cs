@@ -9,6 +9,6 @@ public class GetUserByEmailGlobalSpecification : GlobalSingleResultSpecification
     public GetUserByEmailGlobalSpecification(string email)
     {
         Query
-            .Where(x => x.Contact.Email.Equals(email));
+            .Where(x => x.Contact.Email.Equals(email) && x.IsActive);
     }
 }

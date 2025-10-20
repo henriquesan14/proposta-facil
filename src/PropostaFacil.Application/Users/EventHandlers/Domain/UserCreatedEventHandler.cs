@@ -12,7 +12,8 @@ public class UserSentEventHandler(IPublishEndpoint publishEndpoint) : INotificat
         var user = userCreatedEvent.User;
         var userCreatedIntegrationEvent = new UserCreatedIntegrationEvent(
             user.Contact.Email,
-            user.Name
+            user.Name,
+            user.VerifiedToken!
         );
         await publishEndpoint.Publish(userCreatedIntegrationEvent, cancellationToken);
     }

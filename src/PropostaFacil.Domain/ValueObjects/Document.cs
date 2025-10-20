@@ -1,20 +1,19 @@
-﻿namespace PropostaFacil.Domain.ValueObjects
+﻿namespace PropostaFacil.Domain.ValueObjects;
+
+public record Document
 {
-    public record Document
+    public string Number { get; init; }
+
+    private Document(string number)
     {
-        public string Number { get; init; }
+        Number = number;
+    }
 
-        private Document(string number)
-        {
-            Number = number;
-        }
+    public static Document Of(string number)
+    {
+        if (string.IsNullOrWhiteSpace(number))
+            throw new ArgumentException("Documento é obrigatório.");
 
-        public static Document Of(string number)
-        {
-            if (string.IsNullOrWhiteSpace(number))
-                throw new ArgumentException("Documento é obrigatório.");
-
-            return new Document(number);
-        }
+        return new Document(number);
     }
 }

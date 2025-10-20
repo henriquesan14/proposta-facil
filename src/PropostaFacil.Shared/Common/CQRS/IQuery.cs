@@ -1,9 +1,8 @@
 ﻿using MediatR;
 
-namespace PropostaFacil.Shared.Common.CQRS
+namespace PropostaFacil.Shared.Common.CQRS;
+
+public interface IQuery<out TResponse> : IRequest<TResponse>
+where TResponse : notnull
 {
-    public interface IQuery<out TResponse> : IRequest<TResponse>
-    where TResponse : notnull
-    {
-    }
 }

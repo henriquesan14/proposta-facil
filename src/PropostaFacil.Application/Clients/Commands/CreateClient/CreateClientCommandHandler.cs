@@ -6,24 +6,23 @@ using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
-namespace PropostaFacil.Application.Clients.Commands.CreateClient
+namespace PropostaFacil.Application.Clients.Commands.CreateClient;
+
+public class CreateClientCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IClientRuleCheck clientDocumentCheck) : ICommandHandler<CreateClientCommand, ResultT<ClientResponse>>
 {
-    public class CreateClientCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IClientRuleCheck clientDocumentCheck) : ICommandHandler<CreateClientCommand, ResultT<ClientResponse>>
+    public async Task<ResultT<ClientResponse>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
     {
-        public async Task<ResultT<ClientResponse>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
-        {
-            var loggedTenantId = currentUserService.TenantId;
+        var loggedTenantId = currentUserService.TenantId;
 
-            var document = Document.Of(request.Document);
-            var contact = Contact.Of(request.Email, request.PhoneNumber);
-            var address = Address.Of(request.AddressStreet, request.AddressNumber, request.AddressComplement, request.AddressDistrict,
-                request.AddressCity, request.AddressState, request.AddressZipCode);
-            var client = Client.Create(request.Name, TenantId.Of(loggedTenantId!.Value), document, contact, address, clientDocumentCheck);
-            await unitOfWork.Clients.AddAsync(client);
+        var document = Document.Of(request.Document);
+        var contact = Contact.Of(request.Email, request.PhoneNumber);
+        var address = Address.Of(request.AddressStreet, request.AddressNumber, request.AddressComplement, request.AddressDistrict,
+            request.AddressCity, request.AddressState, request.AddressZipCode);
+        var client = Client.Create(request.Name, TenantId.Of(loggedTenantId!.Value), document, contact, address, clientDocumentCheck);
+        await unitOfWork.Clients.AddAsync(client);
 
-            await unitOfWork.CompleteAsync();
+        await unitOfWork.CompleteAsync();
 
-            return client.ToDto();
-        }
+        return client.ToDto();
     }
 }

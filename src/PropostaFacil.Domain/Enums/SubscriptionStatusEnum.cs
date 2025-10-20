@@ -1,11 +1,11 @@
-﻿namespace PropostaFacil.Domain.Enums
+﻿namespace PropostaFacil.Domain.Enums;
+
+public enum SubscriptionStatusEnum
 {
-    public enum SubscriptionStatusEnum
-    {
-        Pending,
-        Active,
-        Suspended,
-        Canceled,
-        Expired
-    }
+    Pending,
+    Active,
+    Suspended,
+    Canceled,
+    Expired,
+    Overdue
 }

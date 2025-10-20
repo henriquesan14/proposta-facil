@@ -1,10 +1,10 @@
-﻿namespace PropostaFacil.Infra.Emails.Builders
-{
-    public static class SubscriptionEmailBuilder
-    { 
-        public static string BuildConfirmSubscription(string customerName, string planName, decimal price, string paymentLink)
-        {
-            return $@"
+﻿namespace PropostaFacil.Infra.Emails.Builders;
+
+public static class SubscriptionEmailBuilder
+{ 
+    public static string BuildConfirmSubscription(string customerName, string planName, decimal price, string paymentLink)
+    {
+        return $@"
             <html>
                 <body style='font-family: Arial, sans-serif; color: #333;'>
                     <h2>Olá, {customerName}!</h2>
@@ -32,6 +32,66 @@
                     <p>Obrigado por escolher nossos serviços!</p>
                 </body>
             </html>";
-        }
     }
+
+    public static string BuildSubscriptionExpired(string customerName, string paymentLink, decimal value, DateOnly dueDate)
+    {
+        return $@"
+        <html>
+            <body style='font-family: Arial, sans-serif; color: #333;'>
+                <h2>Olá, {customerName}!</h2>
+                <p>Sua assinatura expirou 😞</p>
+
+                <h3>Detalhes da fatura</h3>
+                <ul>
+                    <li><strong>Valor:</strong> R$ {value:N2}</li>
+                    <li><strong>Vencimento:</strong> {dueDate:dd/MM/yyyy}</li>
+                    <li><strong>Status:</strong> Expirada</li>
+                </ul>
+
+                <p>Mas não se preocupe! Você pode reativar sua assinatura realizando o pagamento através do link abaixo:</p>
+
+                <p>
+                    <a href='{paymentLink}' target='_blank' 
+                       style='display:inline-block; padding:10px 20px; background:#dc3545; 
+                              color:white; text-decoration:none; border-radius:5px;'>
+                       Reativar assinatura
+                    </a>
+                </p>
+
+                <br />
+                <p>Após o pagamento, sua assinatura será reativada automaticamente.</p>
+                <p>Se já realizou o pagamento, por favor desconsidere este e-mail.</p>
+                <p>Obrigado por continuar conosco!</p>
+            </body>
+        </html>";
+    }
+
+    public static string BuildConfirmUpgradeSubscription(string customerName, string newPlanName, decimal newPrice)
+    {
+        return $@"
+        <html>
+            <body style='font-family: Arial, sans-serif; color: #333;'>
+                <h2>Olá, {customerName}!</h2>
+                <p>🎉 Seu upgrade de plano foi confirmado com sucesso!</p>
+
+                <h3>Detalhes do novo plano</h3>
+                <ul>
+                    <li><strong>Plano:</strong> {newPlanName}</li>
+                    <li><strong>Valor:</strong> R$ {newPrice:N2}</li>
+                    <li><strong>Status:</strong> Ativo</li>
+                </ul>
+
+                <p>Agora você tem acesso a todos os recursos e benefícios do seu novo plano.</p>
+
+                <br />
+                <p>Obrigado por continuar evoluindo conosco 🚀</p>
+                <p>Se tiver dúvidas, entre em contato com nosso suporte.</p>
+
+                <br />
+                <p style='font-size: 12px; color: #777;'>Este é um email automático, por favor não responda.</p>
+            </body>
+        </html>";
+    }
+
 }

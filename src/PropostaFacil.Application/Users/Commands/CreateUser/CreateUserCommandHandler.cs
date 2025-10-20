@@ -7,31 +7,29 @@ using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
-namespace PropostaFacil.Application.Users.Commands.CreateUser
+namespace PropostaFacil.Application.Users.Commands.CreateUser;
+
+public class CreateUserCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IPasswordHash passwordHash, IUserRuleCheck userRuleCheck) : ICommandHandler<CreateUserCommand, ResultT<UserResponse>>
 {
-    public class CreateUserCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IPasswordHash passwordHash, IUserRuleCheck userRuleCheck) : ICommandHandler<CreateUserCommand, ResultT<UserResponse>>
+    public async Task<ResultT<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        public async Task<ResultT<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
-        {
-            var loggedTenantId = TenantId.Of(currentUserService.TenantId!.Value);
+        var loggedTenantId = TenantId.Of(currentUserService.TenantId!.Value);
 
-            if (request.Role == UserRoleEnum.AdminSystem)
-                return UserErrors.Forbidden();
+        if (request.Role == UserRoleEnum.AdminSystem)
+            return UserErrors.Forbidden();
 
-            var user = User.Create(
-                request.Name,
-                Contact.Of(request.Email, request.PhoneNumber),
-                request.Password,
-                request.Role,
-                loggedTenantId,
-                passwordHash,
-                userRuleCheck
-            );
+        var user = User.Create(
+            request.Name,
+            Contact.Of(request.Email, request.PhoneNumber),
+            request.Role,
+            loggedTenantId,
+            passwordHash,
+            userRuleCheck
+        );
 
-            await unitOfWork.Users.AddAsync(user);
-            await unitOfWork.CompleteAsync();
+        await unitOfWork.Users.AddAsync(user);
+        await unitOfWork.CompleteAsync();
 
-            return user.ToDto();
-        }
+        return user.ToDto();
     }
 }

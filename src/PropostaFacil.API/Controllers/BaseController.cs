@@ -24,7 +24,7 @@ public class BaseController : ControllerBase
         return Problem(
             statusCode: statusCode,
             title: error.Description,
-            detail: error.Code);
+            detail: $"{error.Code} - {error.Description}");
     }
 
     protected IActionResult? ValidateOrBadRequest<T>(

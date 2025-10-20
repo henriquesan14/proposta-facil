@@ -3,52 +3,98 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PropostaFacil.Application.Proposals;
 using PropostaFacil.Application.Proposals.Commands.CreateProposal;
+using PropostaFacil.Application.Proposals.Commands.DeleteProposal;
 using PropostaFacil.Application.Proposals.Commands.SendProposal;
+using PropostaFacil.Application.Proposals.Commands.UpdateProposal;
+using PropostaFacil.Application.Proposals.Queries.GetProposalById;
 using PropostaFacil.Application.Proposals.Queries.GetProposals;
-using PropostaFacil.Application.Tenants.Commands.CreateTenant;
 
-namespace PropostaFacil.API.Controllers
+namespace PropostaFacil.API.Controllers;
+
+[Route("api/[controller]")]
+[Authorize]
+public class ProposalController(IMediator mediator) : BaseController
 {
-    [Route("api/[controller]")]
-    [Authorize]
-    public class ProposalController(IMediator mediator) : BaseController
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateProposalCommand command, IValidator<CreateProposalCommand> validator, CancellationToken ct)
     {
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateProposalCommand command, IValidator<CreateTenantCommand> validator, CancellationToken ct)
-        {
-            //var badRequest = ValidateOrBadRequest(command, validator);
-            //if (badRequest != null) return badRequest;
+        var badRequest = ValidateOrBadRequest(command, validator);
+        if (badRequest != null) return badRequest;
 
-            var result = await mediator.Send(command, ct);
+        var result = await mediator.Send(command, ct);
 
-            return result.Match(
-                onSuccess: () => Ok(result),
-                onFailure: Problem
-            );
-        }
+        return result.Match(
+            onSuccess: () => CreatedAtAction(
+                actionName: nameof(GetById),
+                routeValues: new { id = result.Value.Id },
+                value: result.Value
+            ),
+            onFailure: Problem
+        );
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] GetProposalsQuery query, CancellationToken ct)
-        {
-            var result = await mediator.Send(query, ct);
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<ProposalResponse>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get([FromQuery] GetProposalsQuery query, CancellationToken ct)
+    {
+        var result = await mediator.Send(query, ct);
 
-            return result.Match(
-                onSuccess: Ok,
-                onFailure: Problem
-            );
-        }
+        return result.Match(
+            onSuccess: Ok,
+            onFailure: Problem
+        );
+    }
 
-        [HttpPost("{id}/send")]
-        public async Task<IActionResult> Send(Guid id, CancellationToken ct)
-        {
-            var command = new SendProposalCommand(id);
-            var result = await mediator.Send(command, ct);
+    [HttpPost("{id}/send")]
+    public async Task<IActionResult> Send(Guid id, CancellationToken ct)
+    {
+        var command = new SendProposalCommand(id);
+        var result = await mediator.Send(command, ct);
 
-            return result.Match(
-                onSuccess: () => NoContent(),
-                onFailure: Problem
-            );
-        }
+        return result.Match(
+            onSuccess: () => NoContent(),
+            onFailure: Problem
+        );
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ProposalResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
+    {
+        var query = new GetProposalByIdQuery(id);
+        var result = await mediator.Send(query, ct);
+
+        return result.Match(
+            onSuccess: Ok,
+            onFailure: Problem
+        );
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Update(UpdateProposalCommand command, CancellationToken ct)
+    {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
+
+        var result = await mediator.Send(command, ct);
+
+        return result.Match(
+            onSuccess: () => NoContent(),
+            onFailure: Problem
+        );
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
+    {
+        var command = new DeleteProposalCommand(id);
+        var result = await mediator.Send(command, ct);
+
+        return result.Match(
+            onSuccess: NoContent,
+            onFailure: Problem
+        );
     }
 }

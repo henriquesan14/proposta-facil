@@ -1,9 +1,8 @@
-﻿namespace PropostaFacil.Domain.Enums
+﻿namespace PropostaFacil.Domain.Enums;
+
+public enum BillingTypeEnum
 {
-    public enum BillingTypeEnum
-    {
-        BOLETO,
-        PIX,
-        CREDIT_CARD
-    }
+    BOLETO,
+    PIX,
+    CREDIT_CARD
 }

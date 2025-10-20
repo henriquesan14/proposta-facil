@@ -2,22 +2,22 @@
 
 public class UserEmailBuilder
 {
-    public static string BuildSendVerifyEmailAddress(string Name, string Email)
+    public static string BuildSendVerifyEmailAddress(string Name, string VerificationLink)
     {
         return $@"
             <!DOCTYPE html>
             <html>
               <head>
                 <meta charset=""UTF-8"">
-                <title>Verificação de E-mail</title>
+                <title>Ative sua conta</title>
               </head>
               <body style=""font-family: Arial, sans-serif; line-height:1.5; color:#333;"">
                 <h2>Olá, {Name}!</h2>
-                <p>Obrigado por se cadastrar no nosso sistema.</p>
-                <p>Por favor, clique no botão abaixo para verificar seu e-mail:</p>
+                <p>Bem-vindo ao nosso sistema.</p>
+                <p>Para ativar sua conta e criar sua senha, clique no botão abaixo:</p>
                 <p>
-                  <a href=""{{verificationLink}}"" style=""display:inline-block; padding:10px 20px; color:#fff; background-color:#6a0dad; text-decoration:none; border-radius:5px;"">
-                    Verificar E-mail
+                  <a href=""{VerificationLink}"" style=""display:inline-block; padding:10px 20px; color:#fff; background-color:#6a0dad; text-decoration:none; border-radius:5px;"">
+                    Ativar Conta e Criar Senha
                   </a>
                 </p>
                 <p>Se você não se cadastrou, ignore este e-mail.</p>
@@ -27,7 +27,7 @@ public class UserEmailBuilder
             </html>";
     }
 
-    public static string BuildSendForgotPassword(string Name, string Email)
+    public static string BuildSendForgotPassword(string Name, string ResetPasswordLink)
     {
         return $@"
             <!DOCTYPE html>
@@ -41,7 +41,7 @@ public class UserEmailBuilder
                 <p>Recebemos uma solicitação para redefinir sua senha.</p>
                 <p>Clique no botão abaixo para criar uma nova senha:</p>
                 <p>
-                  <a href=""{{{{resetLink}}}}"" style=""display:inline-block; padding:10px 20px; color:#fff; background-color:#6a0dad; text-decoration:none; border-radius:5px;"">
+                  <a href=""{ResetPasswordLink}"" style=""display:inline-block; padding:10px 20px; color:#fff; background-color:#6a0dad; text-decoration:none; border-radius:5px;"">
                     Redefinir Senha
                   </a>
                 </p>
