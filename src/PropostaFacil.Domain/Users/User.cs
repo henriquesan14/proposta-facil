@@ -29,6 +29,13 @@ public class User : Aggregate<UserId>
         user.AddDomainEvent(new UserCreatedEvent(user));
         return user;
     }
+
+    public void Update(string name, Contact contact, UserRoleEnum role)
+    {
+        Name = name;
+        Contact = contact;
+        Role = role;
+    }
     public string Name { get; private set; } = default!;
     public Contact Contact { get; private set; } = default!;
     public string PasswordHash { get; private set; } = default!;

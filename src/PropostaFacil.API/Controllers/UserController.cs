@@ -3,8 +3,10 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PropostaFacil.Application.Clients.Commands.UpdateClient;
 using PropostaFacil.Application.Users.Commands.CreateUser;
 using PropostaFacil.Application.Users.Commands.DeleteUser;
+using PropostaFacil.Application.Users.Commands.UpdateUser;
 using PropostaFacil.Application.Users.Queries.GetUserById;
 using PropostaFacil.Application.Users.Queries.GetUsers;
 
@@ -51,6 +53,20 @@ public class UserController(IMediator mediator) : BaseController
 
         return result.Match(
             onSuccess: Ok,
+            onFailure: Problem
+        );
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Update(UpdateUserCommand command, CancellationToken ct)
+    {
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
+
+        var result = await mediator.Send(command, ct);
+
+        return result.Match(
+            onSuccess: () => NoContent(),
             onFailure: Problem
         );
     }

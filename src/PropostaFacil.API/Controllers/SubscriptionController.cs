@@ -1,23 +1,21 @@
 ﻿using Common.ResultPattern;
-using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PropostaFacil.Application.Tenants.Commands.CreateTenant;
-using PropostaFacil.Application.Tenants.Commands.DeleteTenant;
-using PropostaFacil.Application.Tenants.Commands.UpdateTenant;
-using PropostaFacil.Application.Tenants.Queries.GetTenantById;
-using PropostaFacil.Application.Tenants.Queries.GetTenants;
+using PropostaFacil.Application.Payments.Queries.GetPaymentsBySubscription;
+using PropostaFacil.Application.Subscriptions.Commands.CreateSubscription;
+using PropostaFacil.Application.Subscriptions.Commands.DeleteSubscription;
+using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptionById;
+using PropostaFacil.Application.Subscriptions.Queries.GetSubscriptions;
 
-namespace PropostaFacil.API.Controllers.Admin;
+namespace PropostaFacil.API.Controllers;
 
-[Route("api/admin/tenants")]
+[Route("api/[controller]")]
 [Authorize(Roles = "AdminSystem")]
-public class AdminTenantController(IMediator mediator) : BaseController
+public class SubscriptionController(IMediator mediator) : BaseController
 {
-
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] GetTenantsQuery query, CancellationToken ct)
+    public async Task<IActionResult> Get([FromQuery] GetSubscriptionsQuery query, CancellationToken ct)
     {
         var result = await mediator.Send(query, ct);
 
@@ -30,7 +28,7 @@ public class AdminTenantController(IMediator mediator) : BaseController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
     {
-        var query = new GetTenantByIdGuery(id);
+        var query = new GetSubscriptionByIdQuery(id);
         var result = await mediator.Send(query, ct);
 
         return result.Match(
@@ -40,10 +38,10 @@ public class AdminTenantController(IMediator mediator) : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateTenantCommand command, IValidator<CreateTenantCommand> validator, CancellationToken ct)
+    public async Task<IActionResult> Create(CreateSubscriptionCommand command, CancellationToken ct)
     {
-        var badRequest = ValidateOrBadRequest(command, validator);
-        if (badRequest != null) return badRequest;
+        //var badRequest = ValidateOrBadRequest(command, validator);
+        //if (badRequest != null) return badRequest;
 
         var result = await mediator.Send(command, ct);
 
@@ -57,16 +55,14 @@ public class AdminTenantController(IMediator mediator) : BaseController
         );
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Update(UpdateTenantCommand command, IValidator<UpdateTenantCommand> validator, CancellationToken ct)
+    [HttpGet("{id}/payments")]
+    public async Task<IActionResult> GetPayments(Guid id, CancellationToken ct)
     {
-        var badRequest = ValidateOrBadRequest(command, validator);
-        if (badRequest != null) return badRequest;
-
-        var result = await mediator.Send(command, ct);
+        var query = new GetPaymentsBySubscriptionQuery(id);
+        var result = await mediator.Send(query, ct);
 
         return result.Match(
-            onSuccess: () => NoContent(),
+            onSuccess: Ok,
             onFailure: Problem
         );
     }
@@ -74,7 +70,7 @@ public class AdminTenantController(IMediator mediator) : BaseController
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
     {
-        var command = new DeleteTenantCommand(id);
+        var command = new DeleteSubscriptionCommand(id);
 
         var result = await mediator.Send(command, ct);
 
