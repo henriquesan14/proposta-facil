@@ -3,6 +3,7 @@ using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Users.Queries.GetUsers;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Users;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Tests.Builders.Entities;
 using PropostaFacil.Tests.Builders.Queries;
@@ -13,7 +14,7 @@ namespace PropostaFacil.Tests.Queries;
 public class GetUsersQueryTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
-    private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
+    private readonly Mock<IUserContext> _currentUserServiceMock = new();
 
     //private GetUsersQueryHandler CreateHandler()
     //=> new GetUsersQueryHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object);

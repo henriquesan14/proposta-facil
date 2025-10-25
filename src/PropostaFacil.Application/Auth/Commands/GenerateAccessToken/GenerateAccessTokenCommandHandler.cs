@@ -8,7 +8,7 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Auth.Commands.GenerateAccessToken;
 
-public class GenerateAccessTokenCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, ICurrentUserService currentUserService, IPasswordCheck passwordCheck) : ICommandHandler<GenerateAccessTokenCommand, ResultT<AuthResponse>>
+public class GenerateAccessTokenCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUserContext currentUserService, IPasswordCheck passwordCheck) : ICommandHandler<GenerateAccessTokenCommand, ResultT<AuthResponse>>
 {
     public async Task<ResultT<AuthResponse>> Handle(GenerateAccessTokenCommand request, CancellationToken cancellationToken)
     {

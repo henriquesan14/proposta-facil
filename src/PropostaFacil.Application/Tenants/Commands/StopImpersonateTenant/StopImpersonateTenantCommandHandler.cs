@@ -3,13 +3,14 @@ using PropostaFacil.Application.Auth;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.RefreshTokens;
 using PropostaFacil.Domain.RefreshTokens.Specifications;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.Users.Specifications;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Tenants.Commands.StopImpersonateTenant;
 
-public class StopImpersonateTenantCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, ICurrentUserService currentUserService) : ICommandHandler<StopImpersonateTenantCommand, ResultT<AuthResponse>>
+public class StopImpersonateTenantCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUserContext currentUserService) : ICommandHandler<StopImpersonateTenantCommand, ResultT<AuthResponse>>
 {
     public async Task<ResultT<AuthResponse>> Handle(StopImpersonateTenantCommand request, CancellationToken cancellationToken)
     {

@@ -13,7 +13,7 @@ namespace PropostaFacil.Tests.Commands;
 public class CreateUserCommandTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
-    private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
+    private readonly Mock<IUserContext> _currentUserServiceMock = new();
     private readonly Mock<IPasswordHash> _passwordHashMock = new();
     private readonly Mock<IUserRuleCheck> _userRuleCheckMock = new();
 

@@ -9,7 +9,7 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Users.Commands.CreateUser;
 
-public class CreateUserCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IPasswordHash passwordHash, IUserRuleCheck userRuleCheck) : ICommandHandler<CreateUserCommand, ResultT<UserResponse>>
+public class CreateUserCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService, IPasswordHash passwordHash, IUserRuleCheck userRuleCheck) : ICommandHandler<CreateUserCommand, ResultT<UserResponse>>
 {
     public async Task<ResultT<UserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {

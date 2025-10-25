@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Clients;
 using PropostaFacil.Domain.Payments;
 using PropostaFacil.Domain.Proposals;
@@ -8,6 +7,7 @@ using PropostaFacil.Domain.SubscriptionPlans;
 using PropostaFacil.Domain.Subscriptions;
 using PropostaFacil.Domain.Tenants;
 using PropostaFacil.Domain.Users;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using System.Reflection;
 
@@ -16,7 +16,7 @@ namespace PropostaFacil.Infra.Data;
 public class PropostaFacilDbContext : DbContext
 {
     private TenantId? _tenantId;
-    public PropostaFacilDbContext(DbContextOptions<PropostaFacilDbContext> options, ICurrentUserService currentUserService)
+    public PropostaFacilDbContext(DbContextOptions<PropostaFacilDbContext> options, IUserContext currentUserService)
     : base(options) 
     {
         _tenantId = currentUserService.TenantId.HasValue ? TenantId.Of(currentUserService.TenantId!.Value) : null;

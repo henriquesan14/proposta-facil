@@ -3,6 +3,7 @@ using PropostaFacil.Application.Proposals.Commands.CreateProposal;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Tenants;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Tests.Builders.Commands;
 using System.Linq.Expressions;
@@ -12,7 +13,7 @@ namespace PropostaFacil.Tests.Commands;
 public class CreateProposalCommandTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
-    private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
+    private readonly Mock<IUserContext> _currentUserServiceMock = new();
 
     private CreateProposalCommandHandler CreateHandler()
     => new CreateProposalCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object);
