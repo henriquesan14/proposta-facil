@@ -47,8 +47,7 @@ public class SubscriptionConfiguration : IEntityTypeConfiguration<Subscription>
 
         builder.HasOne(s => s.Tenant)
             .WithOne(t => t.Subscription)
-            .HasForeignKey<Subscription>(s => s.TenantId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey<Subscription>(s => s.TenantId);
 
         builder.Property(a => a.TenantId).HasConversion(
             id => id.Value,

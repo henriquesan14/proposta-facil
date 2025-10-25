@@ -1,11 +1,12 @@
 ﻿using Common.ResultPattern;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.RefreshTokens.Specifications;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Auth.Commands.RevokeRefreshToken;
 
-public class RevokeRefreshTokenCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : ICommandHandler<RevokeRefreshTokenCommand, Result>
+public class RevokeRefreshTokenCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService) : ICommandHandler<RevokeRefreshTokenCommand, Result>
 {
     public async Task<Result> Handle(RevokeRefreshTokenCommand request, CancellationToken cancellationToken)
     {

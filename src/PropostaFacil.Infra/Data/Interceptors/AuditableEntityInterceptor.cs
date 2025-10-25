@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Abstractions;
+using PropostaFacil.Domain.Users.Contracts;
 
 namespace PropostaFacil.Infra.Data.Interceptors;
 
-public class AuditableEntityInterceptor(ICurrentUserService currentUserService) : SaveChangesInterceptor
+public class AuditableEntityInterceptor(IUserContext currentUserService) : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
