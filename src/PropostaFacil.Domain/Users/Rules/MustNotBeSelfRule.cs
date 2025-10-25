@@ -1,5 +1,6 @@
 using PropostaFacil.Domain.Abstractions;
 using PropostaFacil.Domain.Users.Contracts;
+using PropostaFacil.Domain.ValueObjects.Ids;
 
 namespace PropostaFacil.Domain.Users.Rules;
 
@@ -9,6 +10,7 @@ internal class MustNotBeSelfRule(User user, IUserContext context) : IBusinessRul
 
     public bool IsBroken()
     {
-        return user.Id.Equals(context.GetCurrentUserId());
+        var userId = UserId.Of(context.UserId!.Value);
+        return user.Id.Equals(userId);
     }
 }

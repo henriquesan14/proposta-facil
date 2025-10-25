@@ -3,13 +3,14 @@ using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Application.Users;
 using PropostaFacil.Domain.RefreshTokens;
 using PropostaFacil.Domain.RefreshTokens.Specifications;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.Users.Specifications;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Auth.Commands.RenewRefreshToken;
 
-public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, ITokenService tokenService) : ICommandHandler<RefreshTokenCommand, ResultT<AuthResponse>>
+public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService, ITokenService tokenService) : ICommandHandler<RefreshTokenCommand, ResultT<AuthResponse>>
 {
     public async Task<ResultT<AuthResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {

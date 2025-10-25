@@ -3,22 +3,21 @@ using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PropostaFacil.Application.Clients.Commands.CreateClient;
-using PropostaFacil.Application.Clients.Commands.DeleteClient;
-using PropostaFacil.Application.Clients.Commands.UpdateClient;
-using PropostaFacil.Application.Clients.Queries.GetClientById;
-using PropostaFacil.Application.Clients.Queries.GetClients;
 using PropostaFacil.Application.Tenants.Commands.CreateTenant;
+using PropostaFacil.Application.Tenants.Commands.DeleteTenant;
 using PropostaFacil.Application.Tenants.Commands.UpdateTenant;
+using PropostaFacil.Application.Tenants.Queries.GetTenantById;
+using PropostaFacil.Application.Tenants.Queries.GetTenants;
 
 namespace PropostaFacil.API.Controllers;
 
 [Route("api/[controller]")]
-[Authorize]
-public class ClientController(IMediator mediator) : BaseController
+[Authorize(Roles = "AdminSystem")]
+public class TenantController(IMediator mediator) : BaseController
 {
+
     [HttpGet]
-    public async Task<IActionResult> Get([FromQuery] GetClientsQuery query, CancellationToken ct)
+    public async Task<IActionResult> Get([FromQuery] GetTenantsQuery query, CancellationToken ct)
     {
         var result = await mediator.Send(query, ct);
 
@@ -31,7 +30,7 @@ public class ClientController(IMediator mediator) : BaseController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id, CancellationToken ct)
     {
-        var query = new GetClientByIdQuery(id);
+        var query = new GetTenantByIdGuery(id);
         var result = await mediator.Send(query, ct);
 
         return result.Match(
@@ -41,10 +40,10 @@ public class ClientController(IMediator mediator) : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateClientCommand command, IValidator<CreateTenantCommand> validator, CancellationToken ct)
+    public async Task<IActionResult> Create(CreateTenantCommand command, IValidator<CreateTenantCommand> validator, CancellationToken ct)
     {
-        //var badRequest = ValidateOrBadRequest(command, validator);
-        //if (badRequest != null) return badRequest;
+        var badRequest = ValidateOrBadRequest(command, validator);
+        if (badRequest != null) return badRequest;
 
         var result = await mediator.Send(command, ct);
 
@@ -59,10 +58,10 @@ public class ClientController(IMediator mediator) : BaseController
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(UpdateClientCommand command, CancellationToken ct)
+    public async Task<IActionResult> Update(UpdateTenantCommand command, IValidator<UpdateTenantCommand> validator, CancellationToken ct)
     {
-        //var badRequest = ValidateOrBadRequest(command, validator);
-        //if (badRequest != null) return badRequest;
+        var badRequest = ValidateOrBadRequest(command, validator);
+        if (badRequest != null) return badRequest;
 
         var result = await mediator.Send(command, ct);
 
@@ -75,11 +74,12 @@ public class ClientController(IMediator mediator) : BaseController
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id, CancellationToken ct)
     {
-        var command = new DeleteClientCommand(id);
+        var command = new DeleteTenantCommand(id);
+
         var result = await mediator.Send(command, ct);
 
         return result.Match(
-            onSuccess: NoContent,
+            onSuccess: () => NoContent(),
             onFailure: Problem
         );
     }

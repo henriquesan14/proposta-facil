@@ -8,7 +8,7 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Auth.Commands.UpdatePassword;
 
-public class UpdatePasswordCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IPasswordCheck passwordCheck, IPasswordHash passwordHash) : ICommandHandler<UpdatePasswordCommand, Result>
+public class UpdatePasswordCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService, IPasswordCheck passwordCheck, IPasswordHash passwordHash) : ICommandHandler<UpdatePasswordCommand, Result>
 {
     public async Task<Result> Handle(UpdatePasswordCommand request, CancellationToken cancellationToken)
     {

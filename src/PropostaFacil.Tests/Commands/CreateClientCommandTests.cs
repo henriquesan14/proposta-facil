@@ -5,6 +5,7 @@ using PropostaFacil.Domain.Clients;
 using PropostaFacil.Domain.Clients.Contracts;
 using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Tenants;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Tests.Builders.Commands;
 using PropostaFacil.Tests.Builders.Entities;
@@ -15,7 +16,7 @@ namespace PropostaFacil.Tests.Commands;
 public class CreateClientCommandTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
-    private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
+    private readonly Mock<IUserContext> _currentUserServiceMock = new();
     private readonly Mock<IClientRuleCheck> _ClientRuleCheckMock = new();
 
     private CreateClientCommandHandler CreateHandler()

@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
-using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Enums;
+using PropostaFacil.Domain.Users.Contracts;
 using System.Security.Claims;
 
 namespace PropostaFacil.Infra.Services;
 
-public class CurrentUserService : ICurrentUserService
+public class UserContext : IUserContext
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+    public UserContext(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
     }

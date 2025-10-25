@@ -2,13 +2,14 @@
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Clients;
 using PropostaFacil.Domain.Clients.Contracts;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.ValueObjects;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Clients.Commands.CreateClient;
 
-public class CreateClientCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService, IClientRuleCheck clientDocumentCheck) : ICommandHandler<CreateClientCommand, ResultT<ClientResponse>>
+public class CreateClientCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService, IClientRuleCheck clientDocumentCheck) : ICommandHandler<CreateClientCommand, ResultT<ClientResponse>>
 {
     public async Task<ResultT<ClientResponse>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
     {

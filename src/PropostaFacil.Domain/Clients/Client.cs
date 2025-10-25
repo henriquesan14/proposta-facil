@@ -25,10 +25,9 @@ public class Client : Aggregate<ClientId>
         };
     }
 
-    public void Update(string name, TenantId tenantId, Document document, Contact contact, Address address)
+    public void Update(string name, Document document, Contact contact, Address address)
     {
         Name = name;
-        TenantId = tenantId;
         Document = document;
         Contact = contact;
         Address = address;

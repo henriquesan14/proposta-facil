@@ -3,12 +3,13 @@ using PropostaFacil.Application.Clients;
 using PropostaFacil.Application.Shared.Interfaces;
 using PropostaFacil.Domain.Clients.Specifications;
 using PropostaFacil.Domain.Proposals;
+using PropostaFacil.Domain.Users.Contracts;
 using PropostaFacil.Domain.ValueObjects.Ids;
 using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Proposals.Commands.CreateProposal;
 
-public class CreateProposalCommandHandler(IUnitOfWork unitOfWork, ICurrentUserService currentUserService) : ICommandHandler<CreateProposalCommand, ResultT<ProposalResponse>>
+public class CreateProposalCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService) : ICommandHandler<CreateProposalCommand, ResultT<ProposalResponse>>
 {
     public async Task<ResultT<ProposalResponse>> Handle(CreateProposalCommand request, CancellationToken cancellationToken)
     {
