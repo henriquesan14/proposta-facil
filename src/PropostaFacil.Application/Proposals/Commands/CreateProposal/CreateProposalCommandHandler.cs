@@ -9,11 +9,11 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Proposals.Commands.CreateProposal;
 
-public class CreateProposalCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService) : ICommandHandler<CreateProposalCommand, ResultT<ProposalResponse>>
+public class CreateProposalCommandHandler(IUnitOfWork unitOfWork, IUserContext userContext) : ICommandHandler<CreateProposalCommand, ResultT<ProposalResponse>>
 {
     public async Task<ResultT<ProposalResponse>> Handle(CreateProposalCommand request, CancellationToken cancellationToken)
     {
-        var loggedTenantId = TenantId.Of(currentUserService.TenantId!.Value);
+        var loggedTenantId = TenantId.Of(userContext.TenantId!.Value);
 
         var clientExist = await unitOfWork.Clients.SingleOrDefaultAsync(new GetClientByIdSpecification(ClientId.Of(request.ClientId)));
 

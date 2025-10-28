@@ -10,7 +10,7 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Tenants.Commands.ImpersonateTenant;
 
-public class ImpersonateTenantCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUserContext currentUserService) : ICommandHandler<ImpersonateTenantCommand, ResultT<AuthResponse>>
+public class ImpersonateTenantCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUserContext userContext) : ICommandHandler<ImpersonateTenantCommand, ResultT<AuthResponse>>
 {
     public async Task<ResultT<AuthResponse>> Handle(ImpersonateTenantCommand request, CancellationToken cancellationToken)
     {
@@ -27,13 +27,13 @@ public class ImpersonateTenantCommandHandler(IUnitOfWork unitOfWork, ITokenServi
             token: authToken.RefreshToken,
             userId: UserId.Of(userAdminSystem.Id.Value),
             expiresAt: authToken.RefreshTokenExpiresAt,
-            createdByIp: currentUserService.IpAddress!
+            createdByIp: userContext.IpAddress!
         );
 
         await unitOfWork.RefreshTokens.AddAsync(refreshToken);
         await unitOfWork.CompleteAsync();
 
-        currentUserService.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
+        userContext.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
 
         var authResponse = new AuthResponse(userAdminSystem.Id.Value, userAdminSystem.Name, Domain.Enums.UserRoleEnum.AdminTenant, tenant.ToDto());
         return authResponse;

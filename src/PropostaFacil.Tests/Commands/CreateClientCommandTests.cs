@@ -16,11 +16,11 @@ namespace PropostaFacil.Tests.Commands;
 public class CreateClientCommandTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
-    private readonly Mock<IUserContext> _currentUserServiceMock = new();
+    private readonly Mock<IUserContext> _userContextMock = new();
     private readonly Mock<IClientRuleCheck> _ClientRuleCheckMock = new();
 
     private CreateClientCommandHandler CreateHandler()
-    => new CreateClientCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object, _ClientRuleCheckMock.Object);
+    => new CreateClientCommandHandler(_unitOfWorkMock.Object, _userContextMock.Object, _ClientRuleCheckMock.Object);
 
     [Fact]
     public async Task Handle_Should_Return_TenantRequired_When_AdminSystem_Without_TenantId()
@@ -29,7 +29,7 @@ public class CreateClientCommandTests
         var command = new CreateClientCommandBuilder()
             .Build();
 
-        _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+        _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
 
         var handler = CreateHandler();
 
@@ -48,7 +48,7 @@ public class CreateClientCommandTests
     //    var command = new CreateClientCommandBuilder()
     //        .Build();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
     //    _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(
     //        It.IsAny<TenantId>(),
     //        It.IsAny<bool>(),
@@ -80,7 +80,7 @@ public class CreateClientCommandTests
     //    var client = new ClientBuilder()
     //        .Build();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
 
     //    _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(It.IsAny<TenantId>(), false, null!))
     //        .ReturnsAsync(tenant);
@@ -109,7 +109,7 @@ public class CreateClientCommandTests
     //    var tenant = new TenantBuilder()
     //        .Build();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
 
     //    _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(It.IsAny<TenantId>(), false, null!))
     //        .ReturnsAsync(tenant);

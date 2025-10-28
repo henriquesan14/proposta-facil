@@ -10,11 +10,11 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Tenants.Commands.StopImpersonateTenant;
 
-public class StopImpersonateTenantCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUserContext currentUserService) : ICommandHandler<StopImpersonateTenantCommand, ResultT<AuthResponse>>
+public class StopImpersonateTenantCommandHandler(IUnitOfWork unitOfWork, ITokenService tokenService, IUserContext userContext) : ICommandHandler<StopImpersonateTenantCommand, ResultT<AuthResponse>>
 {
     public async Task<ResultT<AuthResponse>> Handle(StopImpersonateTenantCommand request, CancellationToken cancellationToken)
     {
-        var currentRefreshToken = currentUserService.RefreshToken;
+        var currentRefreshToken = userContext.RefreshToken;
         if (string.IsNullOrEmpty(currentRefreshToken)) return AuthErrors.RefreshTokenNotFound();
 
         var userAdminSystem = await unitOfWork.Users.SingleOrDefaultAsync(new GetUserAdminSystemSpecification());
@@ -24,7 +24,7 @@ public class StopImpersonateTenantCommandHandler(IUnitOfWork unitOfWork, ITokenS
         if (token == null)
             return AuthErrors.RefreshTokenNotFound();
 
-        token.Revoke(currentUserService.IpAddress!);
+        token.Revoke(userContext.IpAddress!);
 
         var authToken = tokenService.GenerateAccessToken(userAdminSystem!);
 
@@ -33,13 +33,13 @@ public class StopImpersonateTenantCommandHandler(IUnitOfWork unitOfWork, ITokenS
             token: authToken.RefreshToken,
             userId: UserId.Of(userAdminSystem.Id.Value),
             expiresAt: authToken.RefreshTokenExpiresAt,
-            createdByIp: currentUserService.IpAddress!
+            createdByIp: userContext.IpAddress!
         );
 
         await unitOfWork.RefreshTokens.AddAsync(refreshToken);
         await unitOfWork.CompleteAsync();
 
-        currentUserService.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
+        userContext.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
 
         var authResponse = new AuthResponse(userAdminSystem.Id.Value, userAdminSystem.Name, Domain.Enums.UserRoleEnum.AdminSystem);
         return authResponse;

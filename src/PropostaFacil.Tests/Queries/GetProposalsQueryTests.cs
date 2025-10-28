@@ -15,7 +15,7 @@ public class GetProposalsQueryTests
     //public async Task Handle_Should_Return_All_Proposals_When_AdminSystem()
     //{
     //    // Arrange
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
     //    var query = new GetProposalsQueryBuilder().Build();
 
     //    var proposals = Enumerable.Range(1, 5)
@@ -50,16 +50,16 @@ public class GetProposalsQueryTests
     //{
     //    // Arrange
     //    var tenantId = Guid.NewGuid();
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
-    //    _currentUserServiceMock.Setup(x => x.TenantId).Returns(tenantId);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
+    //    _userContextMock.Setup(x => x.TenantId).Returns(tenantId);
     //    var query = new GetProposalsQueryBuilder().Build();
 
     //    var tenantProposals = Enumerable.Range(1, 3)
     //        .Select(i => new ProposalBuilder().WithTenantId(TenantId.Of(tenantId)).Build())
     //        .ToList();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
-    //    _currentUserServiceMock.Setup(x => x.TenantId).Returns(tenantId);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
+    //    _userContextMock.Setup(x => x.TenantId).Returns(tenantId);
 
     //    _unitOfWorkMock.Setup(x => x.Proposals.GetAsync(
     //            It.IsAny<Expression<Func<Proposal, bool>>>(),

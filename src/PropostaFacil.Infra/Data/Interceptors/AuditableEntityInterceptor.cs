@@ -6,7 +6,7 @@ using PropostaFacil.Domain.Users.Contracts;
 
 namespace PropostaFacil.Infra.Data.Interceptors;
 
-public class AuditableEntityInterceptor(IUserContext currentUserService) : SaveChangesInterceptor
+public class AuditableEntityInterceptor(IUserContext userContext) : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -28,17 +28,17 @@ public class AuditableEntityInterceptor(IUserContext currentUserService) : SaveC
         {
             if (entry.State == EntityState.Added)
             {
-                if (currentUserService!.UserId != null)
+                if (userContext!.UserId != null)
                 {
-                    entry.Entity.CreatedBy = currentUserService.UserId;
-                    entry.Entity.CreatedByName = currentUserService.UserName;
+                    entry.Entity.CreatedBy = userContext.UserId;
+                    entry.Entity.CreatedByName = userContext.UserName;
                 }
                 entry.Entity.CreatedAt = DateTime.Now;
             }
 
             if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
             {
-                if (currentUserService!.UserId != null) entry.Entity.LastModifiedBy = currentUserService.UserId;
+                if (userContext!.UserId != null) entry.Entity.LastModifiedBy = userContext.UserId;
                 entry.Entity.LastModified = DateTime.Now;
             }
         }

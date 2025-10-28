@@ -13,10 +13,10 @@ namespace PropostaFacil.Tests.Commands;
 public class CreateProposalCommandTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
-    private readonly Mock<IUserContext> _currentUserServiceMock = new();
+    private readonly Mock<IUserContext> _userContextMock = new();
 
     private CreateProposalCommandHandler CreateHandler()
-    => new CreateProposalCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object);
+    => new CreateProposalCommandHandler(_unitOfWorkMock.Object, _userContextMock.Object);
 
     [Fact]
     public async Task Handle_Should_Return_TenantRequired_When_AdminSystem_Without_TenantId()
@@ -25,7 +25,7 @@ public class CreateProposalCommandTests
         var command = new CreateProposalCommandBuilder()
             .Build();
 
-        _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+        _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
 
         var handler = CreateHandler();
 
@@ -44,7 +44,7 @@ public class CreateProposalCommandTests
     //    var command = new CreateProposalCommandBuilder()
     //        .Build();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
     //    _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(
     //        It.IsAny<TenantId>(),
     //        It.IsAny<bool>(),
@@ -70,8 +70,8 @@ public class CreateProposalCommandTests
     //    var command = new CreateProposalCommandBuilder()
     //        .Build();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
-    //    _currentUserServiceMock.Setup(x => x.TenantId).Returns(Guid.NewGuid());
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
+    //    _userContextMock.Setup(x => x.TenantId).Returns(Guid.NewGuid());
 
     //    _unitOfWorkMock
     //        .Setup(x => x.Clients.GetSingleAsync(It.IsAny<Expression<Func<Client, bool>>>(), false, null!))
@@ -104,7 +104,7 @@ public class CreateProposalCommandTests
 
     //    var proposalRepositoryMock = new Mock<IProposalRepository>();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
 
     //    _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(It.IsAny<TenantId>(), false, null!))
     //        .ReturnsAsync(tenant);

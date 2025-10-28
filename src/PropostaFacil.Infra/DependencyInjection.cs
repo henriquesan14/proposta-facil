@@ -65,10 +65,7 @@ public static class DependencyInjection
         services.AddScoped<ISubscriptionPlanRepository, SubscriptionPlanRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
 
-        services.AddHttpContextAccessor();
-
         //Services
-        services.AddScoped<IUserContext, UserContext>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ITokenCleanupService, TokenCleanupService>();
         services.AddScoped<ISubscriptionsJobService, SubscriptionsJobService>();
