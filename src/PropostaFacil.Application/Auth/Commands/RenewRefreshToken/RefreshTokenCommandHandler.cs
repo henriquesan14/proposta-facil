@@ -10,11 +10,11 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Auth.Commands.RenewRefreshToken;
 
-public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService, ITokenService tokenService) : ICommandHandler<RefreshTokenCommand, ResultT<AuthResponse>>
+public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IUserContext userContext, ITokenService tokenService) : ICommandHandler<RefreshTokenCommand, ResultT<AuthResponse>>
 {
     public async Task<ResultT<AuthResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        var refreshToken = currentUserService.RefreshToken;
+        var refreshToken = userContext.RefreshToken;
         var existingToken = await unitOfWork.RefreshTokens
             .SingleOrDefaultAsync(new GetRefreshTokenByTokenSpecification(refreshToken!));
 
@@ -30,16 +30,16 @@ public class RefreshTokenCommandHandler(IUnitOfWork unitOfWork, IUserContext cur
         }
 
         var authToken = tokenService.GenerateAccessToken(user);
-        var newRefreshToken = RefreshToken.Create(RefreshTokenId.Of(Guid.NewGuid()), authToken.RefreshToken, user.Id, currentUserService.IpAddress!, DateTime.Now.AddDays(7));
+        var newRefreshToken = RefreshToken.Create(RefreshTokenId.Of(Guid.NewGuid()), authToken.RefreshToken, user.Id, userContext.IpAddress!, DateTime.Now.AddDays(7));
 
-        existingToken.Revoke(currentUserService.IpAddress!);
+        existingToken.Revoke(userContext.IpAddress!);
         existingToken.SetReplacedByToken(newRefreshToken.Token);
 
 
         await unitOfWork.RefreshTokens.AddAsync(newRefreshToken);
         await unitOfWork.CompleteAsync();
 
-        currentUserService.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
+        userContext.SetCookieTokens(authToken.AccessToken, authToken.RefreshToken);
 
         var authResponse = new AuthResponse(user.Id.Value, user.Name, user.Role);
         return authResponse;

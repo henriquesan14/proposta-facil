@@ -6,11 +6,11 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Auth.Commands.RevokeRefreshToken;
 
-public class RevokeRefreshTokenCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService) : ICommandHandler<RevokeRefreshTokenCommand, Result>
+public class RevokeRefreshTokenCommandHandler(IUnitOfWork unitOfWork, IUserContext userContext) : ICommandHandler<RevokeRefreshTokenCommand, Result>
 {
     public async Task<Result> Handle(RevokeRefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        var refreshToken = currentUserService.RefreshToken;
+        var refreshToken = userContext.RefreshToken;
         if (string.IsNullOrEmpty(refreshToken))
             return AuthErrors.RefreshTokenNotFound();
 
@@ -18,10 +18,10 @@ public class RevokeRefreshTokenCommandHandler(IUnitOfWork unitOfWork, IUserConte
         if (token == null)
             return AuthErrors.RefreshTokenNotFound();
 
-        token.Revoke(currentUserService.IpAddress!);
+        token.Revoke(userContext.IpAddress!);
         await unitOfWork.CompleteAsync();
 
-        currentUserService.RemoveCookiesToken();
+        userContext.RemoveCookiesToken();
 
         return Result.Success();
     }

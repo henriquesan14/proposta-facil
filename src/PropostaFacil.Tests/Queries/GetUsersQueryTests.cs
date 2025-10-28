@@ -14,17 +14,17 @@ namespace PropostaFacil.Tests.Queries;
 public class GetUsersQueryTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
-    private readonly Mock<IUserContext> _currentUserServiceMock = new();
+    private readonly Mock<IUserContext> _userContextMock = new();
 
     //private GetUsersQueryHandler CreateHandler()
-    //=> new GetUsersQueryHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object);
+    //=> new GetUsersQueryHandler(_unitOfWorkMock.Object, _userContextMock.Object);
 
 
     //[Fact]
     //public async Task Handle_Should_Return_All_Users_When_AdminSystem()
     //{
     //    // Arrange
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
     //    var query = new GetUsersQueryBuilder().Build();
 
     //    var users = Enumerable.Range(1, 5)
@@ -59,16 +59,16 @@ public class GetUsersQueryTests
     //{
     //    // Arrange
     //    var tenantId = Guid.NewGuid();
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
-    //    _currentUserServiceMock.Setup(x => x.TenantId).Returns(tenantId);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
+    //    _userContextMock.Setup(x => x.TenantId).Returns(tenantId);
     //    var query = new GetUsersQueryBuilder().Build();
 
     //    var tenantUsers = Enumerable.Range(1, 3)
     //        .Select(i => new UserBuilder().WithTenantId(TenantId.Of(tenantId)).Build())
     //        .ToList();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
-    //    _currentUserServiceMock.Setup(x => x.TenantId).Returns(tenantId);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
+    //    _userContextMock.Setup(x => x.TenantId).Returns(tenantId);
 
     //    _unitOfWorkMock.Setup(x => x.Users.GetAsync(
     //            It.IsAny<Expression<Func<User, bool>>>(),

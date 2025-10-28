@@ -13,12 +13,12 @@ namespace PropostaFacil.Tests.Commands;
 public class CreateUserCommandTests
 {
     private readonly Mock<IUnitOfWork> _unitOfWorkMock = new();
-    private readonly Mock<IUserContext> _currentUserServiceMock = new();
+    private readonly Mock<IUserContext> _userContextMock = new();
     private readonly Mock<IPasswordHash> _passwordHashMock = new();
     private readonly Mock<IUserRuleCheck> _userRuleCheckMock = new();
 
     private CreateUserCommandHandler CreateHandler()
-    => new CreateUserCommandHandler(_unitOfWorkMock.Object, _currentUserServiceMock.Object, _passwordHashMock.Object, _userRuleCheckMock.Object);
+    => new CreateUserCommandHandler(_unitOfWorkMock.Object, _userContextMock.Object, _passwordHashMock.Object, _userRuleCheckMock.Object);
 
     [Fact]
     public async Task Handle_Should_Return_TenantRequired_When_AdminSystem_Without_TenantId()
@@ -28,7 +28,7 @@ public class CreateUserCommandTests
             .WithRole(UserRoleEnum.AdminTenant)
             .Build();
 
-        _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+        _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
 
         var handler = CreateHandler();
 
@@ -47,7 +47,7 @@ public class CreateUserCommandTests
     //    var command = new CreateUserCommandBuilder()
     //        .Build();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
     //    _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(
     //        It.IsAny<TenantId>(),
     //        It.IsAny<bool>(),
@@ -74,8 +74,8 @@ public class CreateUserCommandTests
             .WithRole(UserRoleEnum.AdminSystem)
             .Build();
 
-        _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
-        _currentUserServiceMock.Setup(x => x.TenantId).Returns(Guid.NewGuid());
+        _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminTenant);
+        _userContextMock.Setup(x => x.TenantId).Returns(Guid.NewGuid());
 
         var handler = CreateHandler();
 
@@ -100,7 +100,7 @@ public class CreateUserCommandTests
     //    var user = new UserBuilder()
     //        .Build();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
 
     //    _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(It.IsAny<TenantId>(), false, null!))
     //        .ReturnsAsync(tenant);
@@ -129,7 +129,7 @@ public class CreateUserCommandTests
     //    var tenant = new TenantBuilder()
     //        .Build();
 
-    //    _currentUserServiceMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
+    //    _userContextMock.Setup(x => x.Role).Returns(UserRoleEnum.AdminSystem);
 
     //    _unitOfWorkMock.Setup(x => x.Tenants.GetByIdAsync(It.IsAny<TenantId>(), false, null!))
     //        .ReturnsAsync(tenant);

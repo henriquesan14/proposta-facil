@@ -9,11 +9,11 @@ using PropostaFacil.Shared.Common.CQRS;
 
 namespace PropostaFacil.Application.Users.Commands.UpdateUser;
 
-public class UpdateUserCommandHandler(IUnitOfWork unitOfWork, IUserContext currentUserService) : ICommandHandler<UpdateUserCommand, Result>
+public class UpdateUserCommandHandler(IUnitOfWork unitOfWork, IUserContext userContext) : ICommandHandler<UpdateUserCommand, Result>
 {
     public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var loggedTenantId = TenantId.Of(currentUserService.TenantId!.Value);
+        var loggedTenantId = TenantId.Of(userContext.TenantId!.Value);
 
         if (request.Role == UserRoleEnum.AdminSystem)
             return UserErrors.Forbidden();

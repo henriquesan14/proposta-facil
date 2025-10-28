@@ -16,10 +16,10 @@ namespace PropostaFacil.Infra.Data;
 public class PropostaFacilDbContext : DbContext
 {
     private TenantId? _tenantId;
-    public PropostaFacilDbContext(DbContextOptions<PropostaFacilDbContext> options, IUserContext currentUserService)
+    public PropostaFacilDbContext(DbContextOptions<PropostaFacilDbContext> options, IUserContext userContext)
     : base(options) 
     {
-        _tenantId = currentUserService.TenantId.HasValue ? TenantId.Of(currentUserService.TenantId!.Value) : null;
+        _tenantId = userContext.TenantId.HasValue ? TenantId.Of(userContext.TenantId!.Value) : null;
     }
 
     public DbSet<Tenant> Tenants => Set<Tenant>();
