@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using PropostaFacil.Domain.Enums;
+﻿using PropostaFacil.Domain.Enums;
 using PropostaFacil.Domain.Users.Contracts;
 using System.Security.Claims;
 
-namespace PropostaFacil.Infra.Services;
+namespace PropostaFacil.API.Services;
 
 public class UserContext : IUserContext
 {

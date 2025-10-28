@@ -3,6 +3,8 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using PropostaFacil.API.ErrorHandling;
 using PropostaFacil.API.Extensions;
+using PropostaFacil.API.Services;
+using PropostaFacil.Domain.Users.Contracts;
 
 namespace PropostaFacil.API;
 
@@ -23,6 +25,9 @@ public static class DependencyInjection
         services.AddCorsConfig(builder.Environment);
         services.AddJsonSerializationConfig();
         services.AddAuthConfig(configuration, builder.Environment);
+
+        services.AddHttpContextAccessor();
+        services.AddScoped<IUserContext, UserContext>();
 
         services.AddHangfireConfig(configuration);
 
