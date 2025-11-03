@@ -9,7 +9,6 @@ using PropostaFacil.Application.Auth.Commands.RenewRefreshToken;
 using PropostaFacil.Application.Auth.Commands.ResetPassword;
 using PropostaFacil.Application.Auth.Commands.RevokeRefreshToken;
 using PropostaFacil.Application.Auth.Commands.UpdatePassword;
-using PropostaFacil.Application.Users.Commands.CreateUser;
 
 namespace PropostaFacil.API.Controllers;
 

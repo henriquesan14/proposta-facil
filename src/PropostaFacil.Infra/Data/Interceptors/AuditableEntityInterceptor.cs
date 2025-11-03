@@ -26,20 +26,17 @@ public class AuditableEntityInterceptor(IUserContext userContext) : SaveChangesI
 
         foreach (var entry in context.ChangeTracker.Entries<IEntity>())
         {
-            if (entry.State == EntityState.Added)
+            if (entry.State is EntityState.Added or EntityState.Modified || entry.HasChangedOwnedEntities())
             {
-                if (userContext!.UserId != null)
+                var now = DateTime.Now;
+                if (entry.State == EntityState.Added)
                 {
                     entry.Entity.CreatedBy = userContext.UserId;
                     entry.Entity.CreatedByName = userContext.UserName;
+                    entry.Entity.CreatedAt = now;
                 }
-                entry.Entity.CreatedAt = DateTime.Now;
-            }
-
-            if (entry.State == EntityState.Added || entry.State == EntityState.Modified || entry.HasChangedOwnedEntities())
-            {
-                if (userContext!.UserId != null) entry.Entity.LastModifiedBy = userContext.UserId;
-                entry.Entity.LastModified = DateTime.Now;
+                if(userContext.UserId != null) entry.Entity.LastModifiedBy = userContext.UserId;
+                entry.Entity.LastModified = now;
             }
         }
     }
