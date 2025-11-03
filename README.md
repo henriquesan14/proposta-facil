@@ -10,11 +10,11 @@
 - [x] Jobs (Hangfire) para cancelamento automático de assinaturas vencidas
 - [x] Envio de e-mails transacionais com SendGrid
 - [x] Envio de propostas personalizadas para clientes dos tenants
-- [x]Autenticação JWT + Refresh Token com HTTP-only cookies
-- [x]Impersonate Tenant (admin acessa como usuário)
-- [x]Alteração de plano de assinatura e atualização de senha
-- [x]Remoção lógica (soft delete)
-- [x]Cache distribuído com Redis para alto desempenho ⚡
+- [x] Autenticação JWT + Refresh Token com HTTP-only cookies
+- [x] Impersonate Tenant (admin acessa como usuário)
+- [x] Alteração de plano de assinatura e atualização de senha
+- [x] Remoção lógica (soft delete)
+- [x] Cache distribuído com Redis para alto desempenho ⚡
 
 
 ### 🛠 Tecnologias
